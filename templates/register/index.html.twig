@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sign up !{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1>Sign up !</h1>
+
+        {{  form(registerForm) }}
+
+        <div class="border-1 border-black p-3 w-25 bg-body-tertiary">
+            Already have an account ? <a href="{{ path('app_login') }}" class="btn btn-dark p-1">Sign in !</a>
+        </div>
+    </div>
+{% endblock %}

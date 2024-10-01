@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="text-center">Account</h1>
+
+        <div class="row">
+            <!-- Left menu -->
+            <div class="col-lg-3">
+                {% include '/account/_menu.html.twig' %}
+            </div>
+
+            <!-- Right content -->
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">My Last Orders</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Order #1234
+                                <span class="badge bg-primary rounded-pill">Shipped</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Order #1233
+                                <span class="badge bg-warning rounded-pill">Processing</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Order #1232
+                                <span class="badge bg-success rounded-pill">Delivered</span>
+                            </li>
+                        </ul>
+                        <div class="d-flex justify-content-center mt-3">
+                            <a href="#" class="btn btn-outline-secondary btn-sm">View all orders</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
