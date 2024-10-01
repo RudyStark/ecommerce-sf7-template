@@ -27,9 +27,23 @@ class Category
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
     private Collection $children;
 
+    /**
+     * @var Collection<int, Product>
+     */
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'parentCategory')]
+    private Collection $parentProducts;
+
+    /**
+     * @var Collection<int, Product>
+     */
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'subCategory')]
+    private Collection $subCategoryProducts;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->parentProducts = new ArrayCollection();
+        $this->subCategoryProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -103,8 +117,79 @@ class Category
         return $this;
     }
 
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getParentProducts(): Collection
+    {
+        return $this->parentProducts;
+    }
+
+    public function addParentProduct(Product $product): static
+    {
+        if (!$this->parentProducts->contains($product)) {
+            $this->parentProducts->add($product);
+            $product->setParentCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParentProduct(Product $product): static
+    {
+        if ($this->parentProducts->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getParentCategory() === $this) {
+                $product->setParentCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getSubCategoryProducts(): Collection
+    {
+        return $this->subCategoryProducts;
+    }
+
+    public function addSubCategoryProduct(Product $product): static
+    {
+        if (!$this->subCategoryProducts->contains($product)) {
+            $this->subCategoryProducts->add($product);
+            $product->setSubCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubCategoryProduct(Product $product): static
+    {
+        if ($this->subCategoryProducts->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getSubCategory() === $this) {
+                $product->setSubCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getAllProducts(): Collection
+    {
+        // Fusionner les produits des catégories parent et sous-catégories
+        return new ArrayCollection(
+            array_merge($this->parentProducts->toArray(), $this->subCategoryProducts->toArray())
+        );
+    }
+
     public function __toString(): string
     {
-        return $this->name; // Ou tout autre champ que tu veux utiliser pour représenter la catégorie
+        return $this->name;
     }
 }
