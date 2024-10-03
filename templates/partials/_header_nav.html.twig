@@ -1,0 +1,175 @@
+<header class="bg-dark text-light">
+    <div class="container py-2">
+        <div class="row py-4 pb-0 pb-sm-4 align-items-center ">
+            <div class="col-sm-4 col-lg-1 text-center text-sm-start">
+                <div class="main-logo">
+                    <a href="{{ path('app_home') }}">
+                        <img src="{{ asset('assets/images/logosf.png') }}" alt="logo" class="img-fluid">
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
+                <div class="search-bar border rounded-2 px-3 border-light">
+                    <form id="search-form" class="text-center d-flex align-items-center" action="" method="">
+                        <input type="text" class="form-control form-control-md border-0 bg-transparent text-light search-placeholder" placeholder="Search Here">
+                        <i class="bi bi-search fs-5"></i>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-sm-8 col-lg-6 d-flex justify-content-end gap-3 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
+                <!-- Support Box for Phone -->
+                <div class="support-box d-flex align-items-center text-end d-none d-xl-block p-2 bg-gradient rounded-4 shadow-sm" style="background: rgba(255, 255, 255, 0.1); width: 240px;">
+                    <i class="bi bi-telephone-fill text-light fs-4 me-2"></i>
+                    <div>
+                        <span class="fs-6 secondary-font text-light">Call Us Anytime</span>
+                        <h6 class="mb-0">+123-45678900</h6>
+                    </div>
+                </div>
+
+                <!-- Support Box for Store Hours -->
+                <div class="support-box d-flex align-items-center text-end d-none d-xl-block p-2 bg-gradient rounded-4 shadow-sm" style="background: rgba(255, 255, 255, 0.1); width: 240px;">
+                    <i class="bi bi-clock-fill text-light fs-4 me-2"></i>
+                    <div>
+                        <span class="fs-6 secondary-font text-light">Store Hours</span>
+                        <h6 class="mb-0">Mon-Fri: 9AM - 7PM</h6>
+                    </div>
+                </div>
+
+                <!-- Support Box for Address/Location -->
+                <div class="support-box d-flex align-items-center text-end d-none d-xl-block p-2 bg-gradient rounded-4 shadow-sm" style="background: rgba(255, 255, 255, 0.1); width: 240px;">
+                    <i class="bi bi-geo-alt-fill text-light fs-4 me-2"></i>
+                    <div>
+                        <span class="fs-6 secondary-font text-light">Our Store Location</span>
+                        <h6 class="mb-0">123 Fashion Street, Paris</h6>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <hr class="m-0 border-light">
+    </div>
+
+    <div class="container">
+        <nav class="main-menu d-flex navbar navbar-expand-lg navbar-dark">
+            <!-- Mobile only options -->
+            <div class="d-flex d-lg-none align-items-end mt-3">
+                <ul class="d-flex justify-content-end list-unstyled m-0">
+                    <li>
+                        <a href="javascript:void(0)" class="mx-3 text-light">
+                            <i class="bi bi-person fs-4"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="mx-3 text-light">
+                            <i class="bi bi-heart fs-4"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ path('app_cart') }}" class="mx-3 text-light"">
+                            <i class="bi bi-cart fs-4 position-relative"></i>
+                            <span class="position-absolute translate-middle badge rounded-circle bg-primary pt-2">
+                                {{ fullCartQuantity }}
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="mx-3 text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
+                            <i class="bi bi-search fs-4"></i>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="offcanvas offcanvas-end bg-dark text-light" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header justify-content-center">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body justify-content-between">
+                    <div class="dropdown me-2">
+                        <button class="btn btn-dark dropdown-toggle w-auto d-flex align-items-center" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-globe me-1"></i> EN
+                        </button>
+                        <ul class="dropdown-menu bg-dark text-light p-0" aria-labelledby="languageDropdown" style="min-width: 90px;">
+                            <li>
+                                <a class="dropdown-item text-light" href="#">
+                                    EN
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-light" href="#">
+                                    FR
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <ul class="navbar-nav menu-list list-unstyled d-flex gap-md-3 mb-0">
+                        <li class="nav-item">
+                            <a href="{{ path('app_home') }}" class="nav-link active text-light">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" role="button" id="pages" data-bs-toggle="dropdown" aria-expanded="false">
+                                Recycled Polyester
+                            </a>
+                            <ul class="dropdown-menu bg-dark text-light" aria-labelledby="pages">
+                                {% for parentCategory in parentCategories %}
+                                    <li><a href="{{ path('app_category', { slug : parentCategory.slug }) }}" class="dropdown-item text-light">{{ parentCategory.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" role="button" id="pages" data-bs-toggle="dropdown" aria-expanded="false">Useful</a>
+                            <ul class="dropdown-menu bg-dark text-light" aria-labelledby="pages">
+                                <li><a href="javascript:void(0)" class="dropdown-item text-light">Size Guide</a></li>
+                                <li><a href="javascript:void(0)" class="dropdown-item text-light">Fabric Guide</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-light">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-light">Contact</a>
+                        </li>
+                    </ul>
+                    <!-- Desktop options -->
+                    <div class="d-none d-lg-flex align-items-end">
+                        <ul class="d-flex justify-content-end list-unstyled m-0">
+                            <li>
+                                <a href="javascript:void(0)" class="mx-3 text-light text-decoration-none">
+                                    <i class="bi bi-person fs-4"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)" class="mx-3 text-light">
+                                    <i class="bi bi-heart fs-4"></i>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ path('app_cart') }}" class="mx-3 text-light">
+                                    <i class="bi bi-cart fs-4 position-relative"></i>
+                                    <span class="position-absolute translate-middle badge bg-secondary rounded-circle ms-2">
+                                        {{ fullCartQuantity }}
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>

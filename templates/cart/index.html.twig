@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container my-5">
+        <div class="row d-flex align-items-stretch">
+            <div class="col-lg-8 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <!-- Titre du panier et lien pour retourner à la boutique -->
+                    <h4 class="text-light">
+                        <span class="text-dark">Cart ({{ cart|length }} items)</span>
+                    </h4>
+                    <div class="d-flex align-items-center">
+                        <!-- Clear Cart Button/Trash Icon -->
+                        <!-- Desktop version -->
+                        <a href="{{ path('app_cart_clear') }}" class="btn btn-danger d-none d-md-inline-block me-3">
+                            Clear Cart
+                        </a>
+
+                        <!-- Mobile version -->
+                        <a href="{{ path('app_cart_clear') }}" class="btn btn-outline-danger d-inline-block d-md-none me-3 small-text-mobile">
+                            <i class="bi bi-trash"></i>
+                        </a>
+
+                        <!-- Back to shopping -->
+                        <a href="{{ path('app_home') }}" class="btn btn-outline-secondary d-inline-flex align-items-center small-text-mobile">
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Back to shopping
+                        </a>
+                    </div>
+                </div>
+
+
+                <ul class="list-group flex-grow-1 shadow">
+                    {% for product in cart %}
+                        <li class="list-group-item text-dark h100">
+                            <div class="row flex-column flex-md-row">
+                                <div class="col-md-4 col-12 mb-3 mb-md-0">
+                                    <a href="{{ path('app_product', { slug: product.object.slug }) }}">
+                                        <img src="/uploads/products/{{ product.object.picture }}" class="img-fluid rounded w-100" alt="{{ product.object.name }}">
+                                    </a>
+                                </div>
+                                <div class="col-md-8 col-12 text-center text-md-start"> <!-- for mobile, text-center is used to center the text -->
+                                    <h5 class="fw-bold">{{ product.object.name }}</h5>
+                                    <p class="mb-1">Color: White</p>
+                                    <p class="mb-1">Size: M</p>
+                                    <p class="mb-1">Price: {{ product.object.price|price }}</p>
+
+                                    <div class="d-flex align-items-center justify-content-center justify-content-md-start mt-2">
+                                        <a href="{{ path('app_cart_decrease', { id: product.object.id }) }}" class="btn btn-outline-light btn-sm me-2 border-black text-dark">-</a>
+                                        <input type="text" class="form-control text-center me-2 bg-dark text-light input-quantity" value="{{ product.quantity }}" readonly>
+                                        <a href="{{ path('app_cart_add', { id: product.object.id }) }}" class="btn btn-outline-light btn-sm border-black text-dark" data-action="cart#increaseQuantity">+</a>
+                                    </div>
+
+                                    <!-- favorite button -->
+                                    <a href="@" class="btn btn-outline-danger btn-sm mt-2">
+                                        <i class="bi bi-heart"></i> Add to favorites
+                                    </a>
+
+
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-lg-4 d-flex flex-column mt-2">
+                <h4 class="d-flex justify-content-between align-items-center mb-3 text-light">
+                    <span class="text-dark">Total :</span>
+                </h4>
+                <div class="card shadow">
+                    <div class="card-header">
+                        <h4>Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-4">
+                            <li class="d-flex justify-content-between mb-3">
+                                <span>Total products</span>
+                                <span> {{ fullCartQuantity }}</span>
+                            </li>
+                            <li class="d-flex justify-content-between mb-3">
+                                <span>Shipping</span>
+                                <span>Free</span>
+                            </li>
+                            <li class="d-flex justify-content-between mb-3">
+                                <span>Total (including VAT)</span>
+                                <strong>{{ totalWithTaxes|price }}</strong>
+                            </li>
+                        </ul>
+                        <a href="#" class="btn btn-primary w-100">Go to Checkout</a>
+                        <div class="mt-3">
+                            <label for="coupon">Add a discount code (optional)</label>
+                            <input type="text" class="form-control" id="coupon" placeholder="Coupon code">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

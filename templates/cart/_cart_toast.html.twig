@@ -1,0 +1,31 @@
+<turbo-stream action="update" target="cart-qty">
+    <template>
+        {{ cartQty }}
+    </template>
+</turbo-stream>
+
+<turbo-stream action="append" target="toasts">
+    <template>
+        <div id="liveToast" class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true" style="max-width: 100%; min-width: 320px;">
+            <div class="toast-header">
+                <strong class="me-auto"><i class="icon-shopping-cart"></i> Your cart</strong>
+                <small>just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-center">
+                <div class="d-flex flex-column align-items-center">
+                    <img src="/uploads/products/{{ product.picture }}" class="img-fluid mb-2" alt="{{ product.name }}" style="max-width: 100px; height: auto;">
+                    <strong class="text-center">{{ product.name }}</strong>
+                    <small class="text-center">is added to your cart</small>
+                </div>
+                <p>
+                    <a href="{{ path('app_cart') }}" class="btn btn-dark w-100 mt-2">
+                        <i class="icon-view-show"></i> View cart <span class="badge bg-secondary rounded-circle ms-2">{{ cartQty }}</span>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </template>
+
+</turbo-stream>
+

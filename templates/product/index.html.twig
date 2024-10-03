@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Header avec bannière et titre -->
+    <header class="bg-dark text-white py-4 mb-5" style="background-image: url('/path/to/banner.jpg'); background-size: cover; background-position: center;">
+        <div class="container text-center">
+            <h1 class="display-5">{{ product.name }}</h1>
+            <p class="lead">Discover the best {{ product.name }} on our store</p>
+        </div>
+    </header>
+
+    <!-- Détails du produit -->
+    <div class="container my-5">
+        <small><i>
+                <!-- Lien vers la catégorie parent -->
+                <a href="{{ path('app_category', { slug: product.parentCategory.slug }) }}" class="text-decoration-none text-dark">
+                    {{ product.parentCategory.name }}
+                </a>
+                {% if product.subCategory %}
+                    <!-- Lien vers la sous-catégorie si elle existe -->
+                    >
+                    <a href="{{ path('app_category', { slug: product.subCategory.slug }) }}" class="text-decoration-none text-dark">
+                        {{ product.subCategory.name }}
+                    </a>
+                {% endif %}
+                <!-- Nom du produit sans lien -->
+                > {{ product.name }}
+            </i></small>
+        <div class="row mb-5 mt-5">
+            <!-- Carousel de produit -->
+            <div class="col-lg-6 mb-4">
+                <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                            <div class="">
+                                <img src="/uploads/products/{{ product.picture }}" class="d-block w-100" style="height: 400px; object-fit: cover;" alt="{{ product.name }}">
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Détails du produit -->
+            <div class="col-lg-6">
+
+                <h2>{{ product.name }}</h2>
+                <p class="lead">{{ product.pricewt|price }}</p>
+                <form action="{{ path('app_cart_add', { id : product.id } ) }}" method="post" data-turbo-frame="cart-qty">
+                    <div class="mb-4">
+                        <label for="quantity" class="form-label">Quantité</label>
+                        <input type="number" id="quantity" name="quantity" class="form-control w-25" value="1" min="1">
+                        <ul class="list-group mt-3">
+                            <li class="list-group-item"><strong>Color:</strong> White</li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <strong class="me-3">Size:</strong>
+                                <select class="form-select w-auto" name="size" id="size">
+                                    <option value="XS">XS</option>
+                                    <option value="S">S</option>
+                                    <option value="M">M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                </select>
+                            </li>
+                            <li class="list-group-item"><strong>Available stock:</strong> Yes</li>
+                        </ul>
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-dark w-100">Ajouter au panier <i class="bi bi-cart-fill ms-2"></i></button>
+                </form>
+                <!-- Caractéristiques du produit -->
+                <div class="mt-5 border border-1 bg-body-tertiary">
+                    <div class="p-3">
+                        <h4>Product Details</h4>
+                        <p class="text-muted">{{ product.description|raw }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section des produits similaires -->
+        <div class="mt-5">
+            <h3>Similar Products</h3>
+            <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100">
+                            <img src="/uploads/products/nophoto.png" class="card-img-top" alt="" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Lorem</h5>
+                                <p class="card-text">20 €</p>
+                                <a href="" class="btn btn-outline-dark">View Product</a>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <!-- Section des avis clients -->
+        <div class="mt-5">
+            <h3>Customer Reviews</h3>
+            <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card p-3 bg-body-tertiary">
+                            <div class="d-flex justify-content-between">
+                                <h5>Charles</h5>
+                                <p class="text-muted">10/10/2024</p>
+                            </div>
+                            <p class="mb-0">Lorem ipsum dolor sit amet.</p>
+                            <div class="mt-2">
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center">No reviews yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fix CSS for layout adjustments -->
+
+{% endblock %}
