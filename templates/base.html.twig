@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr" data-bs-theme="auto">
 <head>
@@ -6,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ecommerce SF7 Template - V1</title>
     <meta name="description" content="Ecommerce SF7 Template - V1">
+    <meta name="csrf-token" content="{{ csrf_token('authenticate') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
@@ -16,45 +16,19 @@
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
+    {{ importmap() }}
 </head>
 <body>
+{% include 'partials/_header_nav.html.twig' %}
+{% include 'partials/_search_offcanvas.html.twig' %}
 
-<header data-bs-theme="dark">
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ path('app_home') }}">Ecommerce SF7 Template - V1</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                </ul>
-                <div class="speed-menu">
-                    {% if app.user %}
-                        <a href="{{ path('app_account') }}"><i data-feather="user"></i> {{ app.user.firstname }}</a>
-                    {% else %}
-                    <a href="{{ path('app_login') }}"><i data-feather="user"></i></a>
-                    {% endif %}
-                    <a href=""><i data-feather="shopping-cart"></i></a>
-                </div>
-            </div>
-        </div>
-    </nav>
-</header>
+<div id="toasts" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11; width: 100%; max-width: 400px;">
+    <div id="liveToast">
+        <!-- Les toasts apparaissent ici -->
+    </div>
+</div>
+
 <main>
-
     <!-- Flash messages -->
     <div class="container">
         {% for type, messages in app.flashes %}

@@ -1,40 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <!-- Header avec bannière et titre -->
-    <header class="bg-dark text-white py-4" style="background-image: url('/path/to/banner.jpg'); background-size: cover; background-position: center;">
+    <header class="bg-dark text-white py-4" style="background-image: url({{ asset('assets/images/category-banner.webp') }}); background-size: cover; background-position: center;">
         <div class="container text-center">
             <h1 class="display-5">{{ category.name }} Collection</h1>
         </div>
     </header>
 
-    <!-- Affichage du nombre de produits dans la catégorie -->
     <div class="container my-5">
         <p class="text-center">There are {{ category.allProducts|length }} product(s) in this collection.</p>
 
-        <!-- Grid pour afficher les cartes des produits -->
         <div class="row g-3">
             {% for product in category.allProducts %}
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card card-single h-100">
-                        <!-- Image du produit avec une taille standardisée -->
-                        <img class="card-img-top" src="/uploads/products/{{ product.picture }}" alt="{{ product.name }}" style="height: 250px; width: 100%; object-fit: cover;">
+                    <a href="{{ path('app_product', { slug: product.slug }) }}" class="text-decoration-none text-dark">
+                        <div class="card card-single h-100 border-0 shadow">
+                            <img class="card-img-top" src="/uploads/products/{{ product.picture }}" alt="{{ product.name }}" style="height: 250px; width: 100%; object-fit: cover;">
 
-                        <!-- Corps de la carte avec le nom et la description -->
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                        </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                            </div>
 
-                        <!-- Pied de carte avec le prix du produit -->
-                        <div class="card-footer d-flex justify-content-between align-items-center">
-                            <p class="card-text mb-0">
-                                <strong>{{ product.pricewt|number_format(2, '.', ',') }} €</strong>
-                            </p>
-                            <a href="#">
-                                <i class="bi bi-cart-fill text-black"></i>
-                            </a>
+                            <div class="card-footer d-flex justify-content-between align-items-center">
+                                <p class="card-text mb-0">
+                                    <strong>{{ product.pricewt|price }}</strong>
+                                </p>
+                                <a href="#">
+                                    <i class="bi bi-cart-fill text-black"></i>
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             {% else %}
                 <p class="text-center">No products found in this collection.</p>
