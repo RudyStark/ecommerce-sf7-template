@@ -5,6 +5,7 @@ namespace App\Controller\Account;
 use App\Entity\Address;
 use App\Form\AddressUserType;
 use App\Repository\AddressRepository;
+use App\Services\CartService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +29,7 @@ class AddressController extends AbstractController
     }
 
     #[Route('/add/{id}', name: 'app_account_address_form', defaults: ['id' => null])]
-    public function form(Request $request, $id, AddressRepository $addressRepository): Response
+    public function form(Request $request, $id, AddressRepository $addressRepository, CartService $cartService): Response
     {
         if ($id) {
             // Check if the address exists and belongs to the user
@@ -53,6 +54,10 @@ class AddressController extends AbstractController
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Your address has been added successfully!');
+
+            if ($cartService->getTotalQuantity() > 0) {
+                return $this->redirectToRoute('app_order');
+            }
 
             return $this->redirectToRoute('app_account_addresses');
         }
