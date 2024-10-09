@@ -1,0 +1,116 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block main %}
+    <div class="container-fluid py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0 mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <h3 class="card-title mb-0">Order Details - #{{ order.id }}</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <!-- Order Information -->
+                            <div class="col-md-6">
+                                <h5 class="mb-3 text-secondary">Order Information</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span class="fw-bold">Created At:</span>
+                                        <span>{{ order.createdAt|date('Y-m-d H:i:s') }}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span class="fw-bold">Status:</span>
+                                        <span>{{ include('admin/order_state.html.twig', { field: { 'value' : order.state } }) }}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span class="fw-bold">Carrier:</span>
+                                        <span>{{ order.carrierName }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Customer Address and Email -->
+                            <div class="col-md-6">
+                                <h5 class="mb-3 text-secondary">Customer Address</h5>
+                                <div class="p-3 border rounded bg-light">
+                                    <p class="mb-0"><strong>{{ order.delivery|raw }}</strong></p>
+                                    {% if order.user.email %}
+                                        <p class="mt-2 text-muted"><i class="bi bi-envelope"></i> {{ order.user.email }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Products Section -->
+                        <div>
+                            <h5 class="text-secondary mb-3">Products</h5>
+                            <ul class="list-group">
+                                {% for product in order.orderDetails %}
+                                    <li class="list-group-item">
+                                        <div class="row align-items-center">
+                                            <div class="col-3 col-sm-2">
+                                                <img src="/uploads/products/{{ product.productPicture }}" alt="{{ product.productName }}" class="img-thumbnail" style="width: 100%; height: auto;">
+                                            </div>
+                                            <div class="col-9 col-sm-4">
+                                                <h6 class="fw-bold mb-0">{{ product.productName }}</h6>
+                                                <small class="text-muted">Quantity: {{ product.productQuantity }}</small>
+                                            </div>
+                                            <div class="col-6 col-sm-2 text-center">
+                                                <p class="mb-0 fw-bold">Unit Price <small class="text-muted">(excl. VAT)</small></p>
+                                                <p>{{ product.productPrice|price }}</p>
+                                            </div>
+                                            <div class="col-6 col-sm-2 text-center">
+                                                <p class="mb-0 fw-bold">VAT</p>
+                                                <p>{{ product.productVAT }}%</p>
+                                            </div>
+                                            <div class="col-12 col-sm-2 text-end">
+                                                <p class="mb-0 fw-bold">Total <small class="text-muted">(incl. VAT)</small></p>
+                                                {% set coeff = 1 + (product.productVAT / 100) %}
+                                                <p>{{ ((product.productPrice * coeff) * product.productQuantity)|price }}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+
+                                <!-- Carrier Row -->
+                                <li class="list-group-item bg-light">
+                                    <div class="row align-items-center">
+                                        <div class="col-2 col-sm-1">
+                                            <i class="bi bi-truck text-secondary" style="font-size: 1.5rem;"></i>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="fw-bold mb-0">{{ order.carrierName }}</h6>
+                                        </div>
+                                        <div class="col-auto text-end">
+                                            <p class="fw-bold">{{ order.carrierPrice|price }}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Total Section -->
+                    <div class="card-footer bg-light">
+                        <div class="d-flex flex-column align-items-end">
+                            <div class="d-flex justify-content-between align-items-center mb-2" style="width: 100%; max-width: 300px;">
+                                <p class="mb-0 fw-bold text-secondary">Total (excl. VAT):</p>
+                                <p class="mb-0 text-dark">{{ (order.totalWt - order.totalVat)|price }}</p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2" style="width: 100%; max-width: 300px;">
+                                <p class="mb-0 fw-bold text-secondary">Total VAT:</p>
+                                <p class="mb-0 text-dark">{{ order.totalVat|price }}</p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center" style="width: 100%; max-width: 300px;">
+                                <p class="mb-0 fw-bold text-secondary">Total (incl. VAT):</p>
+                                <p class="mb-0 fw-bold text-primary">{{ order.totalWt|price }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

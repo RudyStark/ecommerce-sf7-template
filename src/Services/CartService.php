@@ -101,7 +101,7 @@ class CartService
      * function get total with taxes
      * @return float
      */
-    public function getTotalWithTaxes(): float
+    public function getTotalWithoutTaxes(): float
     {
         $cart = $this->getCart();
         $total = 0;
@@ -111,5 +111,17 @@ class CartService
         }
 
         return $total;
+    }
+
+    public function getTotalWithTaxes(): float
+    {
+        $cart = $this->getCart();
+        $total = 0;
+
+        foreach ($cart as $product) {
+            $total += $product['object']->getPrice() * $product['quantity'];
+        }
+
+        return $total * 1.2;
     }
 }
