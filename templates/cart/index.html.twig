@@ -43,7 +43,7 @@
                                     <h5 class="fw-bold">{{ product.object.name }}</h5>
                                     <p class="mb-1">Color: White</p>
                                     <p class="mb-1">Size: M</p>
-                                    <p class="mb-1">Price: {{ product.object.price|price }}</p>
+                                    <p class="mb-1">Price: {{ product.object.priceWt|price }}</p>
 
                                     <div class="d-flex align-items-center justify-content-center justify-content-md-start mt-2">
                                         <a href="{{ path('app_cart_decrease', { id: product.object.id }) }}" class="btn btn-outline-light btn-sm me-2 border-black text-dark">-</a>
@@ -79,12 +79,12 @@
                                     <span> {{ fullCartQuantity }}</span>
                                 </li>
                                 <li class="d-flex justify-content-between mb-3">
-                                    <span>Shipping</span>
-                                    <span>Free</span>
+                                    <span>Total <small>(excl. VAT)</small></span>
+                                    <strong>{{ totalWithoutTaxes|price }}</strong>
                                 </li>
                                 <li class="d-flex justify-content-between mb-3">
-                                    <span>Total (including VAT)</span>
-                                    <strong>{{ totalWithTaxes|price }}</strong>
+                                    <span>Total <small>(incl. VAT)</small></span>
+                                    <strong>{{ totalWt|price }}</strong>
                                 </li>
                             </ul>
                             <a href="{{ path('app_order') }}" class="btn btn-primary w-100">Go to Checkout</a>

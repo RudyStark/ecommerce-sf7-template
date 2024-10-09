@@ -35,13 +35,43 @@ class Order
     /**
      * @var Collection<int, OrderDetail>
      */
-    #[ORM\OneToMany(targetEntity: OrderDetail::class, mappedBy: 'myOrder')]
+    #[ORM\OneToMany(targetEntity: OrderDetail::class, mappedBy: 'myOrder', cascade: ['persist'])]
     private Collection $orderDetails;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
     }
+
+    public function getTotalWt(): float
+    {
+        $totalWt = 0;
+        $products = $this->getOrderDetails();
+
+        foreach ($products as $product) {
+            $coeff = 1 + ($product->getProductVat() / 100);
+            $totalWt += ($product->getProductPrice() * $coeff) * $product->getProductQuantity();
+        }
+
+        return $totalWt + $this->getCarrierPrice();
+    }
+
+    public function getTotalVat(): float
+    {
+        $totalVat = 0;
+        $products = $this->getOrderDetails();
+
+        foreach ($products as $product) {
+            $totalVat += ($product->getProductPrice() * $product->getProductQuantity()) * ($product->getProductVat() / 100);
+        }
+
+        return $totalVat;
+    }
+
 
     public function getId(): ?int
     {
@@ -134,6 +164,18 @@ class Order
                 $orderDetail->setMyOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
