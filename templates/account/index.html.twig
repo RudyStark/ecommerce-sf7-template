@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/account.css') }}">
+{% endblock %}
+
 {% block body %}
     <div class="container my-5">
         <h1 class="text-center">Account</h1>
@@ -12,30 +17,13 @@
 
             <!-- Right content -->
             <div class="col-lg-9">
-                <div class="card">
-                    <div class="card-header bg-dark text-white">
-                        <h5 class="mb-0">My Last Orders</h5>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Order #1234
-                                <span class="badge bg-primary rounded-pill">Shipped</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Order #1233
-                                <span class="badge bg-warning rounded-pill">Processing</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Order #1232
-                                <span class="badge bg-success rounded-pill">Delivered</span>
-                            </li>
-                        </ul>
-                        <div class="d-flex justify-content-center mt-3">
-                            <a href="#" class="btn btn-outline-secondary btn-sm">View all orders</a>
-                        </div>
-                    </div>
-                </div>
+                {% set current_route = app.request.attributes.get('_route') %}
+
+                {% if current_route == 'app_account' %}
+                    {{ include('account/includes/_dashboard.html.twig') }}
+                {% elseif current_route == 'app_account_order' %}
+                    {{ include('account/order/includes/_details_order.html.twig') }}
+                {% endif %}
             </div>
         </div>
     </div>

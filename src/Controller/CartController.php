@@ -12,9 +12,13 @@ use Symfony\UX\Turbo\TurboBundle;
 
 class CartController extends AbstractController
 {
-    #[Route('/cart', name: 'app_cart')]
-    public function index(CartService $cart): Response
+    #[Route('/cart/{reason}', name: 'app_cart', defaults: [ 'reason' => null ])]
+    public function index(CartService $cart, $reason): Response
     {
+        if ($reason === 'cancelled') {
+            $this->addFlash('warning', 'Your payment has been cancelled, you can continue shopping.');
+        }
+
         return $this->render('cart/index.html.twig', [
             'cart' => $cart->getCart(),
             'totalWithoutTaxes' => $cart->getTotalWithoutTaxes(),
