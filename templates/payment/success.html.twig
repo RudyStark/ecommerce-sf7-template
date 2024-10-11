@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/payment.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container text-center py-5 my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card shadow-lg border-0 animate-slideIn"> <!-- ajout de la classe d'animation ici -->
+                    <div class="card-body p-4 p-md-5">
+                        <!-- Icône de succès animée -->
+                        <div class="mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" class="bi bi-check-circle-fill icon-success" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.97 11.03a.75.75 0 0 0 1.08.02l3.992-3.992a.75.75 0 0 0-1.08-1.08L7.5 9.555l-1.47-1.47a.75.75 0 0 0-1.08 1.08l2 2z"/>
+                            </svg>
+                        </div>
+
+                        <!-- Message de succès -->
+                        <h1 class="display-5 fw-bold text-success mb-3">Payment Accepted!</h1>
+                        <p class="text-muted mb-4">Thank you for your purchase! Your payment was successfully processed.</p>
+
+                        <!-- Détails de la commande -->
+                        <div class="order-summary bg-light rounded-3 py-3 px-4 mb-4">
+                            <h5 class="text-dark fw-bold">Order Summary</h5>
+                            <ul class="list-unstyled">
+                                <li class="d-flex justify-content-between">
+                                    <span>Order Number:</span>
+                                    <span class="fw-bold">#{{ order.id }}</span>
+                                </li>
+                                <li class="d-flex justify-content-between">
+                                    <span>Payment Amount:</span>
+                                    <span class="fw-bold">{{ order.totalWt|price }}</span>
+                                </li>
+                                <li class="d-flex justify-content-between">
+                                    <span>Estimated Delivery:</span>
+                                    <span class="fw-bold">5-7 Business Days</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Boutons d'action -->
+                        <div class="action-buttons mt-3">
+                            <a href="{{ path('app_home') }}" class="btn btn-outline-primary btn-lg me-2 mb-2 mt-3">Continue Shopping</a>
+                            <a href="{{ path('app_account_order', { id_order: order.id }) }}" class="btn btn-primary btn-lg mb-2 mt-3">View Order</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

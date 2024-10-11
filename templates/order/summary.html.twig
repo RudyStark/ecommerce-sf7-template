@@ -90,7 +90,7 @@
                                         <strong>{{ (totalWt + choices.carriers.price)|price }}</strong>
                                     </li>
                                 </ul>
-                                <button href="" class="btn btn-success w-100 btn-sm">Place Order</button>
+                                <a data-turbo="false" href="{{ path('app_payment', { 'id_order' : order.id }) }}" class="btn btn-success w-100 btn-sm">Place Order</a>
                             </div>
                         </div>
                     </div>

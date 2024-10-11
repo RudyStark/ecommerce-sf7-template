@@ -1,0 +1,87 @@
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg border-0 mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Order Details - #{{ order.id }}</h5>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Order Information Section -->
+                    <div class="mb-4">
+                        <h6 class="text-secondary">Order Information</h6>
+                        <ul class="list-unstyled">
+                            <li class="d-flex justify-content-between py-2">
+                                <span class="fw-bold">Order Date:</span>
+                                <span>{{ order.createdAt|date('F j, Y, g:i A') }}</span>
+                            </li>
+                            <li class="d-flex justify-content-between py-2">
+                                <span class="fw-bold">Order Status:</span>
+                                {{ include('account/order/includes/_state.html.twig', { field: { value: order.state } }) }}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Customer Information Section -->
+                    <div class="mb-4">
+                        <h6 class="text-secondary">Customer Information</h6>
+                        <div class="p-3 border rounded bg-light">
+                            <p class="mb-0"><strong>Name:</strong> {{ order.user.firstname }} {{ order.user.lastname }}</p>
+                            <p class="mb-0"><strong>Email:</strong> {{ order.user.email }}</p>
+                            <p class="mb-0"><strong>Shipping Address:</strong> {{ order.delivery|raw }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Products Section -->
+                    <div class="mb-4">
+                        <h6 class="text-secondary">Ordered Products</h6>
+                        <ul class="list-group shadow-sm">
+                            {% for product in order.orderDetails %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <img src="/uploads/products/{{ product.productPicture }}" alt="{{ product.productName }}" class="img-thumbnail me-3" style="width: 60px; height: auto;">
+                                        <div>
+                                            <h6 class="mb-0">{{ product.productName }}</h6>
+                                            <small class="text-muted">Quantity: {{ product.productQuantity }}</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="mb-0 fw-bold">Unit Price (excl. VAT): {{ product.productPrice|price }}</p>
+                                        <p class="mb-0 fw-bold">VAT: {{ product.productVAT }}%</p>
+                                        <p class="fw-bold">Total: {{ ((product.productPrice * (1 + product.productVAT / 100)) * product.productQuantity)|price }}</p>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!-- Carrier Information -->
+                    <div class="mb-4">
+                        <h6 class="text-secondary">Shipping Information</h6>
+                        <div class="p-3 border rounded bg-light">
+                            <p class="mb-0"><strong>Carrier:</strong> {{ order.carrierName }}</p>
+                            <p class="mb-0"><strong>Shipping Cost:</strong> {{ order.carrierPrice|price }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Section -->
+                <div class="card-footer bg-light">
+                    <div class="d-flex flex-column align-items-end">
+                        <div class="d-flex justify-content-between align-items-center mb-2" style="width: 100%; max-width: 300px;">
+                            <p class="mb-0 fw-bold text-secondary">Total (excl. VAT):</p>
+                            <p class="mb-0 text-dark">{{ (order.totalWt - order.totalVat)|price }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2" style="width: 100%; max-width: 300px;">
+                            <p class="mb-0 fw-bold text-secondary">Total VAT:</p>
+                            <p class="mb-0 text-dark">{{ order.totalVat|price }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center" style="width: 100%; max-width: 300px;">
+                            <p class="mb-0 fw-bold text-secondary">Total (incl. VAT):</p>
+                            <p class="mb-0 fw-bold text-primary">{{ order.totalWt|price }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
