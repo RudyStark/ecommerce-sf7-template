@@ -27,9 +27,12 @@
                                         <span>{{ order.carrierName }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
-                                        <span class="fw-bold">Stripe ID:</span>
-                                        <small>{{ order.stripeSessionId }}</small>
+                                        <span type="button" class="btn fw-bold" data-bs-toggle="popover" data-bs-title="Stripe payment ID" data-bs-content={{ order.stripeSessionId }}>Stripe ID</span>
+                                        <a href="{{ path('app_invoice_admin', { 'id_order': order.id }) }}" class="btn btn-primary">Download Invoice</a>
                                     </li>
+{#                                    <li class="list-group item d-flex justify-content-between">#}
+{#                                        <a href="{{ path('app_invoice_admin', { 'id_order': order.id }) }}" class="btn btn-primary">Download Invoice</a>#}
+{#                                    </li>#}
                                 </ul>
                             </div>
 
