@@ -6,6 +6,7 @@ use App\Entity\Product;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -39,6 +40,7 @@ class ProductCrudController extends AbstractCrudController
 
         return [
             TextField::new('name')->setLabel('Name'),
+            BooleanField::new('isHomepage')->setLabel('Show on homepage')->setHelp('Check this box to show the product on the homepage'),
             SlugField::new('slug')->setTargetFieldName('name')->setLabel('Slug')->setHelp('The slug is used in the URL to identify the product'),
             TextEditorField::new('description')->setLabel('Description')->setHelp('The description of the product'),
             ImageField::new('picture')->setLabel('Image')->setHelp('Image should be 600x600px')->setUploadDir('public/uploads/products')->setBasePath('uploads/products')->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')->setRequired($required),
