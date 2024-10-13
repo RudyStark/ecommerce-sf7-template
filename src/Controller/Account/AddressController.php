@@ -25,7 +25,9 @@ class AddressController extends AbstractController
     #[Route('/', name: 'app_account_addresses')]
     public function index(): Response
     {
-        return $this->render('account/address/index.html.twig');
+        return $this->render('account/index.html.twig', [
+            'current_route' => 'app_account_addresses',
+        ]);
     }
 
     #[Route('/add/{id}', name: 'app_account_address_form', defaults: ['id' => null])]
