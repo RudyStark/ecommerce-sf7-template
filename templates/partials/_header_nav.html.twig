@@ -61,19 +61,21 @@
             <div class="d-flex d-lg-none align-items-end mt-3">
                 <ul class="d-flex justify-content-end list-unstyled m-0">
                     <li>
-                        <a href="javascript:void(0)" class="mx-3 text-light">
-                            <i class="bi bi-person fs-4"></i>
+                        <a href="{{ path('app_account') }}" class="mx-3 link-light">
+                            <i data-feather="user"></i>
                         </a>
                     </li>
-                    <li>
-                        <a href="javascript:void(0)" class="mx-3 text-light">
-                            <i class="bi bi-heart fs-4"></i>
-                        </a>
-                    </li>
+                    {% if app.user %}
+                        <li>
+                            <a href="{{ path('app_account_wishlist') }}" class="link-light">
+                                <i data-feather="heart" class="mx-1" style="cursor: pointer; font-size: 1.5rem;"></i>
+                            </a>
+                        </li>
+                    {% endif %}
 
                     <li>
-                        <a href="{{ path('app_cart') }}" class="mx-3 text-light"">
-                            <i class="bi bi-cart fs-4 position-relative"></i>
+                        <a href="{{ path('app_cart') }}" class="mx-3 text-light">
+                            <i data-feather="shopping-cart"></i>
                             <span class="position-absolute translate-middle badge rounded-circle bg-primary pt-2">
                                 {{ fullCartQuantity }}
                             </span>
@@ -81,8 +83,8 @@
                     </li>
 
                     <li>
-                        <a href="#" class="mx-3 text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
-                            <i class="bi bi-search fs-4"></i>
+                        <a href="#" class="mx-2 text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
+                            <i data-feather="search"></i>
                         </a>
                     </li>
                 </ul>
@@ -147,20 +149,22 @@
                     </ul>
                     <!-- Desktop options -->
                     <div class="d-none d-lg-flex align-items-end">
-                        <ul class="d-flex justify-content-end list-unstyled m-0">
+                        <ul class="d-flex justify-content-end list-unstyled m-0 mb-2">
                             <li>
-                                <a href="{{ path('app_account') }}" class="mx-3 text-light text-decoration-none">
-                                    <i class="bi bi-person fs-4"></i>
+                                <a href="{{ path('app_account') }}" class="mx-3 link-light">
+                                    <i data-feather="user"></i>
                                 </a>
                             </li>
-                            <li>
-                                <a href="javascript:void(0)" class="mx-3 text-light">
-                                    <i class="bi bi-heart fs-4"></i>
-                                </a>
-                            </li>
+                            {% if app.user %}
+                                <li>
+                                    <a href="{{ path('app_account_wishlist') }}" class="link-light">
+                                        <i data-feather="heart" style="cursor: pointer;"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
                             <li class="">
                                 <a href="{{ path('app_cart') }}" class="mx-3 text-light">
-                                    <i class="bi bi-cart fs-4 position-relative"></i>
+                                    <i data-feather="shopping-cart"></i>
                                     <span class="position-absolute translate-middle badge bg-secondary rounded-circle ms-2">
                                         {{ fullCartQuantity }}
                                     </span>

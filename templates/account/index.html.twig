@@ -23,6 +23,10 @@
                     {{ include('account/includes/_dashboard.html.twig') }}
                 {% elseif current_route == 'app_account_order' %}
                     {{ include('account/order/includes/_details_order.html.twig') }}
+                {% elseif current_route == 'app_account_addresses' %}
+                    {{ include('account/address/includes/_index.html.twig') }}
+                {% elseif current_route == 'app_account_wishlist' %}
+                    {{ include('account/wishlist/_index.html.twig') }}
                 {% endif %}
             </div>
         </div>
