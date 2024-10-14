@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}An error occurred{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="h3 mb-3 font-weight-normal">An error occurred</h1>
+
+        <p>
+            An error occurred while loading the page you requested.
+
+            Please contact us if you think this is a server error. Thank you.
+        </p>
+
+        <a href="{{ path('app_home') }}" class="btn btn-dark">Go back to the homepage</a>
+    </div>
+{% endblock %}
