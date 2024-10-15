@@ -18,4 +18,10 @@ class HomeController extends AbstractController
             'productsInHomepage' => $productRepository->findByIsHomepage(true),
         ]);
     }
+
+    #[Route('/vue', name: 'app_vue')]
+    public function vue(): Response
+    {
+        return $this->render('vue.html.twig');
+    }
 }

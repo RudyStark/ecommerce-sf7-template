@@ -16,6 +16,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
         <script src="https://unpkg.com/feather-icons"></script>
     {% endblock %}
+    <script defer src="https://ga.jspm.io/npm:es-module-shims@1.5.5/dist/es-module-shims.js"></script>
     {{ importmap() }}
 </head>
 <body>
@@ -41,7 +42,9 @@
         {% endfor %}
     </div>
 
-    {% block body %}{% endblock %}
+    {% block body %}
+
+    {% endblock %}
 
     <!-- FOOTER -->
     <footer class="container">
@@ -49,7 +52,17 @@
     </footer>
 </main>
 
-<script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('assets/js/global.js') }}"></script>
+{% block javascripts %}
+    <!-- Vos scripts JavaScript -->
+    <!-- Script principal avec type="module" pour utiliser les imports ES -->
+    <script type="module" src="{{ asset('app.js') }}"></script>
+
+    <!-- Autres scripts JavaScript -->
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" defer></script>
+    <script src="{{ asset('assets/js/global.js') }}"></script>
+
+    <!-- Icônes Feather -->
+    <script src="https://unpkg.com/feather-icons"></script>
+{% endblock %}
 </body>
 </html>
