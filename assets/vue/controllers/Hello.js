@@ -3,7 +3,7 @@
 export default {
     data() {
         return {
-            name: 'New',
+            name: 'TOTO',
         };
     },
     template: `<div>Hello {{ name }}!</div>`,
