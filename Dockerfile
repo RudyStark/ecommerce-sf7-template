@@ -12,7 +12,9 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libzip-dev \
     zip \
-    unzip
+    unzip \
+    gnupg \
+    ca-certificates
 
 # Installer les extensions PHP nécessaires
 RUN docker-php-ext-install intl pdo_mysql gd zip
@@ -24,8 +26,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 RUN mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
 
-# Copie la configuration PHP personnalisée si nécessaire
-#COPY php.ini /usr/local/etc/php/php.ini
+# Installer Node.js et npm
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get install -y nodejs
 
 # Définit le répertoire de travail
 WORKDIR /var/www/html
