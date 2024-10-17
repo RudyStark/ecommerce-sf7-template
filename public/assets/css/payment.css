@@ -1,0 +1,58 @@
+/* Style principal */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Animation */
+.animate-slideIn {
+    animation: slideIn 0.8s ease-out;
+}
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Icône de succès */
+.icon-success {
+    color: green;
+    font-size: 3.5rem;
+}
+
+/* Détails de la commande */
+.order-summary {
+    padding: 1.5rem;
+}
+
+/* Alignement des boutons */
+.action-buttons a {
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .display-5 {
+        font-size: 1.75rem;
+    }
+    .icon-success {
+        font-size: 2.5rem;
+    }
+    .order-summary h5 {
+        font-size: 1.25rem;
+    }
+    .order-summary ul {
+        padding-left: 0;
+    }
+    .action-buttons a {
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+    }
+    .container {
+        padding: 2rem;
+    }
+}
