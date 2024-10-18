@@ -8,25 +8,22 @@
     <meta name="csrf-token" content="{{ csrf_token('authenticate') }}">
 
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-        <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+        {{ encore_entry_link_tags('app') }}
+        <link rel="stylesheet" href="{{ asset('build/css/style.css') }}">
+        <link href="{{ asset('build/css/bootstrap.min.css') }}" rel="stylesheet">
         <!-- Custom styles for this template -->
-        <link href="{{ asset('assets/css/carousel.css') }}" rel="stylesheet">
-        <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
+        <link href="{{ asset('build/css/carousel.css') }}" rel="stylesheet">
+        <link href="{{ asset('build/css/custom.css') }}" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
         <script src="https://unpkg.com/feather-icons"></script>
     {% endblock %}
-    {{ importmap() }}
+    {% block javascript %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
 </head>
 <body>
 {% include 'partials/_header_nav.html.twig' %}
 {% include 'partials/_search_offcanvas.html.twig' %}
-
-<div id="toasts" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11; width: 100%; max-width: 400px;">
-    <div id="liveToast">
-        <!-- Les toasts apparaissent ici -->
-    </div>
-</div>
 
 <main>
     <!-- Flash messages -->
@@ -41,15 +38,17 @@
         {% endfor %}
     </div>
 
-    {% block body %}{% endblock %}
+    {% block body %}
+
+    {% endblock %}
 
     <!-- FOOTER -->
     <footer class="container">
-        <p>&copy; 2024 Ecommerce SF7 - Template - V1 <a href="#">CGV</a> &middot; <a href="#">CGU</a></p>
+        <p>&copy; 2024 Ecommerce SF7 - Template - V1 - dqdsdsqdsq <a href="#">CGV</a> &middot; <a href="#">CGU</a></p>
     </footer>
 </main>
 
-<script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('assets/js/global.js') }}"></script>
+<script src="{{ asset('build/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('build/js/global.js') }}"></script>
 </body>
 </html>
