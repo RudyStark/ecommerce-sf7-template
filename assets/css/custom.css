@@ -1,5 +1,5 @@
 /* Import Bootstrap first */
-@import './bootstrap.min.css';
+/*@import './bootstrap.min.css';*/
 
 /* Import TailwindCSS */
 @tailwind base;

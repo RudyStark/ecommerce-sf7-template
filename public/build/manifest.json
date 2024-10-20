@@ -15,7 +15,6 @@
   "build/css/NavBar.css": "/build/css/NavBar.css",
   "build/css/payment.css": "/build/css/payment.css",
   "build/js/global.js": "/build/js/global.js",
-  "build/css/combine.css": "/build/css/combine.css",
   "build/images/category-banner.webp": "/build/images/category-banner.webp",
-  "build/vendors-node_modules_hotwired_turbo_dist_turbo_es2017-esm_js-node_modules_symfony_stimulus-br-12afbd.js": "/build/vendors-node_modules_hotwired_turbo_dist_turbo_es2017-esm_js-node_modules_symfony_stimulus-br-12afbd.js"
+  "build/css/header.css": "/build/css/header.css"
 }
