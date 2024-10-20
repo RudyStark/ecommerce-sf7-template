@@ -9,6 +9,14 @@
       "css": [
         "/build/app.css"
       ]
+    },
+    "custom": {
+      "js": [
+        "/build/runtime.js"
+      ],
+      "css": [
+        "/build/custom.css"
+      ]
     }
   }
 }

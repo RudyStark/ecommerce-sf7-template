@@ -1,0 +1,79 @@
+.navbar {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    width: 70%;
+    margin-left: 15%;
+}
+
+.navbar.scrolled {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.palmier-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 0.5rem;
+    animation: sway 3s infinite ease-in-out;
+}
+
+@keyframes sway {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(10deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.nav-link {
+    color: #333;
+    transition: color 0.3s ease-in-out;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: #000;
+}
+
+.icon {
+    width: 28px;
+    height: 28px;
+    stroke-width: 1.5;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-link:hover .icon {
+    stroke: #000;
+    transform: scale(1.1);
+}
+
+.badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Ajustement pour la lisibilité sur fond transparent */
+.navbar.scrolled .nav-link {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.navbar.scrolled .nav-link:hover {
+    color: rgba(0, 0, 0, 1);
+}

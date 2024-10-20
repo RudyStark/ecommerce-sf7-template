@@ -10,6 +10,12 @@ Encore
     .setOutputPath('public/build/')
     .setPublicPath('/build')
     .addEntry('app', './assets/app.js')
+    .addStyleEntry('custom', './assets/css/custom.css')
+    .enablePostCssLoader((options) => {
+        options.postcssOptions = {
+            config: './postcss.config.js',
+        };
+    })
     .enableReactPreset()
     .splitEntryChunks()
     .enableStimulusBridge('./assets/controllers.json')
