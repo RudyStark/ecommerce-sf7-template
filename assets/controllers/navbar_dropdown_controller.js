@@ -14,6 +14,8 @@ export default class extends Controller {
     connect() {
         this.closeDropdowns = this.closeDropdowns.bind(this)
         document.addEventListener('click', this.closeDropdowns)
+        // S'assurer que tous les dropdowns sont initialement cachés
+        this.ensureDropdownsAreClosed()
     }
 
     disconnect() {
@@ -46,7 +48,6 @@ export default class extends Controller {
         this.languageButtonTarget.querySelector('span > span').textContent = selectedLanguage
         this.languageButtonTarget.querySelector('img').src = event.currentTarget.querySelector('img').src
         this.languageMenuTarget.classList.add('hidden')
-        // here we would send a request to the server to change the language
     }
 
     closeDropdowns(event) {
@@ -68,9 +69,19 @@ export default class extends Controller {
     }
 
     closeAllDropdowns() {
-        this.dropdownMenuTargets.forEach(menu => menu.classList.add('hidden'))
-        this.languageMenuTarget.classList.add('hidden')
-        if (this.hasUserDropdownMenuTarget) {
+        this.ensureDropdownsAreClosed()
+    }
+
+    ensureDropdownsAreClosed() {
+        this.dropdownMenuTargets.forEach(menu => {
+            if (!menu.classList.contains('hidden')) {
+                menu.classList.add('hidden')
+            }
+        })
+        if (!this.languageMenuTarget.classList.contains('hidden')) {
+            this.languageMenuTarget.classList.add('hidden')
+        }
+        if (this.hasUserDropdownMenuTarget && !this.userDropdownMenuTarget.classList.contains('hidden')) {
             this.userDropdownMenuTarget.classList.add('hidden')
         }
     }
