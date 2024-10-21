@@ -202,6 +202,90 @@ html, body {
     fill: red;
 }
 
+/* Company Values */
+/* Company Values Full-Width Sections */
+.company-values-sections {
+    margin-top: 50px;
+    padding: 0;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 50px;
+    color: #ff6f61; /* Couleur vive, inspirée de l'été et de la plage */
+}
+
+/* Chaque section de valeur de l'entreprise */
+.company-value-section {
+    position: relative;
+    min-height: 400px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: white;
+    transition: transform 0.4s ease-in-out;
+    opacity: 0;
+    transform: translateY(50px); /* Départ en dehors de la vue pour l'effet de révélation */
+}
+
+.company-value-section.active {
+    opacity: 1;
+    transform: translateY(0); /* Effet de révélation lors du scroll */
+}
+
+/* Contenu de la valeur (titre et description) */
+.company-value-content {
+    background: rgba(0, 0, 0, 0.6); /* Overlay noir transparent pour rendre le texte lisible */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 600px;
+}
+
+.value-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #ffde59; /* Couleur dorée pour rappeler l'été, la plage et le luxe */
+}
+
+.value-description {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #fff;
+}
+
+.shadow-custom {
+    box-shadow: 0px 0 8px rgba(0, 0, 0, 0.2), /* Ombre à droite */
+    -4px 0 8px rgba(0, 0, 0, 0.2); /* Ombre à gauche */
+}
+
+/* Effets de survol */
+.company-value-section:hover {
+    transform: scale(1.02); /* Légère mise en avant au survol */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Ombre légère */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .company-value-section {
+        min-height: 300px;
+    }
+
+    .value-title {
+        font-size: 1.5rem;
+    }
+
+    .value-description {
+        font-size: 1rem;
+    }
+}
+
+
 
 
 

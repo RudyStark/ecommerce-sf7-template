@@ -75,7 +75,7 @@ export default class extends Controller {
         const newContent = `
             <div class="position-relative h-100 fade-in">
                 <img src="/uploads/header/${selectedHeader.picture}" class="position-absolute w-100 h-100 object-fit-cover" alt="${selectedHeader.title || ''}">
-                <div class="position-absolute bottom-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-4" style="background: linear-gradient(to right, rgba(0,0,0,0.5), transparent);">
+                <div class="position-absolute bottom-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-4">
                     <h1 class="text-white fw-bold mb-2">${selectedHeader.title || ''}</h1>
                     <p class="text-white mb-4">${selectedHeader.content || ''}</p>
                     <div class="d-flex justify-content-center">

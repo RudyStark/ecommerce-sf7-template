@@ -10,11 +10,11 @@
   "build/images/308382.svg": "/build/images/308382.svg",
   "build/css/style.css": "/build/css/style.css",
   "build/css/custom.css": "/build/css/custom.css",
-  "build/css/account.css": "/build/css/account.css",
   "build/css/header.css": "/build/css/header.css",
+  "build/css/account.css": "/build/css/account.css",
   "build/css/carousel.css": "/build/css/carousel.css",
-  "build/css/NavBar.css": "/build/css/NavBar.css",
   "build/css/payment.css": "/build/css/payment.css",
+  "build/css/NavBar.css": "/build/css/NavBar.css",
   "build/js/global.js": "/build/js/global.js",
   "build/images/category-banner.webp": "/build/images/category-banner.webp"
 }
