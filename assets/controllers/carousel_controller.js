@@ -73,13 +73,13 @@ export default class extends Controller {
 
     updateMainCard(selectedHeader) {
         const newContent = `
-            <div class="relative h-full fade-in">
-                <img src="/uploads/header/${selectedHeader.picture}" class="absolute inset-0 w-full h-full object-cover" alt="${selectedHeader.title || ''}">
-                <div class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex flex-col justify-end p-6">
-                    <h1 class="text-4xl font-bold mb-2 text-white">${selectedHeader.title || ''}</h1>
-                    <p class="text-lg mb-4 text-white">${selectedHeader.content || ''}</p>
-                    <div class="flex justify-center">
-                        <a href="${selectedHeader.buttonLink || '#'}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full text-sm inline-block">
+            <div class="position-relative h-100 fade-in">
+                <img src="/uploads/header/${selectedHeader.picture}" class="position-absolute w-100 h-100 object-fit-cover" alt="${selectedHeader.title || ''}">
+                <div class="position-absolute bottom-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-4" style="background: linear-gradient(to right, rgba(0,0,0,0.5), transparent);">
+                    <h1 class="text-white fw-bold mb-2">${selectedHeader.title || ''}</h1>
+                    <p class="text-white mb-4">${selectedHeader.content || ''}</p>
+                    <div class="d-flex justify-content-center">
+                        <a href="${selectedHeader.buttonLink || '#'}" class="btn btn-primary rounded-pill">
                             ${selectedHeader.buttonTitle || 'Click here'}
                         </a>
                     </div>

@@ -1,21 +1,41 @@
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+.carousel-container {
+    height: 500px;
 }
-.pulse {
-    animation: pulse 0.3s ease-in-out;
+
+.w-70 {
+    width: 60%;
 }
-.selected-thumbnail {
-    border: 3px solid #3b82f6;
-    transition: border 0.3s ease-in-out;
+
+.w-30 {
+    width: 40%;
 }
-.fade-in {
-    animation: fadeIn 0.5s ease-in-out;
+
+.miniature-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    max-height: 100%;
+    padding-right: 5px;
 }
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(1.05); }
-    to { opacity: 1; transform: scale(1); }
+
+.thumbnail-container {
+    height: 80px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.thumbnail-container:hover {
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+}
+
+/* Ajout d'une scrollbar fine pour la colonne des miniatures */
+.miniature-grid::-webkit-scrollbar {
+    width: 5px;
+}
+
+.miniature-grid::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 5px;
 }
 
 @media (max-width: 768px) {
@@ -24,65 +44,128 @@
         height: auto;
     }
 
-    /* Cache l'image polygonale en mobile */
-    .w-75.overflow-hidden {
-        display: none !important;
-    }
-
-    /* Ajustement de la largeur pour les éléments principaux */
-    .w-75 {
+    .w-70, .w-30 {
         width: 100% !important;
     }
 
-    /* Affichage des colonnes en une seule colonne */
-    .grid.grid-cols-3 {
-        grid-template-columns: 1fr;
+    .d-flex.w-70 {
+        flex-direction: column;
     }
 
-    .col-span-2 {
-        height: 300px; /* Ajuste une hauteur fixe pour l'image centrale */
-    }
-
-    .col-span-2 img {
-        object-fit: cover; /* Assure que l'image couvre l'espace correctement */
-        height: 100%; /* L'image doit remplir toute la hauteur disponible */
-    }
-
-    /* Miniatures en ligne avec CSS Grid */
-    .miniature-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Définit une taille fixe pour chaque miniature */
-        grid-gap: 10px; /* Ajoute un espacement entre les miniatures */
-        justify-items: center; /* Centre les miniatures */
-        padding: 10px 0;
-        overflow-x: auto; /* Ajoute un défilement horizontal si nécessaire */
-    }
-
-    .miniature-grid > div {
-        width: 100px; /* Taille fixe des miniatures */
-        height: 80px;
-        display: flex;
-        align-items: center; /* Assure que l'image est centrée verticalement */
-        justify-content: center; /* Assure que l'image est centrée horizontalement */
-        overflow: hidden;
-    }
-
-    .miniature-grid img {
+    .col-8, .col-3 {
         width: 100%;
-        height: 100%;
-        object-fit: cover; /* Garde les proportions de l'image */
+        margin-right: 0;
+        margin-bottom: 1rem;
     }
 
-    /* Ajustement des textes */
-    .text-4xl {
-        font-size: 1.5rem; /* Réduit le titre en mobile */
+    .col-8 {
+        height: 300px;
     }
 
-    .text-lg {
-        font-size: 0.875rem; /* Réduit la taille du texte en mobile */
+    .miniature-grid {
+        flex-direction: row;
+        justify-content: flex-start;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 10px;
+        margin-top: 1rem;
     }
 
-    .bg-blue-600 {
-        padding: 8px 16px; /* Ajustement du padding du bouton */
+    .thumbnail-container {
+        flex: 0 0 auto;
+        width: 100px;
+        height: 80px;
+        margin-right: 10px;
+        margin-bottom: 0;
+    }
+
+    /* Cacher explicitement l'image polygonale en version mobile */
+    .w-30.overflow-hidden {
+        display: none !important;
+    }
+}
+
+/* Animations existantes */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.pulse {
+    animation: pulse 0.3s ease-in-out;
+}
+
+.selected-thumbnail {
+    border: 3px solid #0d6efd;
+    transition: border 0.3s ease-in-out;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(1.05); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}
+
+.featured-products {
+    background-color: #f8f9fa;
+}
+
+.product-card {
+    transition: transform 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-image {
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+.product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.product-card:hover .product-overlay {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .product-image {
+        height: 200px;
     }
 }
