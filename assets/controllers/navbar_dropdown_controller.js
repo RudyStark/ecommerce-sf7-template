@@ -1,4 +1,3 @@
-// navbar_dropdown_controller.js
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
@@ -8,13 +7,15 @@ export default class extends Controller {
         "languageButton",
         "languageMenu",
         "userMenuButton",
-        "userDropdownMenu"
+        "userDropdownMenu",
+        "mobileMenu",
+        "mobileMenuButton"
     ]
 
     connect() {
+        console.log("NavbarDropdown controller connected")
         this.closeDropdowns = this.closeDropdowns.bind(this)
         document.addEventListener('click', this.closeDropdowns)
-        // S'assurer que tous les dropdowns sont initialement cachés
         this.ensureDropdownsAreClosed()
     }
 
@@ -55,12 +56,14 @@ export default class extends Controller {
         const isClickInsideDropdown = (
             this.dropdownMenuTargets.some(menu => menu.contains(clickedElement)) ||
             this.languageMenuTarget.contains(clickedElement) ||
-            (this.hasUserDropdownMenuTarget && this.userDropdownMenuTarget.contains(clickedElement))
+            (this.hasUserDropdownMenuTarget && this.userDropdownMenuTarget.contains(clickedElement)) ||
+            this.mobileMenuTarget.contains(clickedElement)
         );
         const isClickOnButton = (
             this.dropdownButtonTargets.some(button => button.contains(clickedElement)) ||
             this.languageButtonTarget.contains(clickedElement) ||
-            (this.hasUserMenuButtonTarget && this.userMenuButtonTarget.contains(clickedElement))
+            (this.hasUserMenuButtonTarget && this.userMenuButtonTarget.contains(clickedElement)) ||
+            this.hasMobileMenuButtonTarget && this.mobileMenuButtonTarget.contains(clickedElement)
         );
 
         if (!isClickInsideDropdown && !isClickOnButton) {
@@ -69,20 +72,53 @@ export default class extends Controller {
     }
 
     closeAllDropdowns() {
-        this.ensureDropdownsAreClosed()
+        this.dropdownMenuTargets.forEach(menu => menu.classList.add('hidden'))
+        this.languageMenuTarget.classList.add('hidden')
+        if (this.hasUserDropdownMenuTarget) {
+            this.userDropdownMenuTarget.classList.add('hidden')
+        }
+        // Fermer le menu mobile si nécessaire
+        if (this.hasMobileMenuTarget) {
+            this.mobileMenuTarget.classList.add('opacity-0', 'pointer-events-none')
+            const menuPanel = this.mobileMenuTarget.querySelector('.transform')
+            if (menuPanel) {
+                menuPanel.classList.add('translate-x-full')
+                menuPanel.classList.remove('translate-x-0')
+            }
+        }
+    }
+
+    toggleMobileMenu(event) {
+        event.preventDefault()
+        this.mobileMenuTarget.classList.toggle('opacity-0')
+        this.mobileMenuTarget.classList.toggle('pointer-events-none')
+        const menuPanel = this.mobileMenuTarget.querySelector('.transform')
+        if (menuPanel) {
+            menuPanel.classList.toggle('translate-x-full')
+            menuPanel.classList.toggle('translate-x-0')
+        }
+
+        if (this.hasMobileMenuButtonTarget) {
+            const hamburgerIcon = this.mobileMenuButtonTarget.querySelector('svg')
+            if (hamburgerIcon) {
+                hamburgerIcon.classList.toggle('rotate-90')
+            }
+        }
+    }
+
+    toggleMobileSubmenu(event) {
+        const button = event.currentTarget;
+        const submenuId = button.dataset.submenuTarget;
+        const submenu = document.getElementById(`${submenuId}-submenu`);
+        const icon = button.querySelector('svg');
+
+        if (submenu) {
+            submenu.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
     }
 
     ensureDropdownsAreClosed() {
-        this.dropdownMenuTargets.forEach(menu => {
-            if (!menu.classList.contains('hidden')) {
-                menu.classList.add('hidden')
-            }
-        })
-        if (!this.languageMenuTarget.classList.contains('hidden')) {
-            this.languageMenuTarget.classList.add('hidden')
-        }
-        if (this.hasUserDropdownMenuTarget && !this.userDropdownMenuTarget.classList.contains('hidden')) {
-            this.userDropdownMenuTarget.classList.add('hidden')
-        }
+        this.closeAllDropdowns()
     }
 }
