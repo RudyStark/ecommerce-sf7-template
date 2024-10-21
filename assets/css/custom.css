@@ -6,6 +6,14 @@ html, body {
     padding: 0;
 }
 
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;

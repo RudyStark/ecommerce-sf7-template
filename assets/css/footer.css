@@ -1,0 +1,61 @@
+footer {
+    background-color: #f8f9fa; /* Couleur de fond claire */
+    color: #343a40; /* Couleur de texte sombre mais élégante */
+    font-size: 0.875rem;
+}
+
+footer h6 {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: #007bff; /* Accent de couleur professionnelle */
+}
+
+footer a {
+    color: #343a40;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #007bff; /* Accent de couleur au survol */
+}
+
+footer .form-control {
+    border-radius: 0;
+    border: 1px solid #007bff; /* Bordure avec une couleur d'accent */
+    background-color: #ffffff; /* Fond clair premium */
+    color: #343a40;
+}
+
+footer .btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    font-size: 0.875rem;
+}
+
+footer .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+footer .fab {
+    font-size: 1.25rem;
+}
+
+footer .row.align-items-center {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+footer .small {
+    font-size: 0.75rem;
+}
+
+footer .text-muted {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+footer .img-fluid {
+    max-width: 80px;
+    height: auto;
+}

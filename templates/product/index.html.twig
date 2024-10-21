@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="bg-light shadow">
     <!-- Header avec bannière et titre -->
     <header class="bg-dark text-white py-4 mb-5" style="background-image: url('/path/to/banner.jpg'); background-size: cover; background-position: center;">
         <div class="container text-center">
@@ -16,7 +17,7 @@
     </div>
 
     <!-- Détails du produit -->
-    <div class="container my-5">
+    <div class="container">
         <small><i>
                 <!-- Lien vers la catégorie parent -->
                 <a href="{{ path('app_category', { slug: product.parentCategory.slug }) }}" class="text-decoration-none text-dark">
@@ -92,7 +93,7 @@
                     <button type="submit" class="btn btn-lg btn-dark w-100">Ajouter au panier <i class="bi bi-cart-fill ms-2"></i></button>
                 </form>
                 <!-- Caractéristiques du produit -->
-                <div class="mt-5 border border-1 bg-body-tertiary">
+                <div class="mt-5 border border-1 bg-body-secondary">
                     <div class="p-3">
                         <h4>Product Details</h4>
                         <p class="text-muted">{{ product.description|raw }}</p>
@@ -139,6 +140,6 @@
             </div>
         </div>
     </div>
-    <!-- Fix CSS for layout adjustments -->
+</div>
 
 {% endblock %}

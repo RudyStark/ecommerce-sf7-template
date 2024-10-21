@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="bg-light shadow">
     <header class="bg-dark text-white py-4" style="background-image: url({{ asset('assets/images/category-banner.webp') }}); background-size: cover; background-position: center;">
         <div class="container text-center">
             <h1 class="display-5">{{ category.name }} Collection</h1>
@@ -34,5 +35,5 @@
             {% endfor %}
         </div>
     </div>
-
+</div>
 {% endblock %}
