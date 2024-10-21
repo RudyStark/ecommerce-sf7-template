@@ -1,10 +1,5 @@
 /* Import Bootstrap first */
-/*@import './bootstrap.min.css';*/
-
-/* Import TailwindCSS */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import './bootstrap.min.css';
 
 html, body {
     margin: 0;

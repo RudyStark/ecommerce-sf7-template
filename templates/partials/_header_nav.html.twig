@@ -1,236 +1,155 @@
-<nav class="bg-white border-b border-gray-200" data-controller="navbar-dropdown">
-    <div class="max-w-screen-xl flex items-center justify-between mx-auto p-2">
-        <div class="flex items-center space-x-8 flex-grow">
-            <a href="{{ path('app_home') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="{{ asset('build/images/logosf.png') }}" class="h-8" alt="Logo" />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap">SF7 Ecommerce Template</span>
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm" data-controller="navbar-dropdown">
+    <div class="container-fluid flex-column p-0 px-lg-4">
+        <!-- Partie supérieure : logo, recherche, icônes -->
+        <div class="d-flex justify-content-between align-items-center w-100 py-2">
+            <!-- Logo -->
+            <a class="navbar-brand mx-5" href="{{ path('app_home') }}">
+                <img src="{{ asset('build/images/logosf.png') }}" alt="Logo" height="32" class="d-inline-block align-top">
+                <span class="ms-2 fs-4 d-none d-lg-inline">SF7 Ecommerce Template</span>
             </a>
-            <div class="hidden md:flex items-center flex-grow max-w-[400px]">
-                <input type="search" id="default-search" class="block w-full py-2 px-4 text-sm text-gray-900 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-200" placeholder="What can we help you find today?" required>
-                <button type="submit" class="p-2 ml-2 text-gray-500 focus:outline-none">
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
+
+            <!-- Barre de recherche (affichée en mobile et desktop) -->
+            <form class="d-flex mx-auto" style="width: 30%;">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-secondary" type="submit">
+                    <i class="bi bi-search"></i>
                 </button>
-            </div>
-        </div>
+            </form>
 
-        <!-- Bouton hamburger visible uniquement en mobile -->
-        <div class="md:hidden">
-            <button id="mobile-menu-button" class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none"
-                    data-action="click->navbar-dropdown#toggleMobileMenu"
-                    data-navbar-dropdown-target="mobileMenuButton">
-                <svg id="hamburger-icon" class="w-6 h-6 transition-transform duration-300 ease-in-out" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-
-        <div class="navbar-icons hidden md:flex items-center space-x-6">
-            {% if app.user %}
-                <a href="{{ path('app_account_wishlist') }}" class="icon-item flex items-center">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                    <span class="ml-2">Favorites</span>
+            <!-- Icônes (affichées uniquement en desktop) -->
+            <div class="d-flex align-items-center d-none d-lg-flex">
+                <a href="{{ path('app_account_wishlist') }}" class="btn btn-link text-dark me-3 text-decoration-none">
+                    <i class="bi bi-heart"></i>
+                    <span class="d-none d-lg-inline">Favorites</span>
                 </a>
-            {% endif %}
-            <div class="icon-item flex items-center">
-                <a href="{{ path('app_cart') }}" class="flex items-center">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="icon-badge">{{ fullCartQuantity }}</span>
-                    <span class="ml-1">My Cart</span>
+                <a href="{{ path('app_cart') }}" class="btn btn-link text-dark me-3 position-relative text-decoration-none">
+                    <i class="bi bi-cart"></i>
+                    <span class="d-none d-lg-inline">My Cart</span>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ fullCartQuantity }}
+                    </span>
                 </a>
-            </div>
-            {% if app.user %}
-                <div class="icon-item relative flex items-center">
-                    <button type="button" class="flex items-center" data-action="click->navbar-dropdown#toggleUserMenu" data-navbar-dropdown-target="userMenuButton" aria-expanded="false">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                        <span class="ml-2">My Account</span>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
+                <div class="dropdown mx-4">
+                    <button class="btn btn-link text-dark dropdown-toggle text-decoration-none" type="button" id="accountDropdown" data-action="click->navbar-dropdown#toggleUserMenu" data-navbar-dropdown-target="userMenuButton">
+                        <i class="bi bi-person"></i>
+                        <span class="d-none d-lg-inline">My Account</span>
                     </button>
-
-                    <!-- Menu dropdown -->
-                    <div data-navbar-dropdown-target="userDropdownMenu" id="user-dropdown" class="hidden absolute top-6 z-10 bg-white divide-gray-100 rounded-lg shadow w-auto dark:bg-gray-700 dark:divide-gray-600">
-                        <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                            <div>{{ app.user.firstname }}</div>
-                            <div class="font-medium truncate">{{ app.user.email }}</div>
-                        </div>
-                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="user-menu-button">
-                            <li>
-                                <a href="{{ path('app_account') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('app_account') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('app_logout') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown" data-navbar-dropdown-target="userDropdownMenu">
+                        <li><a class="dropdown-item" href="{{ path('app_account') }}">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_account') }}">Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Sign out</a></li>
+                    </ul>
                 </div>
-            {% else %}
-                <a href="{{ path('app_account') }}" class="icon-item flex items-center">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                    <span class="ml-2">My Account</span>
-                </a>
-            {% endif %}
-        </div>
-    </div>
+            </div>
 
-    <!-- Trait de séparation -->
-    <hr class="border-gray-300 my-2" />
-
-    <div class="max-w-screen-xl mx-auto px-4 py-1 hidden md:flex items-center justify-between">
-        <ul class="flex items-center space-x-6 text-sm font-medium">
-            <li>
-                <a href="{{ path('app_home') }}" class="text-gray-900 hover:text-gray-600">Home</a>
-            </li>
-            <li class="relative">
-                <button data-navbar-dropdown-target="dropdownButton" data-action="click->navbar-dropdown#toggleDropdown" class="flex items-center text-gray-900 hover:text-gray-600">
-                    Recycled Polyester
-                    <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                </button>
-                <div data-navbar-dropdown-target="dropdownMenu" class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden z-10">
-                    <div class="py-1">
-                        {% for parentCategory in parentCategories %}
-                            <a href="{{ path('app_category', { slug: parentCategory.slug }) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ parentCategory.name }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-            </li>
-            <li class="relative">
-                <button data-navbar-dropdown-target="dropdownButton" data-action="click->navbar-dropdown#toggleDropdown" class="flex items-center text-gray-900 hover:text-gray-600">
-                    Useful
-                    <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                </button>
-                <div data-navbar-dropdown-target="dropdownMenu" class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden z-10">
-                    <div class="py-1">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Size Guide</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Fabric Guide</a>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <a href="#" class="text-gray-900 hover:text-gray-600">About us</a>
-            </li>
-            <li>
-                <a href="#" class="text-gray-900 hover:text-gray-600">Contact</a>
-            </li>
-        </ul>
-        <div class="relative">
-            <button data-navbar-dropdown-target="languageButton" data-action="click->navbar-dropdown#toggleLanguage" class="flex items-center justify-between w-32 text-gray-900 hover:text-gray-600 bg-white border border-gray-300 rounded-md px-3 py-1">
-                <span class="flex items-center">
-                    <img src="https://flagcdn.com/w20/us.png" width="20" height="15" alt="English" class="mr-2">
-                    <span>English</span>
-                </span>
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            <!-- Bouton Hamburger pour mobile (visible uniquement en mobile) -->
+            <button class="navbar-toggler d-lg-none ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-expanded="false" aria-controls="mobileMenu" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <div data-navbar-dropdown-target="languageMenu" class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg hidden z-10">
-                <div class="py-1">
-                    <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-action="click->navbar-dropdown#selectLanguage">
-                        <img src="https://flagcdn.com/w20/us.png" width="20" height="15" alt="English" class="mr-2">
-                        <span>English</span>
-                    </a>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-action="click->navbar-dropdown#selectLanguage">
-                        <img src="https://flagcdn.com/w20/fr.png" width="20" height="15" alt="Français" class="mr-2">
-                        <span>Français</span>
-                    </a>
-                </div>
-            </div>
         </div>
-    </div>
 
-    <!-- Menu mobile -->
-    <div id="mobile-menu" class="fixed inset-0 z-50 bg-gray-800 bg-opacity-75 transition-opacity duration-300 ease-in-out opacity-0 pointer-events-none" data-navbar-dropdown-target="mobileMenu">
-        <div class="absolute top-0 right-0 w-64 h-full bg-white p-4 shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <div class="flex space-x-4">
-                    {% if app.user %}
-                        <a href="{{ path('app_account_wishlist') }}" class="text-gray-600 hover:text-gray-900">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                            </svg>
-                        </a>
-                    {% endif %}
-                    <a href="{{ path('app_cart') }}" class="text-gray-600 hover:text-gray-900 relative">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                        <span class="absolute -top-2 -right-2 bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">{{ fullCartQuantity }}</span>
-                    </a>
-                    {% if app.user %}
-                        <a href="{{ path('app_account') }}" class="text-gray-600 hover:text-gray-900">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
-                        </a>
-                    {% else %}
-                        <a href="{{ path('app_account') }}" class="text-gray-600 hover:text-gray-900">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
-                        </a>
-                    {% endif %}
-                </div>
-                <button class="text-gray-600 hover:text-gray-900" data-action="click->navbar-dropdown#toggleMobileMenu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
+        <!-- Barre de séparation -->
+        <div class="border-top w-100"></div>
 
-            <ul class="space-y-4">
-                <li>
-                    <a href="{{ path('app_home') }}" class="block text-gray-900 hover:text-gray-600 text-lg font-medium">Home</a>
+        <!-- Partie inférieure : liens de navigation (affichée en desktop uniquement) -->
+        <div class="collapse navbar-collapse justify-content-between w-100 py-2 d-none d-lg-flex" id="navbarNav">
+            <ul class="navbar-nav mx-5">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_home') }}">Home</a>
                 </li>
-                <li>
-                    <button data-action="click->navbar-dropdown#toggleMobileSubmenu" data-submenu-target="recycled-polyester" class="flex items-center justify-between w-full text-gray-900 hover:text-gray-600 text-lg font-medium">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="recycledPolyesterDropdown" role="button" data-action="click->navbar-dropdown#toggleDropdown" data-navbar-dropdown-target="dropdownButton">
                         Recycled Polyester
-                        <svg class="w-4 h-4 ml-1 transform transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                    </button>
-                    <div id="recycled-polyester-submenu" class="hidden mt-2 ml-4 space-y-2">
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="recycledPolyesterDropdown" data-navbar-dropdown-target="dropdownMenu">
                         {% for parentCategory in parentCategories %}
-                            <a href="{{ path('app_category', { slug: parentCategory.slug }) }}" class="block text-gray-700 hover:text-gray-900">{{ parentCategory.name }}</a>
+                            <li><a class="dropdown-item" href="{{ path('app_category', { slug: parentCategory.slug }) }}">{{ parentCategory.name }}</a></li>
                         {% endfor %}
-                    </div>
+                    </ul>
                 </li>
-                <li>
-                    <button data-action="click->navbar-dropdown#toggleMobileSubmenu" data-submenu-target="useful" class="flex items-center justify-between w-full text-gray-900 hover:text-gray-600 text-lg font-medium">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="usefulDropdown" role="button" data-action="click->navbar-dropdown#toggleDropdown" data-navbar-dropdown-target="dropdownButton">
                         Useful
-                        <svg class="w-4 h-4 ml-1 transform transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                    </button>
-                    <div id="useful-submenu" class="hidden mt-2 ml-4 space-y-2">
-                        <a href="#" class="block text-gray-700 hover:text-gray-900">Size Guide</a>
-                        <a href="#" class="block text-gray-700 hover:text-gray-900">Fabric Guide</a>
-                    </div>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="usefulDropdown" data-navbar-dropdown-target="dropdownMenu">
+                        <li><a class="dropdown-item" href="#">Size Guide</a></li>
+                        <li><a class="dropdown-item" href="#">Fabric Guide</a></li>
+                    </ul>
                 </li>
-                <li>
-                    <a href="#" class="block text-gray-900 hover:text-gray-600 text-lg font-medium">About us</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About us</a>
                 </li>
-                <li>
-                    <a href="#" class="block text-gray-900 hover:text-gray-600 text-lg font-medium">Contact</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
                 </li>
             </ul>
+            <div class="dropdown mx-5">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="languageDropdown" data-action="click->navbar-dropdown#toggleLanguage" data-navbar-dropdown-target="languageButton">
+                    <img src="https://flagcdn.com/w20/us.png" width="20" height="15" alt="English" class="me-1">
+                    <span class="d-none d-lg-inline">English</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown" data-navbar-dropdown-target="languageMenu">
+                    <li><a class="dropdown-item" href="#" data-action="click->navbar-dropdown#selectLanguage"><img src="https://flagcdn.com/w20/us.png" width="20" height="15" alt="English" class="me-2">English</a></li>
+                    <li><a class="dropdown-item" href="#" data-action="click->navbar-dropdown#selectLanguage"><img src="https://flagcdn.com/w20/fr.png" width="20" height="15" alt="Français" class="me-2">Français</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 
+    <!-- Menu Mobile (affiché en mobile uniquement avec collapse) -->
+    <div class="collapse position-fixed top-0 end-0 bg-white vh-100 vw-100" id="mobileMenu" style="z-index: 1050;">
+        <div class="d-flex justify-content-between align-items-center py-3 px-3 border-bottom" style="font-size: 1.2rem;">
+            <!-- Icônes de wishlist, cart et account avec badges pour le cart -->
+            <a href="{{ path('app_account_wishlist') }}" class="btn text-dark">
+                <i class="bi bi-heart" style="font-size: 1.5rem;"></i>
+            </a>
+            <a href="{{ path('app_cart') }}" class="btn text-dark position-relative">
+                <i class="bi bi-cart" style="font-size: 1.5rem;"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ fullCartQuantity }}
+            </span>
+            </a>
+            <a href="{{ path('app_account') }}" class="btn text-dark">
+                <i class="bi bi-person" style="font-size: 1.5rem;"></i>
+            </a>
+            <!-- Bouton pour fermer le menu mobile -->
+            <button class="btn text-dark" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-label="Close">
+                <i class="bi bi-x-lg" style="font-size: 1.5rem;"></i>
+            </button>
+        </div>
 
-
+        <!-- Liens en bas dans le menu mobile avec un style premium -->
+        <ul class="navbar-nav mt-4 px-3">
+            <li class="nav-item py-2 border-bottom">
+                <a class="nav-link text-dark fs-5 fw-bold" href="{{ path('app_home') }}">Home</a>
+            </li>
+            <li class="nav-item dropdown py-2 border-bottom">
+                <a class="nav-link dropdown-toggle text-dark fs-5 fw-bold" href="#" id="mobileRecycledPolyesterDropdown" role="button" data-action="click->navbar-dropdown#toggleDropdown" data-navbar-dropdown-target="dropdownButton">
+                    Recycled Polyester
+                </a>
+                <ul class="dropdown-menu border-0 shadow-sm" aria-labelledby="mobileRecycledPolyesterDropdown" data-navbar-dropdown-target="dropdownMenu">
+                    {% for parentCategory in parentCategories %}
+                        <li><a class="dropdown-item text-dark" href="{{ path('app_category', { slug: parentCategory.slug }) }}">{{ parentCategory.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li class="nav-item dropdown py-2 border-bottom">
+                <a class="nav-link dropdown-toggle text-dark fs-5 fw-bold" href="#" id="mobileUsefulDropdown" role="button" data-action="click->navbar-dropdown#toggleDropdown" data-navbar-dropdown-target="dropdownButton">
+                    Useful
+                </a>
+                <ul class="dropdown-menu border-0 shadow-sm" aria-labelledby="mobileUsefulDropdown" data-navbar-dropdown-target="dropdownMenu">
+                    <li><a class="dropdown-item text-dark" href="#">Size Guide</a></li>
+                    <li><a class="dropdown-item text-dark" href="#">Fabric Guide</a></li>
+                </ul>
+            </li>
+            <li class="nav-item py-2 border-bottom">
+                <a class="nav-link text-dark fs-5 fw-bold" href="#">About us</a>
+            </li>
+            <li class="nav-item py-2 border-bottom">
+                <a class="nav-link text-dark fs-5 fw-bold" href="#">Contact</a>
+            </li>
+        </ul>
+        </div>
+    </div>
 </nav>
