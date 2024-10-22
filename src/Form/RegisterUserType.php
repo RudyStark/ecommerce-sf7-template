@@ -75,12 +75,6 @@ class RegisterUserType extends AbstractType
                     'placeholder' => 'Enter your last name',
                 ],
             ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Register',
-                'attr' => [
-                    'class' => 'btn btn-success',
-                ],
-            ])
         ;
     }
 

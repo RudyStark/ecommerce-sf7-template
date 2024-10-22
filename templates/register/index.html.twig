@@ -1,13 +1,82 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Register{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/css/login.css') }}">
+{% endblock %}
+
 {% block body %}
-    <div class="container my-5">
-        <h1>Sign up !</h1>
+    <div class="bg-light shadow">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+            <div class="card shadow-lg border-0 my-5" style="max-width: 700px; width: 100%; border-radius: 15px; overflow: hidden;">
 
-        {{  form(registerForm) }}
+                <!-- Image Block -->
+                <div class="card-header bg-transparent p-0" style="height: 200px; overflow: hidden;">
+                    <img src="{{ asset('build/images/login-header.jpg') }}" alt="Register Image" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                </div>
 
-        <div class="border-1 border-black p-3 w-25 bg-body-tertiary">
-            Already have an account ? <a href="{{ path('app_login') }}" class="btn btn-dark p-1">Sign in !</a>
+                <!-- Registration Form -->
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-4">Create Your Account</h2>
+
+                    {{ form_start(registerForm, { 'attr': { 'class': 'needs-validation' } }) }}
+
+                    <!-- Firstname and Lastname inputs -->
+                    <div class="row mb-3">
+                        <!-- Firstname input with animation -->
+                        <div class="col-md-6 mb-3 mb-md-0 position-relative">
+                            <label for="register_firstname" class="form-label">First Name</label>
+                            {{ form_widget(registerForm.firstname, { 'attr': { 'class': 'form-control animated-input', 'autocomplete': 'given-name', 'required': 'required' } }) }}
+                            <div class="invalid-feedback">Please enter your first name.</div>
+                        </div>
+
+                        <!-- Lastname input with animation -->
+                        <div class="col-md-6 position-relative">
+                            <label for="register_lastname" class="form-label">Last Name</label>
+                            {{ form_widget(registerForm.lastname, { 'attr': { 'class': 'form-control animated-input', 'autocomplete': 'family-name', 'required': 'required' } }) }}
+                            <div class="invalid-feedback">Please enter your last name.</div>
+                        </div>
+                    </div>
+
+                    <!-- Email input with animation -->
+                    <div class="mb-3 position-relative">
+                        <label for="register_email" class="form-label">Email</label>
+                        {{ form_widget(registerForm.email, { 'attr': { 'class': 'form-control animated-input', 'autocomplete': 'email', 'required': 'required' } }) }}
+                        <div class="invalid-feedback">Please enter a valid email.</div>
+                    </div>
+
+                    <!-- Password input with animation -->
+                    <div class="mb-3 position-relative">
+                        <label for="register_password" class="form-label">Password</label>
+                        {{ form_widget(registerForm.plainPassword.first, { 'attr': { 'class': 'form-control animated-input', 'autocomplete': 'new-password', 'required': 'required' } }) }}
+                        <div class="invalid-feedback">Please enter a valid password.</div>
+                    </div>
+
+                    <!-- Confirm Password input with animation -->
+                    <div class="mb-3 position-relative">
+                        <label for="register_confirm_password" class="form-label">Confirm Password</label>
+                        {{ form_widget(registerForm.plainPassword.second, { 'attr': { 'class': 'form-control animated-input', 'autocomplete': 'new-password', 'required': 'required' } }) }}
+                        <div class="invalid-feedback">Passwords do not match.</div>
+                    </div>
+
+                    <!-- CSRF Token -->
+                    {{ form_widget(registerForm._token) }}
+
+                    <!-- Register button with 3D animation -->
+                    <button class="btn btn-lg w-50 mb-3 animated-button" type="submit" style="font-size: 1rem;">
+                        Sign up
+                    </button>
+
+                    <!-- Already have an account? -->
+                    <div class="text-center">
+                        <p class="mb-0">Already have an account? <a href="{{ path('app_login') }}" class="text-success" style="font-size: 0.875rem;">Sign in!</a></p>
+                    </div>
+
+                    {{ form_end(registerForm) }}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
