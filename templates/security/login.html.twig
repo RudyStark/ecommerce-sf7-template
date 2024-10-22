@@ -2,39 +2,77 @@
 
 {% block title %}Login{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/css/login.css') }}">
+{% endblock %}
+
 {% block body %}
-    <div class="container my-5">
-        <form method="post">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
+    <div class="bg-light shadow">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+            <div class="card shadow-lg border-0 my-5" style="max-width: 600px; width: 100%; border-radius: 15px; overflow: hidden;">
 
-            {% if app.user %}
-                <div class="mb-3">
-                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                <!-- Image Block -->
+                <div class="card-header bg-transparent p-0" style="height: 200px; overflow: hidden;">
+                    <img src="{{ asset('build/images/login-header.jpg') }}" alt="Login Image" class="img-fluid w-100 h-100" style="object-fit: cover;">
                 </div>
-            {% endif %}
 
-            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-            <label for="username">Email</label>
-            <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-            <label for="password">Password</label>
-            <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+                <!-- Login Form -->
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-4">Welcome Back</h2>
 
-            <input type="hidden" name="_csrf_token"
-                   value="{{ csrf_token('authenticate') }}"
-            >
-            <div class="checkbox mb-3">
-                <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me">Remember me</label>
+                    <form method="post">
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+
+                        {% if app.user %}
+                            <div class="mb-3">
+                                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                            </div>
+                        {% endif %}
+
+                        <!-- Email input with animation -->
+                        <div class="mb-3 position-relative">
+                            <label for="username" class="form-label">Email</label>
+                            <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control animated-input" autocomplete="email" required autofocus>
+                            <div class="invalid-feedback">Please enter a valid email.</div>
+                        </div>
+
+                        <!-- Password input with animation -->
+                        <div class="mb-3 position-relative">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" name="_password" id="password" class="form-control animated-input" autocomplete="current-password" required>
+                            <div class="invalid-feedback">Please enter your password.</div>
+                        </div>
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <!-- Sign in button with 3D animation -->
+                        <button class="btn btn-lg w-100 mb-3 animated-button" type="submit" style="font-size: 1rem;">
+                            Sign in
+                        </button>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <!-- Remember me checkbox -->
+                            <div class="form-check mb-0">
+                                <input type="checkbox" class="form-check-input" name="_remember_me" id="_remember_me">
+                                <label class="form-check-label" for="_remember_me" style="font-size: 0.875rem;">Remember me</label>
+                            </div>
+
+                            <!-- Forgot password link -->
+                            <a href="{{ path('app_account_recovery_password') }}" class="text-decoration-none" style="font-size: 0.875rem;">
+                                Forgot your password?
+                            </a>
+                        </div>
+
+                        <!-- Register link -->
+                        <a href="{{ path('app_register') }}" class="text-muted text-center mb-3" style="font-size: 0.8rem;">
+                            Not a member? Register
+                        </a>
+                    </form>
+                </div>
             </div>
-
-
-            <button class="btn btn-lg btn-primary" type="submit">
-                Sign in
-            </button>
-            <a href="{{ path('app_register') }}" class="btn btn-lg btn-secondary">Register</a>
-        </form>
-        <a href="{{ path('app_account_recovery_password') }}" class="btn btn-lg btn-bd-primary mt-3">Forgot your password ?</a>
+        </div>
     </div>
 {% endblock %}
