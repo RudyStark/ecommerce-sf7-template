@@ -1,5 +1,7 @@
 {% extends '@!EasyAdmin/layout.html.twig' %}
 
+{% set sortedHistories = order.orderHistories|sort((a, b) => b.changedAt <=> a.changedAt) %}
+
 {% block main %}
     <div class="container-fluid py-4">
         <div class="row justify-content-center">
@@ -159,8 +161,33 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Block for Order History with Bootstrap 5 premium design -->
+                    <div class="card-footer bg-white mt-4">
+                        <h5 class="text-secondary mb-4">Order History</h5>
 
+                        <div class="d-flex flex-column">
+                            {% for history in sortedHistories %}
+                                <div class="d-flex align-items-start mb-4">
+                                    <!-- Timeline icon -->
+                                    <div class="bg-dark-subtle text-white d-flex align-items-center justify-content-center rounded-circle" style="width: 40px; height: 40px; font-size: 18px;">
+                                        <i class="fas fa-history"></i>
+                                    </div>
 
+                                    <!-- Timeline content -->
+                                    <div class="ms-3 flex-grow-1">
+                                        <h6 class="fw-bold mb-1">{{ history.changedAt|date('d.m.Y H:i') }}</h6>
+                                        <p class="mb-0 text-muted">Changed by: <strong>{{ history.changedBy }}</strong></p>
+                                        <p class="mb-0 text-muted">Status changed to: <span class="fw-bold">{{ history.statusChange }}</span></p>
+                                    </div>
+                                </div>
+                                <hr class="my-4">
+                            {% else %}
+                                <div class="text-center text-muted">
+                                    No changes have been made to this order yet.
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

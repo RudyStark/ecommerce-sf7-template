@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Order;
+use App\Entity\OrderHistory;
 use App\Services\MailService;
 use App\Services\OrderStateService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -57,6 +58,17 @@ class OrderCrudController extends AbstractCrudController
     public function changeState($order, $state)
     {
         $order->setState($state);
+
+        $admin = $this->getUser()->getFirstname() . ' ' . $this->getUser()->getLastname();
+        // Create a new OrderHistory entry
+        $orderHistory = new OrderHistory();
+        $orderHistory->setStatusChange(OrderStateService::STATES[$state]['label']);
+        $orderHistory->setChangedBy($admin);
+        $orderHistory->setChangedAt(new \DateTime());
+        $orderHistory->setOrderReference($order);
+
+        $this->em->persist($orderHistory);
+
         $this->em->flush();
 
         // if state is superior to 2, send an email to the user

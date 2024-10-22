@@ -45,9 +45,16 @@ class Order
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $stripe_session_id = null;
 
+    /**
+     * @var Collection<int, OrderHistory>
+     */
+    #[ORM\OneToMany(targetEntity: OrderHistory::class, mappedBy: 'orderReference')]
+    private Collection $orderHistories;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
+        $this->orderHistories = new ArrayCollection();
     }
 
     public function getTotalWt(): float
@@ -191,6 +198,36 @@ class Order
     public function setStripeSessionId(?string $stripe_session_id): static
     {
         $this->stripe_session_id = $stripe_session_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderHistory>
+     */
+    public function getOrderHistories(): Collection
+    {
+        return $this->orderHistories;
+    }
+
+    public function addOrderHistory(OrderHistory $orderHistory): static
+    {
+        if (!$this->orderHistories->contains($orderHistory)) {
+            $this->orderHistories->add($orderHistory);
+            $orderHistory->setOrderReference($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderHistory(OrderHistory $orderHistory): static
+    {
+        if ($this->orderHistories->removeElement($orderHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($orderHistory->getOrderReference() === $this) {
+                $orderHistory->setOrderReference(null);
+            }
+        }
 
         return $this;
     }
