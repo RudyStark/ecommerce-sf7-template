@@ -76,25 +76,24 @@
     <div class="container border-top-0 bg-light">
         <div class="container-fluid py-5 border-top-0">
             <!-- START THE FEATURETTES -->
-            <h2 class="text-center mb-5 display-4">Our featured products</h2>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <h2 class="text-center mb-5 display-4 fs-1 fw-bold fs-md-3">Our Featured Products</h2>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                 {% for product in productsInHomepage %}
                     <div class="col">
-                        <div class="card h-100 border-0 shadow product-card bg-light">
-                            <div class="position-relative">
+                        <div class="card h-100 border-0 shadow-sm product-card bg-light">
+                            <div class="d-flex justify-content-center align-items-center position-relative" style="height: 200px;">
                                 <img src="/uploads/products/{{ product.picture }}"
-                                     class="card-img-top product-image"
+                                     class="card-img-top w-75 w-md-100 img-fluid"
                                      alt="{{ product.name }}">
-                                <div class="product-overlay d-flex align-items-center justify-content-center">
+                                <div class="product-overlay d-flex align-items-center justify-content-center position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50">
                                     <a href="{{ path('app_product', { slug : product.slug }) }}"
-                                       class="btn btn-outline-light">Voir le produit</a>
+                                       class="btn btn-outline-light btn-sm">View Product</a>
                                 </div>
                             </div>
                             <div class="card-body text-center">
                                 <h3 class="card-title h5">{{ product.name }}</h3>
-                                <p class="card-text small text-muted">{{ product.description|striptags|slice(0, 100) }}
-                                    ...</p>
-                                <p class="card-text font-weight-bold">{{ product.price|price }}</p>
+                                <p class="card-text small text-muted">{{ product.description|striptags|slice(0, 100) }}...</p>
+                                <p class="card-text fw-bold">{{ product.price|price }}</p>
                             </div>
                         </div>
                     </div>
@@ -103,7 +102,7 @@
 
             <!-- START THE COMPANY VALUES -->
             <div class="container-fluid company-values-sections" data-controller="reveal">
-                <h2 class="text-center mb-5 display-4">Our Company Values</h2>
+                <h2 class="text-center mb-5 display-4 fs-1 fw-bold fs-md-3">Our Company Values</h2>
 
                 {% for value in companyValues %}
                     <div class="company-value-section" data-reveal-target="section"
