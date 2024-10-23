@@ -1,45 +1,55 @@
-<nav class="navbar navbar-light bg-light">
-    <div class="container-fluid">
-        <div class="d-flex flex-column align-items-start">
-            <ul class="navbar-nav flex-column">
+<nav id="account-nav" class="navbar navbar-light bg-transparent account-menu" data-controller="menu-toggle">    <!-- Bouton toggle pour mobile -->
+    <button class="navbar-toggler d-md-none" type="button" data-action="click->menu-toggle#toggleMenu" aria-label="Toggle navigation menu">
+        <i class="bi bi-list menu-icon"></i>
+        <i class="bi bi-x close-icon d-none"></i>
+    </button>
+
+    <div class="container-fluid d-flex justify-content-center">
+        <ul class="navbar-nav d-flex flex-row align-items-center d-md-flex d-none" data-menu-toggle-target="menu">
+            <li class="nav-item">
+                <a class="nav-link nav-link-account" href="{{ path('app_account') }}">
+                    <i class="bi bi-person"></i>
+                    <span class="nav-text d-block text-center">My Account</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-account" href="">
+                    <i class="bi bi-box-seam"></i>
+                    <span class="nav-text d-block text-center">My Orders</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-account" href="{{ path('app_account_addresses') }}">
+                    <i class="bi bi-geo-alt"></i>
+                    <span class="nav-text d-block text-center">My Addresses</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-account" href="{{ path('app_account_wishlist') }}">
+                    <i class="bi bi-heart"></i>
+                    <span class="nav-text d-block text-center">My Wishlist</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-account" href="{{ path('app_account_change_password') }}">
+                    <i class="bi bi-gear"></i>
+                    <span class="nav-text d-block text-center">Settings</span>
+                </a>
+            </li>
+            {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
-                    <a class="nav-link nav-link-account active" aria-current="page" href="{{ path('app_account') }}">
-                        <i class="bi bi-person"></i> My Account
+                    <a class="nav-link nav-link-account" href="{{ path('admin') }}">
+                        <i class="bi bi-person-lines-fill"></i>
+                        <span class="nav-text d-block text-center">Admin Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-account" href="">
-                        <i class="bi bi-box-seam"></i> My Orders
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-account" href="{{ path('app_account_addresses') }}">
-                        <i class="bi bi-geo-alt"></i> My Addresses
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-account" href="{{ path('app_account_wishlist') }}">
-                        <i class="bi bi-heart"></i> My Wishlist
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-account" href="{{ path('app_account_change_password') }}">
-                        <i class="bi bi-gear"></i> Settings
-                    </a>
-                </li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-account" href="{{ path('admin') }}">
-                            <i class="bi bi-person-lines-fill"></i> Admin Dashboard
-                        </a>
-                    </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link nav-link-account text-danger" href="{{ path('app_logout') }}">
-                        <i class="bi bi-box-arrow-right"></i> Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link nav-link-account text-danger" href="{{ path('app_logout') }}">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span class="nav-text d-block text-center">Logout</span>
+                </a>
+            </li>
+        </ul>
     </div>
 </nav>
