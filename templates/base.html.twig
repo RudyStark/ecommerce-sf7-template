@@ -22,7 +22,7 @@
     {% endblock %}
     {% block javascript %}
     {{ encore_entry_script_tags('app') }}
-{% endblock %}
+    {% endblock %}
 </head>
 <body>
 <header>
@@ -54,7 +54,9 @@
     </footer>
 </main>
 
-<script src="{{ asset('build/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('build/js/global.js') }}"></script>
+{% block javascripts %}
+    <script src="{{ asset('build/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('build/js/global.js') }}"></script>
+{% endblock %}
 </body>
 </html>

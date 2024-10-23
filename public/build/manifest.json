@@ -19,5 +19,6 @@
   "build/css/login.css": "/build/css/login.css",
   "build/css/NavBar.css": "/build/css/NavBar.css",
   "build/js/global.js": "/build/js/global.js",
-  "build/images/category-banner.webp": "/build/images/category-banner.webp"
+  "build/images/category-banner.webp": "/build/images/category-banner.webp",
+  "build/js/account.js": "/build/js/account.js"
 }
