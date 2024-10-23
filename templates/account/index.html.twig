@@ -2,23 +2,18 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('assets/css/account.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/css/account.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="container shadow bg-light py-3">
-        <h1 class="text-center">Account</h1>
-
-        <div class="row">
-            <!-- Left menu -->
-            <div class="col-lg-3">
-                {% include '/account/_menu.html.twig' %}
-            </div>
-
-            <!-- Right content -->
-            <div class="col-lg-9">
+<div class="shadow bg-light">
+    <div class="container">
+        <!-- Navigation en haut -->
+        <div class="dashboard-nav dashboard-container p-2 rounded">
+            {% include '/account/_menu.html.twig' %}
+        </div>
+{#        <div class="row g-4">#}
                 {% set current_route = app.request.attributes.get('_route') %}
-
                 {% if current_route == 'app_account' %}
                     {{ include('account/includes/_dashboard.html.twig') }}
                 {% elseif current_route == 'app_account_order' %}
@@ -28,7 +23,7 @@
                 {% elseif current_route == 'app_account_wishlist' %}
                     {{ include('account/wishlist/_index.html.twig') }}
                 {% endif %}
-            </div>
-        </div>
+{#        </div>#}
     </div>
+</div>
 {% endblock %}

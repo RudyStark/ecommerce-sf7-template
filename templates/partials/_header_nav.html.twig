@@ -18,10 +18,12 @@
 
             <!-- Icônes (affichées uniquement en desktop) -->
             <div class="d-flex align-items-center d-none d-lg-flex">
-                <a href="{{ path('app_account_wishlist') }}" class="btn btn-link text-dark me-3 text-decoration-none">
-                    <i class="bi bi-heart"></i>
-                    <span class="d-none d-lg-inline">Favorites</span>
-                </a>
+                {% if app.user %}
+                    <a href="{{ path('app_account_wishlist') }}" class="btn btn-link text-dark me-3 text-decoration-none">
+                        <i class="bi bi-heart"></i>
+                        <span class="d-none d-lg-inline">Favorites</span>
+                    </a>
+                {% endif %}
                 <a href="{{ path('app_cart') }}" class="btn btn-link text-dark me-3 position-relative text-decoration-none">
                     <i class="bi bi-cart"></i>
                     <span class="d-none d-lg-inline">My Cart</span>
@@ -29,18 +31,25 @@
                         {{ fullCartQuantity }}
                     </span>
                 </a>
-                <div class="dropdown mx-4">
-                    <button class="btn btn-link text-dark dropdown-toggle text-decoration-none" type="button" id="accountDropdown" data-action="click->navbar-dropdown#toggleUserMenu" data-navbar-dropdown-target="userMenuButton">
+                {% if app.user %}
+                    <div class="dropdown mx-4">
+                        <button class="btn btn-link text-dark dropdown-toggle text-decoration-none" type="button" id="accountDropdown" data-action="click->navbar-dropdown#toggleUserMenu" data-navbar-dropdown-target="userMenuButton">
+                            <i class="bi bi-person"></i>
+                            <span class="d-none d-lg-inline">My Account</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown" data-navbar-dropdown-target="userDropdownMenu">
+                            <li><a class="dropdown-item" href="{{ path('app_account') }}">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_account') }}">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ path('app_logout') }}">Sign out</a></li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-link text-dark text-decoration-none me-3">
                         <i class="bi bi-person"></i>
-                        <span class="d-none d-lg-inline">My Account</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown" data-navbar-dropdown-target="userDropdownMenu">
-                        <li><a class="dropdown-item" href="{{ path('app_account') }}">Dashboard</a></li>
-                        <li><a class="dropdown-item" href="{{ path('app_account') }}">Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Sign out</a></li>
-                    </ul>
-                </div>
+                        <span class="d-none d-lg-inline">Sign in</span>
+                    </a>
+                {% endif %}
             </div>
 
             <!-- Bouton Hamburger pour mobile (visible uniquement en mobile) -->

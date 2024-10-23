@@ -142,5 +142,219 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* NAVBAR ACCOUNT */
+/* Style général pour la navigation "account" */
+#account-nav .navbar-nav {
+    gap: 1rem;
+}
+
+#account-nav .nav-link-account {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+#account-nav .nav-link-account i {
+    font-size: 1.8rem;
+    color: #6c757d;
+    transition: color 0.3s ease;
+}
+
+#account-nav .nav-text {
+    font-size: 0.75rem; /* Taille réduite du texte */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+/* Survol en version desktop : texte visible */
+#account-nav .nav-link-account:hover .nav-text {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Animation de base pour toutes les icônes */
+#account-nav .nav-link-account i {
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+/* Animation au survol */
+#account-nav .nav-link-account:hover i {
+    color: #007bff;
+    transform: scale(1.1) translateY(-2px);
+}
+
+/* Animation au clic */
+#account-nav .nav-link-account:active i {
+    transform: scale(0.95);
+}
+
+#account-nav .nav-text {
+    opacity: 1;
+    font-size: 1rem;
+    margin-top: 0.3rem;
+    transition: all 0.3s ease;
+}
+
+#account-nav .nav-link-account:hover .nav-text {
+    color: #007bff;
+}
+
+/* Responsive : texte et icônes visibles en mobile sans scroll */
+@media (max-width: 768px) {
+    /* Styles existants */
+    #account-nav .navbar-nav {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #account-nav .navbar-nav:not(.d-none) {
+        display: flex !important;
+    }
+
+    #account-nav .nav-link-account {
+        padding: 0.25rem;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    #account-nav .nav-link-account i {
+        font-size: 1.4rem;
+    }
+
+    #account-nav .nav-text {
+        opacity: 1;
+        visibility: visible;
+        font-size: 0.7rem;
+        margin-top: 0.3rem;
+    }
+
+    /* Nouveaux styles pour le bouton - avec #account-nav ajouté */
+    #account-nav .navbar-toggler {
+        border: none;
+        background: #f8f9fa;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: all 0.2s ease;
+    }
+
+    #account-nav .navbar-toggler:hover {
+        background: #e9ecef;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    #account-nav .navbar-toggler:active {
+        transform: translateY(1px);
+    }
+
+    #account-nav .navbar-toggler i {
+        font-size: 1.2rem;
+    }
+
+    /* Ajout du texte à côté de l'icône */
+    #account-nav .navbar-toggler::after {
+        content: 'Menu';
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #495057;
+    }
+
+    /* Style spécial quand le menu est ouvert */
+    #account-nav .navbar-toggler[aria-expanded="true"] {
+        background: #e9ecef;
+    }
+
+    /* Animation douce pour le menu */
+    #account-nav .navbar-nav {
+        transition: all 0.3s ease;
+        border-radius: 0 0 12px 12px;
+    }
+}
+
+
+
+
+
+
+/* ACCOUNT DASHBOARD */
+
+/* Dashboard General Styles */
+.dashboard-container {
+    background: #f8f9fa; /* Light background for contrast */
+    border-radius: 15px; /* Rounded corners */
+    padding: 20px;
+}
+
+.dashboard-wrapper {
+    background-color: white;
+    border-radius: 20px; /* More rounded */
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Strong shadow */
+}
+
+/* Card Styling */
+.card-dashboard {
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    border: none;
+}
+
+.card-dashboard:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.card-header {
+    border-bottom: none;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px 10px 0 0;
+}
+
+.list-group-item {
+    border: none;
+    padding: 15px;
+    background-color: #f9f9f9; /* Soft background */
+}
+
+/* Button Styling */
+.btn-sm {
+    padding: 0.4rem 1rem;
+    font-size: 0.875rem;
+}
+
+/* Image Styling */
+.img-thumbnail {
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-wrapper {
+        padding: 15px;
+    }
+
+    .card-header h5 {
+        font-size: 1.25rem;
+    }
+}
+
+
+
+
+
+
 
 
