@@ -1,5 +1,96 @@
 <nav class="navbar navbar-expand-lg container navbar-light bg-white shadow rounded-3" data-controller="navbar-dropdown">
-    <div class="container-fluid flex-column p-0 px-lg-4">
+    <!-- Overlay -->
+    <div id="menuOverlay" class="menu-overlay"></div>
+
+    <!-- Navbar Mobile Fixe -->
+    <nav class="navbar navbar-light bg-white border-bottom fixed-top d-lg-none">
+        <div class="container-fluid d-flex align-items-center">
+            <!-- Groupe hamburger et logo -->
+            <div class="d-flex align-items-center">
+                <button class="navbar-toggler border-0 p-0 me-2" type="button"
+                        data-action="navbar-dropdown#toggleMobileMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand m-0" href="{{ path('app_home') }}">
+                    <img src="{{ asset('build/images/logosf.png') }}" alt="Logo" height="32">
+                </a>
+            </div>
+
+            <!-- Icônes à droite -->
+            <div class="d-flex align-items-center gap-3">
+                <a href="#" class="text-dark">
+                    <i class="bi bi-bell fs-5 position-relative">
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">2</span>
+                    </i>
+                </a>
+                <a href="#" class="text-dark">
+                    <i class="bi bi-search fs-5"></i>
+                </a>
+                <a href="{{ path('app_cart') }}" class="text-dark position-relative">
+                    <i class="bi bi-cart fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ fullCartQuantity }}
+                    </span>
+                </a>
+                <a href="#" class="text-dark">
+                    <i class="bi bi-person fs-5"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Menu Mobile Modal -->
+    <div class="collapse modal-menu rounded-4" id="mobileMenu" data-navbar-dropdown-target="mobileMenu">
+        <div class="bg-white rounded-4 shadow">
+            <!-- En-tête avec X pour fermer -->
+            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                <img src="{{ asset('build/images/logosf.png') }}" alt="Logo" height="32">
+                <button class="btn text-dark" data-action="navbar-dropdown#toggleMobileMenu">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <!-- Contenu du menu -->
+            <div class="mobile-menu-content">
+                {% for parentCategory in categories %}
+                    <div class="mobile-category-section border-bottom">
+                        <div class="d-flex justify-content-between align-items-center p-3"
+                             data-bs-toggle="collapse"
+                             data-bs-target="#category{{ parentCategory.id }}">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-list me-2"></i>
+                                <span class="text-uppercase fw-bold">{{ parentCategory.name }}</span>
+                            </div>
+                            <i class="bi bi-chevron-down"></i>
+                        </div>
+
+                        <div class="collapse" id="category{{ parentCategory.id }}">
+                            <div class="p-3">
+                                <div class="row g-3">
+                                    {% for subCategory in parentCategory.children %}
+                                        <div class="col-6">
+                                            <a href="" class="text-decoration-none mobile-category-link">
+                                                <div class="d-flex align-items-center">
+                                                    {% if subCategory.icon %}
+                                                        <img src="{{ asset('uploads/category/icon/' ~ subCategory.icon) }}"
+                                                             alt="{{ subCategory.name }}"
+                                                             class="category-icon me-2">
+                                                    {% endif %}
+                                                    <span>{{ subCategory.name }}</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div id="top-desktop-nav" class="container-fluid flex-column p-0 px-lg-4">
         <!-- Partie supérieure : logo, recherche, icônes -->
         <div class="d-flex justify-content-between align-items-center w-100 py-2">
             <!-- Logo -->
@@ -24,32 +115,20 @@
                         {{ fullCartQuantity }}
                     </span>
                 </a>
-{#                {% if app.user %}#}
-                    <div class="dropdown mx-4">
-                        <button class="btn btn-link dropdown-toggle text-decoration-none me-3 px-4 rounded-5" type="button" id="accountDropdown" data-action="click->navbar-dropdown#toggleUserMenu" data-navbar-dropdown-target="userMenuButton">
-                            <i class="bi bi-person fs-4"></i>
-                            <span class="d-none d-lg-inline">My Account</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown" data-navbar-dropdown-target="userDropdownMenu">
-                            <li><a class="dropdown-item" href="{{ path('app_account') }}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_account') }}"><i class="bi bi-gear me-2"></i>Settings</a></li>
-                            <li><a class="dropdown-item" href=""><i class="bi bi-box me-2"></i>Orders</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="bi bi-box-arrow-right me-2"></i>Sign out</a></li>
-                        </ul>
-                    </div>
-{#                {% else %}#}
-{#                    <a href="{{ path('app_login') }}" class="btn-link text-dark text-decoration-none bg-body-secondary me-3 px-4 rounded-5">#}
-{#                        <i class="bi bi-person fs-4"></i>#}
-{#                        <span class="d-none d-lg-inline">Sign in</span>#}
-{#                    </a>#}
-{#                {% endif %}#}
+                <div class="dropdown mx-4">
+                    <button class="btn btn-link dropdown-toggle text-decoration-none me-3 px-4 rounded-5" type="button" id="accountDropdown" data-action="click->navbar-dropdown#toggleUserMenu" data-navbar-dropdown-target="userMenuButton">
+                        <i class="bi bi-person fs-4"></i>
+                        <span class="d-none d-lg-inline">My Account</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown" data-navbar-dropdown-target="userDropdownMenu">
+                        <li><a class="dropdown-item" href="{{ path('app_account') }}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_account') }}"><i class="bi bi-gear me-2"></i>Settings</a></li>
+                        <li><a class="dropdown-item" href=""><i class="bi bi-box me-2"></i>Orders</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="bi bi-box-arrow-right me-2"></i>Sign out</a></li>
+                    </ul>
+                </div>
             </div>
-
-            <!-- Bouton Hamburger pour mobile (visible uniquement en mobile) -->
-            <button class="navbar-toggler d-lg-none ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-expanded="false" aria-controls="mobileMenu" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
         </div>
 
         <!-- Barre de séparation -->
@@ -75,9 +154,9 @@
                                                 <div class="col-2">
                                                     <a href="" class="text-decoration-none category-card">
                                                         <div class="card h-100 border-0 shadow-sm text-center p-3" style="height: 120px;">
-                                                            {# Display the icon if it exists #}
                                                             {% if subCategory.icon %}
-                                                                <img src="{{ asset('uploads/category/icon/' ~ subCategory.icon) }}" alt="{{ subCategory.name }} icon"
+                                                                <img src="{{ asset('uploads/category/icon/' ~ subCategory.icon) }}"
+                                                                     alt="{{ subCategory.name }} icon"
                                                                      class="img-fluid mb-2" style="width: 40px; height: 40px;">
                                                             {% endif %}
                                                             <h6 class="card-title text-dark fs-6">{{ subCategory.name }}</h6>
@@ -96,74 +175,72 @@
                     <a class="nav-link" href="#">Contact</a>
                 </li>
             </ul>
+
             <div class="dropdown mx-5">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="languageDropdown" data-action="click->navbar-dropdown#toggleLanguage" data-navbar-dropdown-target="languageButton">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="languageDropdown"
+                        data-action="click->navbar-dropdown#toggleLanguage" data-navbar-dropdown-target="languageButton">
                     <img src="https://flagcdn.com/w20/us.png" width="20" height="15" alt="English" class="me-1">
                     <span class="d-none d-lg-inline">English</span>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown" data-navbar-dropdown-target="languageMenu" style="min-width: 100px; width: 200px;">
-                    <li><a class="dropdown-item" href="#" data-action="click->navbar-dropdown#selectLanguage"><img src="https://flagcdn.com/w20/us.png" width="20" height="15" alt="English" class="me-2">English</a></li>
-                    <li><a class="dropdown-item" href="#" data-action="click->navbar-dropdown#selectLanguage"><img src="https://flagcdn.com/w20/fr.png" width="20" height="15" alt="Français" class="me-2">Français</a></li>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"
+                    data-navbar-dropdown-target="languageMenu" style="min-width: 100px; width: 200px;">
+                    <li><a class="dropdown-item" href="#" data-action="click->navbar-dropdown#selectLanguage">
+                            <img src="https://flagcdn.com/w20/us.png" width="20" height="15" alt="English" class="me-2">English</a>
+                    </li>
+                    <li><a class="dropdown-item" href="#" data-action="click->navbar-dropdown#selectLanguage">
+                            <img src="https://flagcdn.com/w20/fr.png" width="20" height="15" alt="Français" class="me-2">Français</a>
+                    </li>
                 </ul>
             </div>
-
         </div>
-
-
 
         <!-- Menu Mobile (affiché en mobile uniquement avec collapse) -->
-    <div class="collapse position-fixed top-0 end-0 bg-white vh-100 vw-100" id="mobileMenu" style="z-index: 1050;">
-        <div class="d-flex justify-content-between align-items-center py-3 px-3 border-bottom" style="font-size: 1.2rem;">
-            <!-- Icônes de wishlist, cart et account avec badges pour le cart -->
-            <a href="{{ path('app_account_wishlist') }}" class="btn text-dark">
-                <i class="bi bi-heart" style="font-size: 1.5rem;"></i>
-            </a>
-            <a href="{{ path('app_cart') }}" class="btn text-dark position-relative">
-                <i class="bi bi-cart" style="font-size: 1.5rem;"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                {{ fullCartQuantity }}
-            </span>
-            </a>
-            <a href="{{ path('app_account') }}" class="btn text-dark">
-                <i class="bi bi-person" style="font-size: 1.5rem;"></i>
-            </a>
-            <!-- Bouton pour fermer le menu mobile -->
-            <button class="btn text-dark" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-label="Close">
-                <i class="bi bi-x-lg" style="font-size: 1.5rem;"></i>
-            </button>
-        </div>
+        <div class="collapse position-fixed top-0 start-0 bg-white vh-100" id="mobileMenu" style="z-index: 1060; width: 300px;">
+            <div class="d-flex flex-column h-100">
+                <!-- En-tête du menu -->
+                <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                    <h5 class="mb-0">Menu</h5>
+                    <button class="btn text-dark" data-bs-toggle="collapse" data-bs-target="#mobileMenu">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
 
-        <!-- Liens en bas dans le menu mobile avec un style premium -->
-        <ul class="navbar-nav mt-4 px-3">
-            <li class="nav-item py-2 border-bottom">
-                <a class="nav-link text-dark fs-5 fw-bold" href="{{ path('app_home') }}">Home</a>
-            </li>
-            <li class="nav-item dropdown py-2 border-bottom">
-                <a class="nav-link dropdown-toggle text-dark fs-5 fw-bold" href="#" id="mobileRecycledPolyesterDropdown" role="button" data-action="click->navbar-dropdown#toggleDropdown" data-navbar-dropdown-target="dropdownButton">
-                    Recycled Polyester
-                </a>
-                <ul class="dropdown-menu border-0 shadow-sm" aria-labelledby="mobileRecycledPolyesterDropdown" data-navbar-dropdown-target="dropdownMenu">
-                    {% for parentCategory in parentCategories %}
-                        <li><a class="dropdown-item text-dark" href="{{ path('app_category', { slug: parentCategory.slug }) }}">{{ parentCategory.name }}</a></li>
-                    {% endfor %}
+                <!-- Liste des liens -->
+                <ul class="navbar-nav mt-4 px-3">
+                    <li class="nav-item py-2 border-bottom">
+                        <a class="nav-link text-dark fs-5 fw-bold" href="{{ path('app_home') }}">Home</a>
+                    </li>
+                    <li class="nav-item dropdown py-2 border-bottom">
+                        <a class="nav-link dropdown-toggle text-dark fs-5 fw-bold" href="#"
+                           data-action="click->navbar-dropdown#toggleDropdown" data-navbar-dropdown-target="dropdownButton">
+                            Recycled Polyester
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-sm" data-navbar-dropdown-target="dropdownMenu">
+                            {% for parentCategory in parentCategories %}
+                                <li><a class="dropdown-item text-dark" href="{{ path('app_category', { slug: parentCategory.slug }) }}">
+                                        {{ parentCategory.name }}
+                                    </a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown py-2 border-bottom">
+                        <a class="nav-link dropdown-toggle text-dark fs-5 fw-bold" href="#"
+                           data-action="click->navbar-dropdown#toggleDropdown" data-navbar-dropdown-target="dropdownButton">
+                            Useful
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-sm" data-navbar-dropdown-target="dropdownMenu">
+                            <li><a class="dropdown-item text-dark" href="#">Size Guide</a></li>
+                            <li><a class="dropdown-item text-dark" href="#">Fabric Guide</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item py-2 border-bottom">
+                        <a class="nav-link text-dark fs-5 fw-bold" href="#">About us</a>
+                    </li>
+                    <li class="nav-item py-2 border-bottom">
+                        <a class="nav-link text-dark fs-5 fw-bold" href="#">Contact</a>
+                    </li>
                 </ul>
-            </li>
-            <li class="nav-item dropdown py-2 border-bottom">
-                <a class="nav-link dropdown-toggle text-dark fs-5 fw-bold" href="#" id="mobileUsefulDropdown" role="button" data-action="click->navbar-dropdown#toggleDropdown" data-navbar-dropdown-target="dropdownButton">
-                    Useful
-                </a>
-                <ul class="dropdown-menu border-0 shadow-sm" aria-labelledby="mobileUsefulDropdown" data-navbar-dropdown-target="dropdownMenu">
-                    <li><a class="dropdown-item text-dark" href="#">Size Guide</a></li>
-                    <li><a class="dropdown-item text-dark" href="#">Fabric Guide</a></li>
-                </ul>
-            </li>
-            <li class="nav-item py-2 border-bottom">
-                <a class="nav-link text-dark fs-5 fw-bold" href="#">About us</a>
-            </li>
-            <li class="nav-item py-2 border-bottom">
-                <a class="nav-link text-dark fs-5 fw-bold" href="#">Contact</a>
-            </li>
-        </ul>
+            </div>
         </div>
     </div>
 </nav>

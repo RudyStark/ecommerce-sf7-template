@@ -10,20 +10,24 @@ export default class extends Controller {
         "mobileMenu",
         "mobileMenuButton",
         "megaMenu",
-        "languageButton",  // Ajout pour le dropdown de langue
-        "languageMenu"     // Ajout pour le menu de langue
+        "languageButton",
+        "languageMenu"
     ]
 
     connect() {
-        // Initialize user dropdown
         if (this.hasUserDropdownMenuTarget) {
             document.addEventListener('click', this.closeUserDropdown.bind(this));
         }
 
-        // Initialize language dropdown
         if (this.hasLanguageMenuTarget) {
             document.addEventListener('click', this.closeLanguageDropdown.bind(this));
         }
+
+        // Initialiser l'overlay
+        const overlay = document.getElementById('menuOverlay');
+        overlay.addEventListener('click', () => {
+            this.closeMobileMenu();
+        });
     }
 
     disconnect() {
@@ -33,6 +37,10 @@ export default class extends Controller {
 
         if (this.hasLanguageMenuTarget) {
             document.removeEventListener('click', this.closeLanguageDropdown.bind(this));
+        }
+
+        if (this.hasMobileMenuTarget) {
+            document.removeEventListener('click', this.closeMobileMenu.bind(this));
         }
     }
 
@@ -48,10 +56,27 @@ export default class extends Controller {
         }
     }
 
-    // Méthode pour gérer le menu de langue
     toggleLanguage(event) {
         event.stopPropagation();
         this.languageMenuTarget.classList.toggle('show');
+    }
+
+    toggleMobileMenu(event) {
+        event.preventDefault();
+        const overlay = document.getElementById('menuOverlay');
+
+        if (this.mobileMenuTarget.classList.contains('show')) {
+            this.closeMobileMenu();
+        } else {
+            overlay.classList.add('show');
+            this.mobileMenuTarget.classList.add('show');
+        }
+    }
+
+    closeMobileMenu() {
+        const overlay = document.getElementById('menuOverlay');
+        overlay.classList.remove('show');
+        this.mobileMenuTarget.classList.remove('show');
     }
 
     closeLanguageDropdown(event) {
@@ -59,11 +84,5 @@ export default class extends Controller {
             !this.languageMenuTarget.contains(event.target)) {
             this.languageMenuTarget.classList.remove('show');
         }
-    }
-
-    // Pour le menu mobile
-    toggleMobileMenu(event) {
-        event.preventDefault();
-        this.mobileMenuTarget.classList.toggle('show');
     }
 }
