@@ -6,6 +6,7 @@ use App\Entity\Category;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -30,6 +31,12 @@ class CategoryCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        $required = true;
+
+        if ($pageName == 'edit') {
+            $required = false;
+        }
+
         return [
             TextField::new('name', 'Category Name')
                 ->setLabel('Name')
@@ -43,6 +50,7 @@ class CategoryCrudController extends AbstractCrudController
                 })
                 ->renderAsHtml(),
             SlugField::new('slug')->setTargetFieldName('name')->setLabel('Slug')->setHelp('The slug is used in the URL to identify the category'),
+            ImageField::new('icon')->setLabel('Icon')->setHelp('Icon svg')->setUploadDir('public/uploads/category/icon')->setBasePath('uploads/category/icon')->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')->setRequired($required),
             AssociationField::new('parent')->setLabel('Main Category')->setHelp('The main category of this category (don\'t select anything if this is a main category)')->HideOnIndex(),
             AssociationField::new('children')->setLabel('Subcategories')->setHelp('The subcategories of this category')->hideOnForm(),
         ];

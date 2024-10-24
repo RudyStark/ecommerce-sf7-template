@@ -24,20 +24,25 @@ class Category
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
     private ?self $parent = null;
 
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent', cascade: ['remove'], orphanRemoval: true)]
     private Collection $children;
 
     /**
      * @var Collection<int, Product>
      */
-    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'parentCategory')]
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'parentCategory', cascade: ['remove'], orphanRemoval: true)]
     private Collection $parentProducts;
+
 
     /**
      * @var Collection<int, Product>
      */
-    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'subCategory')]
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'subCategory', cascade: ['remove'], orphanRemoval: true)]
     private Collection $subCategoryProducts;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $icon = null;
+
 
     public function __construct()
     {
@@ -191,5 +196,17 @@ class Category
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): static
+    {
+        $this->icon = $icon;
+
+        return $this;
     }
 }

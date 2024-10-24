@@ -30,4 +30,19 @@ class CategoryRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    /**
+     * Récupérer les catégories parent avec leurs sous-catégories.
+     *
+     * @return Category[]
+     */
+    public function findParentCategoriesWithChildren(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.children', 'children')
+            ->addSelect('children')
+            ->where('c.parent IS NULL')
+            ->getQuery()
+            ->getResult();
+    }
 }

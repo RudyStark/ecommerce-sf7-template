@@ -1,15 +1,301 @@
-#mobileMenu {
-    transition: all 0.4s ease-in-out;
+/*******************************
+    GENERAL NAVBAR STYLES
+********************************/
+.navbar {
+    position: relative;
+    background: white;
 }
+
+.navbar-collapse {
+    position: static;
+}
+
+/* Logo */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar-brand img {
+    height: 40px;
+    width: auto;
+}
+
+/* Navbar Mobile Fixe */
+.navbar.fixed-top {
+    height: 60px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1040;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    top: 0; /* Ajout de cette ligne */
+}
+
+.navbar.fixed-top .container-fluid {
+    padding: 0 1rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.navbar.fixed-top .navbar-toggler {
+    padding: 4px 0;
+}
+
+.navbar.fixed-top .badge {
+    font-size: 0.65rem;
+    min-width: 1.2rem;
+    height: 1.2rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FF4500;
+}
+
+/*******************************
+    DESKTOP NAVIGATION
+********************************/
+/* Main Navigation Links */
 .navbar-nav .nav-link {
     font-weight: 500;
+    color: #333;
+    padding: 0.5rem 1rem;
 }
-.navbar-nav .dropdown-menu {
+
+/* Desktop Search Bar */
+.search-form {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 2rem;
+}
+
+.search-form .form-control {
+    border-radius: 50rem;
+    padding-left: 1rem;
+    border: 1px solid #ddd;
+}
+
+.search-form .btn {
+    border-radius: 50rem;
+    padding: 0.375rem 1rem;
+}
+
+/*******************************
+    DESKTOP DROPDOWN MENUS
+********************************/
+/* Dropdown Containers */
+.navbar-nav .dropdown-menu,
+.dropdown .dropdown-menu {
     font-size: 1rem;
-    padding: 10px;
+    padding: 8px;
     transition: all 0.3s ease;
+    min-width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: #f5f2f2;
 }
-.navbar-nav .dropdown-item:hover {
+
+.dropdown .dropdown-menu {
+    left: -30px;
+    right: 20px;
+}
+
+/* Dropdown Items */
+.dropdown .dropdown-menu .dropdown-item {
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 2px 0;
+    color: #000 !important;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+/*******************************
+    DESKTOP BUTTONS & ICONS
+********************************/
+/* Button Styles */
+.btn-link.dropdown-toggle,
+.btn-link[href*="cart"] {
+    transition: all 0.3s ease;
+    background: #f5f2f2 !important;
+    border: 1px solid rgba(108, 99, 255, 0.1) !important;
+    color: #000 !important;
+    font-weight: 500;
+    padding: 6px 16px !important;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 0.95rem;
+    border-radius: 50rem !important;
+}
+
+/* Icon Styles */
+.btn-link.dropdown-toggle i,
+.btn-link[href*="cart"] i {
+    color: #000;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+/* Cart Badge */
+.btn-link[href*="cart"] .badge {
+    transition: all 0.3s ease;
+    background: #FF4500 !important;
+    border: 2px solid #f5f2f2;
+    font-size: 0.7rem;
+    font-weight: 600;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/*******************************
+    HOVER EFFECTS (DESKTOP)
+********************************/
+.nav-item a:hover,
+.dropdown .dropdown-menu .dropdown-item:hover,
+.btn-link.dropdown-toggle:hover,
+.btn-link[href*="cart"]:hover {
+    color: #FF4500 !important;
+    outline: 2px solid #FF4500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: scale(1.02);
+    border-color: transparent;
+    border-radius: 8px;
+    background-color: rgba(255, 69, 0, 0.1) !important;
+}
+
+/*******************************
+    MOBILE NAVBAR FIXED
+********************************/
+.navbar.fixed-top .navbar-toggler {
+    border: none;
+    padding: 0;
+    margin-right: 1rem;
+}
+
+.navbar.fixed-top .container-fluid {
+    padding: 0 1rem;
+}
+
+.navbar.fixed-top .badge {
+    background-color: #FF4500;
+    border: 2px solid white;
+}
+
+/*******************************
+    GENERAL NAVBAR STYLES
+********************************/
+/* ... Vos styles existants ... */
+
+/*******************************
+    MOBILE MENU MODAL & OVERLAY
+********************************/
+/* Overlay sombre */
+.menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1049;
+    width: 100vw;
+    height: 100vh;
+}
+
+.menu-overlay.show {
+    display: block;
+}
+
+/* Menu Modal */
+.modal-menu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    z-index: 1050;
+    display: none;
+    background: white;
+    border-radius: 1rem;
+}
+
+.modal-menu.show {
+    display: block;
+}
+
+/* Style des catégories */
+.mobile-category-section {
+    cursor: pointer;
+}
+
+.mobile-category-section:hover {
     background-color: #f8f9fa;
-    border-radius: 5px;
+}
+
+.mobile-category-link {
+    color: #333;
+    padding: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.mobile-category-link:hover {
+    color: #FF4500;
+    background-color: rgba(255, 69, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Icon des catégories */
+.category-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+/* Animation flèche */
+[aria-expanded="true"] .bi-chevron-down {
+    transform: rotate(180deg);
+}
+
+.bi-chevron-down {
+    transition: transform 0.2s ease;
+}
+
+/* Scroll dans le menu */
+.mobile-menu-content {
+    max-height: calc(80vh - 60px);
+    overflow-y: auto;
+}
+
+/*******************************
+    RESPONSIVE STYLES
+********************************/
+@media (max-width: 991.98px) {
+    #top-desktop-nav {
+        display: none;
+    }
+
+    .navbar-brand span {
+        display: none;
+    }
+
+    .search-form {
+        margin: 0 1rem;
+    }
 }

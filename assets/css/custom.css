@@ -1,5 +1,6 @@
 /* Import Bootstrap first */
 @import './bootstrap.min.css';
+@import './mega-menu.css';
 
 html, body {
     margin: 0;
