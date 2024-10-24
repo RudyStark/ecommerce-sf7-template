@@ -197,11 +197,6 @@
 }
 
 /*******************************
-    GENERAL NAVBAR STYLES
-********************************/
-/* ... Vos styles existants ... */
-
-/*******************************
     MOBILE MENU MODAL & OVERLAY
 ********************************/
 /* Overlay sombre */
@@ -225,7 +220,8 @@
 /* Menu Modal */
 .modal-menu {
     position: fixed;
-    top: 50%;
+    --modal-top-position: 35%; /* Variable pour faciliter l'ajustement */
+    top: var(--modal-top-position);
     left: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
@@ -281,6 +277,31 @@
 .mobile-menu-content {
     max-height: calc(80vh - 60px);
     overflow-y: auto;
+}
+
+/*******************************
+    MOBILE USER MENU
+********************************/
+/* Style spécifique pour le menu utilisateur mobile */
+.list-group-item-action {
+    border: none;
+    padding: 1rem;
+    transition: all 0.2s ease;
+}
+
+.list-group-item-action:hover {
+    background-color: rgba(255, 69, 0, 0.1);
+    color: #FF4500;
+}
+
+.list-group-item-action i {
+    text-align: center;
+}
+
+/* Pour la version danger (sign out) */
+.list-group-item-action.text-danger:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545 !important;
 }
 
 /*******************************

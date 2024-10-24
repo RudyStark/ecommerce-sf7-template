@@ -1,0 +1,49 @@
+<div class="collapse modal-menu rounded-4" id="mobileMenu" data-navbar-dropdown-target="mobileMenu">
+    <div class="bg-white rounded-4 shadow">
+        <!-- En-tête avec X pour fermer -->
+        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+            <img src="{{ asset('build/images/logosf.png') }}" alt="Logo" height="32">
+            <button class="btn text-dark" data-action="navbar-dropdown#toggleMobileMenu">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <!-- Contenu du menu -->
+        <div class="mobile-menu-content">
+            {% for parentCategory in categories %}
+                <div class="mobile-category-section border-bottom">
+                    <div class="d-flex justify-content-between align-items-center p-3"
+                         data-bs-toggle="collapse"
+                         data-bs-target="#category{{ parentCategory.id }}">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-list me-2"></i>
+                            <span class="text-uppercase fw-bold">{{ parentCategory.name }}</span>
+                        </div>
+                        <i class="bi bi-chevron-down"></i>
+                    </div>
+
+                    <div class="collapse" id="category{{ parentCategory.id }}">
+                        <div class="p-3">
+                            <div class="row g-3">
+                                {% for subCategory in parentCategory.children %}
+                                    <div class="col-6">
+                                        <a href="" class="text-decoration-none mobile-category-link">
+                                            <div class="d-flex align-items-center">
+                                                {% if subCategory.icon %}
+                                                    <img src="{{ asset('uploads/category/icon/' ~ subCategory.icon) }}"
+                                                         alt="{{ subCategory.name }}"
+                                                         class="category-icon me-2">
+                                                {% endif %}
+                                                <span>{{ subCategory.name }}</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

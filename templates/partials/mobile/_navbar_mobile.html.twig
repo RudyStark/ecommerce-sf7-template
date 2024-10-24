@@ -1,0 +1,35 @@
+<nav class="navbar navbar-light bg-white border-bottom fixed-top d-lg-none">
+    <div class="container-fluid d-flex align-items-center">
+        <!-- Groupe hamburger et logo -->
+        <div class="d-flex align-items-center">
+            <button class="navbar-toggler border-0 p-0 me-2" type="button"
+                    data-action="navbar-dropdown#toggleMobileMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand m-0" href="{{ path('app_home') }}">
+                <img src="{{ asset('build/images/logosf.png') }}" alt="Logo" height="32">
+            </a>
+        </div>
+
+        <!-- Icônes à droite -->
+        <div class="d-flex align-items-center gap-3">
+            <a href="#" class="text-dark">
+                <i class="bi bi-bell fs-5 position-relative">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">2</span>
+                </i>
+            </a>
+            <a href="#" class="text-dark">
+                <i class="bi bi-search fs-5"></i>
+            </a>
+            <a href="{{ path('app_cart') }}" class="text-dark position-relative">
+                <i class="bi bi-cart fs-5"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ fullCartQuantity }}
+                    </span>
+            </a>
+            <a href="#" class="text-dark" data-action="navbar-dropdown#toggleMobileUserMenu" data-navbar-dropdown-target="mobileUserButton">
+                <i class="bi bi-person fs-5"></i>
+            </a>
+        </div>
+    </div>
+</nav>
