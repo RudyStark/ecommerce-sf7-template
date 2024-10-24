@@ -40,6 +40,7 @@ class AppExtensions extends AbstractExtension implements GlobalsInterface
             'fullCartQuantity' => $this->cart->getTotalQuantity(),
             'cart' => $this->cart->getCart(),
             'totalWt' => $this->cart->getTotalWithTaxes(),
+            'categories' => $this->categoryRepository->findParentCategoriesWithChildren(),
 
         ];
     }

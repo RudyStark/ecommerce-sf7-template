@@ -1,98 +1,69 @@
+// navbar_dropdown_controller.js
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
     static targets = [
         "dropdownButton",
         "dropdownMenu",
-        "languageButton",
-        "languageMenu",
         "userMenuButton",
         "userDropdownMenu",
         "mobileMenu",
-        "mobileMenuButton"
+        "mobileMenuButton",
+        "megaMenu",
+        "languageButton",  // Ajout pour le dropdown de langue
+        "languageMenu"     // Ajout pour le menu de langue
     ]
 
     connect() {
-        console.log("NavbarDropdown controller connected");
-        this.closeDropdowns = this.closeDropdowns.bind(this);
-        document.addEventListener('click', this.closeDropdowns);
-        this.ensureDropdownsAreClosed();
+        // Initialize user dropdown
+        if (this.hasUserDropdownMenuTarget) {
+            document.addEventListener('click', this.closeUserDropdown.bind(this));
+        }
+
+        // Initialize language dropdown
+        if (this.hasLanguageMenuTarget) {
+            document.addEventListener('click', this.closeLanguageDropdown.bind(this));
+        }
     }
 
     disconnect() {
-        document.removeEventListener('click', this.closeDropdowns);
-    }
+        if (this.hasUserDropdownMenuTarget) {
+            document.removeEventListener('click', this.closeUserDropdown.bind(this));
+        }
 
-    toggleDropdown(event) {
-        event.stopPropagation();
-        const button = event.currentTarget;
-        const menu = button.nextElementSibling;
-        this.closeAllDropdowns();
-        menu.classList.toggle('show');  // Utilise 'show' pour afficher/masquer le dropdown
-    }
-
-    toggleLanguage(event) {
-        event.stopPropagation();
-        this.closeAllDropdowns();
-        this.languageMenuTarget.classList.toggle('show');  // Utilise 'show' pour afficher/masquer le menu
+        if (this.hasLanguageMenuTarget) {
+            document.removeEventListener('click', this.closeLanguageDropdown.bind(this));
+        }
     }
 
     toggleUserMenu(event) {
         event.stopPropagation();
-        this.closeAllDropdowns();
-        this.userDropdownMenuTarget.classList.toggle('show');  // Utilise 'show' pour afficher/masquer le menu utilisateur
+        this.userDropdownMenuTarget.classList.toggle('show');
     }
 
-    selectLanguage(event) {
-        event.preventDefault();
-        const selectedLanguage = event.currentTarget.textContent.trim();
-        this.languageButtonTarget.querySelector('span').textContent = selectedLanguage;
-        this.languageButtonTarget.querySelector('img').src = event.currentTarget.querySelector('img').src;
-        this.languageMenuTarget.classList.remove('show');  // Ferme le menu après sélection
-    }
-
-    closeDropdowns(event) {
-        const clickedElement = event.target;
-        const isClickInsideDropdown = (
-            this.dropdownMenuTargets.some(menu => menu.contains(clickedElement)) ||
-            (this.hasLanguageMenuTarget && this.languageMenuTarget.contains(clickedElement)) ||
-            (this.hasUserDropdownMenuTarget && this.userDropdownMenuTarget.contains(clickedElement)) ||
-            (this.hasMobileMenuTarget && this.mobileMenuTarget.contains(clickedElement))
-        );
-        const isClickOnButton = (
-            this.dropdownButtonTargets.some(button => button.contains(clickedElement)) ||
-            (this.hasLanguageButtonTarget && this.languageButtonTarget.contains(clickedElement)) ||
-            (this.hasUserMenuButtonTarget && this.userMenuButtonTarget.contains(clickedElement)) ||
-            (this.hasMobileMenuButtonTarget && this.mobileMenuButtonTarget.contains(clickedElement))
-        );
-
-        if (!isClickInsideDropdown && !isClickOnButton) {
-            this.closeAllDropdowns();
-        }
-    }
-
-    closeAllDropdowns() {
-        this.dropdownMenuTargets.forEach(menu => menu.classList.remove('show'));  // Ferme tous les dropdowns
-        if (this.hasLanguageMenuTarget) {
-            this.languageMenuTarget.classList.remove('show');
-        }
-        if (this.hasUserDropdownMenuTarget) {
+    closeUserDropdown(event) {
+        if (!this.userMenuButtonTarget.contains(event.target) &&
+            !this.userDropdownMenuTarget.contains(event.target)) {
             this.userDropdownMenuTarget.classList.remove('show');
         }
-        // Fermer le menu mobile si nécessaire
-        if (this.hasMobileMenuTarget) {
-            this.mobileMenuTarget.classList.remove('show');
+    }
+
+    // Méthode pour gérer le menu de langue
+    toggleLanguage(event) {
+        event.stopPropagation();
+        this.languageMenuTarget.classList.toggle('show');
+    }
+
+    closeLanguageDropdown(event) {
+        if (!this.languageButtonTarget.contains(event.target) &&
+            !this.languageMenuTarget.contains(event.target)) {
+            this.languageMenuTarget.classList.remove('show');
         }
     }
 
+    // Pour le menu mobile
     toggleMobileMenu(event) {
         event.preventDefault();
-        const mobileMenu = document.getElementById("mobileMenu");
-        const bsOffcanvas = new bootstrap.Offcanvas(mobileMenu);
-        bsOffcanvas.toggle();  // Utilisation du Offcanvas de Bootstrap pour le menu mobile
-    }
-
-    ensureDropdownsAreClosed() {
-        this.closeAllDropdowns();
+        this.mobileMenuTarget.classList.toggle('show');
     }
 }
