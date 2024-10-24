@@ -9,6 +9,8 @@ export default class extends Controller {
         "userDropdownMenu",
         "mobileMenu",
         "mobileMenuButton",
+        "mobileUserButton",
+        "mobileUserMenu",
         "megaMenu",
         "languageButton",
         "languageMenu"
@@ -28,6 +30,16 @@ export default class extends Controller {
         overlay.addEventListener('click', () => {
             this.closeMobileMenu();
         });
+
+        if (this.hasMobileUserMenuTarget) {
+            document.addEventListener('click', (event) => {
+                if (!this.mobileUserMenuTarget.contains(event.target) &&
+                    !this.mobileUserButtonTarget.contains(event.target) &&
+                    this.mobileUserMenuTarget.classList.contains('show')) {
+                    this.closeMobileUserMenu();
+                }
+            });
+        }
     }
 
     disconnect() {
@@ -84,5 +96,23 @@ export default class extends Controller {
             !this.languageMenuTarget.contains(event.target)) {
             this.languageMenuTarget.classList.remove('show');
         }
+    }
+
+    toggleMobileUserMenu(event) {
+        event.preventDefault();
+        const overlay = document.getElementById('menuOverlay');
+
+        if (this.mobileUserMenuTarget.classList.contains('show')) {
+            this.closeMobileUserMenu();
+        } else {
+            overlay.classList.add('show');
+            this.mobileUserMenuTarget.classList.add('show');
+        }
+    }
+
+    closeMobileUserMenu() {
+        const overlay = document.getElementById('menuOverlay');
+        overlay.classList.remove('show');
+        this.mobileUserMenuTarget.classList.remove('show');
     }
 }

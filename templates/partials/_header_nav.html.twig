@@ -32,7 +32,7 @@
                         {{ fullCartQuantity }}
                     </span>
                 </a>
-                <a href="#" class="text-dark">
+                <a href="#" class="text-dark" data-action="navbar-dropdown#toggleMobileUserMenu" data-navbar-dropdown-target="mobileUserButton">
                     <i class="bi bi-person fs-5"></i>
                 </a>
             </div>
@@ -86,6 +86,43 @@
                         </div>
                     </div>
                 {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- User Menu Mobile Modal -->
+    <div class="collapse modal-menu rounded-4" id="mobileUserMenu" data-navbar-dropdown-target="mobileUserMenu">
+        <div class="bg-white rounded-4 shadow">
+            <!-- En-tête avec X pour fermer -->
+            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                <img src="{{ asset('build/images/logosf.png') }}" alt="Logo" height="32">
+                <button class="btn text-dark" data-action="navbar-dropdown#closeMobileUserMenu">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <!-- Liste des options utilisateur -->
+            <div class="mobile-menu-content">
+                <div class="list-group list-group-flush">
+                    <a href="{{ path('app_account') }}" class="list-group-item list-group-item-action">
+                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="bi bi-box me-2"></i>Orders
+                    </a>
+                    <a href="{{ path('app_account_addresses') }}" class="list-group-item list-group-item-action">
+                        <i class="bi bi-geo-alt me-2"></i>Addresses
+                    </a>
+                    <a href="{{ path('app_account_wishlist') }}" class="list-group-item list-group-item-action">
+                        <i class="bi bi-heart me-2"></i>Wishlist
+                    </a>
+                    <a href="{{ path('app_account') }}" class="list-group-item list-group-item-action">
+                        <i class="bi bi-gear me-2"></i>Settings
+                    </a>
+                    <a href="{{ path('app_logout') }}" class="list-group-item list-group-item-action text-danger">
+                        <i class="bi bi-box-arrow-right me-2"></i>Sign out
+                    </a>
+                </div>
             </div>
         </div>
     </div>
