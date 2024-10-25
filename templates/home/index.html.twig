@@ -6,10 +6,9 @@
 {% endblock %}
 
 {% block body %}
-    <div class="bg-light shadow">
-        <div class="row g-4 mt-3 mx-3">
+        <div class="row g-4">
             <!-- Carousel Section (Côté gauche) -->
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <div id="myCarousel" class="carousel slide carousel-container" data-bs-ride="carousel">
                     <div class="carousel-indicators">
                         {% if headers|length > 1 %}
@@ -28,8 +27,7 @@
                                          class="w-100 object-fit-cover"
                                          alt="{{ header.title }}">
                                 </div>
-                                <div class="carousel-caption text-start p-4">
-                                    <h1>{{ header.title }}</h1>
+                                <div class="carousel-caption text-start p-4 bg-light bg-opacity-50 rounded-3">
                                     <p class="opacity-75">{{ header.content }}</p>
                                     <p><a class="btn btn-lg btn-tertiary rounded-pill"
                                           href="{{ header.buttonLink }}">{{ header.buttonTitle }}</a></p>
@@ -38,11 +36,13 @@
                         {% endfor %}
                     </div>
                     {% if headers|length > 1 %}
-                        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel"
+                                data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel"
+                                data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
@@ -53,89 +53,122 @@
             <!-- Recommended Products Section (Côté droit) -->
             <div class="col-lg-4">
                 <h4 class="mb-4">RECOMMENDED FOR YOU</h4>
-                <div class="d-flex flex-column gap-3">
-{#                    {% for product in products %}#}
-                        <div class="card border-0 shadow-sm">
-                            <div class="row g-0">
-                                <div class="col-4">
-                                    <img src=""
-                                         class="img-fluid rounded-start h-100 object-fit-cover"
-                                         alt="">
-                                </div>
-                                <div class="col-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title mb-2 fs-6"></h5>
-                                        <div class="d-flex justify-content-between align-items-center">
-{#                                            {% if product.discountPrice %}#}
-                                                <div>
-                                                    <span class="text-decoration-line-through text-muted">€</span>
-                                                    <span class="text-primary fw-bold">€</span>
-                                                </div>
-                                                <span class="badge bg-success">-%</span>
-{#                                            {% else %}#}
-                                                <span class="text-primary fw-bold">€</span>
-{#                                            {% endif %}#}
-                                        </div>
-                                        <div class="mt-2">
-                                            <i class="bi bi-steam"></i>
-                                            <i class="bi bi-globe"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-{#                    {% endfor %}#}
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Container for marketing content -->
-        <div class="container border-top-0 bg-light">
-            <div class="container-fluid py-5 border-top-0">
-                <!-- START THE FEATURETTES -->
-                <h2 class="text-center mb-5 display-4 fs-1 fw-bold fs-md-3">Our Featured Products</h2>
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                <div class="row row-cols-2 g-3">
                     {% for product in productsInHomepage %}
                         <div class="col">
-                            <div class="card h-100 border-0 shadow-sm product-card bg-light">
-                                <div class="d-flex justify-content-center align-items-center position-relative"
-                                     style="height: 200px;">
-                                    <img src="/uploads/products/{{ product.picture }}"
-                                         class="card-img-top w-75 w-md-100 img-fluid"
-                                         alt="{{ product.name }}">
-                                    <div class="product-overlay d-flex align-items-center justify-content-center position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50">
-                                        <a href="{{ path('app_product', { slug : product.slug }) }}"
-                                           class="btn btn-outline-light btn-sm">View Product</a>
+                            <a href="#" class="text-decoration-none product-card-link text-dark">
+                                <div class="card h-100 d-flex flex-column border-0 rounded-4 product-card">
+                                    <!-- Image -->
+                                    <div class="product-image-container">
+                                        <img src="{{ asset('uploads/products/' ~ product.picture) }}"
+                                             class="w-100 h-100 object-fit-cover"
+                                             alt="{{ product.name }}">
+                                    </div>
+
+                                    <!-- Info -->
+                                    <div class="card-body d-flex flex-column justify-content-between">
+                                        <!-- Title -->
+                                        <h5 class="card-title text-center mb-3 product-title">{{ product.name }}</h5>
+
+                                        <!-- Icons -->
+                                        <div class="d-flex justify-content-center gap-3 mb-3 platform-icons">
+                                            {% if product.subCategory and product.subCategory.icon %}
+                                                <span class="platform-icon d-flex align-items-center justify-content-center">
+                                        <img src="{{ asset('uploads/category/icon/' ~ product.subCategory.icon ) }}"
+                                             alt="{{ product.subCategory.name }}">
+                                    </span>
+                                            {% endif %}
+                                            <span class="platform-icon d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-globe"></i>
+                                </span>
+                                        </div>
+
+                                        <!-- Price -->
+                                        <div class="text-white text-center fw-bold fs-4 rounded-3 p-2 price-tag mt-auto">
+                                            €{{ product.price }}
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="card-body text-center">
-                                    <h3 class="card-title h5">{{ product.name }}</h3>
-                                    <p class="card-text small text-muted">{{ product.description|striptags|slice(0, 100) }}
-                                        ...</p>
-                                    <p class="card-text fw-bold">{{ product.price|price }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-
-                <!-- START THE COMPANY VALUES -->
-                <div class="container-fluid company-values-sections" data-controller="reveal">
-                    <h2 class="text-center mb-5 display-4 fs-1 fw-bold fs-md-3">Our Company Values</h2>
-
-                    {% for value in companyValues %}
-                        <div class="company-value-section" data-reveal-target="section"
-                             style="background-image: url('{{ asset('uploads/company_values/' ~ value.picture) }}');">
-                            <div class="company-value-content">
-                                <h3 class="value-title">{{ value.title }}</h3>
-                                <p class="value-description">{{ value.content }}</p>
-                            </div>
+                            </a>
                         </div>
                     {% endfor %}
                 </div>
             </div>
 
+
+            <!-- Category Section -->
+            <div class="bg-dark-subtle-cat py-5 rounded-5 shadow">
+                <div class="container">
+                    <!-- Filter Navigation -->
+                    <div class="category-filters mb-5">
+                        <ul class="nav nav-pills gap-3 d-flex justify-content-center">
+                            {% for parentCategory in categories %}
+                                <li class="nav-item">
+                                    <button class="nav-button rounded-pill px-4 py-2 {% if loop.first %}active{% endif %}"
+                                            id="filter-{{ parentCategory.id }}"
+                                            data-bs-toggle="pill"
+                                            data-bs-target="#content-{{ parentCategory.id }}">
+                                        {% if parentCategory.icon %}
+                                            <img src="{{ asset('uploads/category/icon/' ~ parentCategory.icon) }}"
+                                                 class="filter-icon me-2"
+                                                 alt="">
+                                        {% endif %}
+                                        {{ parentCategory.name }}
+                                    </button>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!-- Category Grid -->
+                    <div class="tab-content" id="categoryContent">
+                        {% for parentCategory in categories %}
+                            <div class="tab-pane fade {% if loop.first %}show active{% endif %}"
+                                 id="content-{{ parentCategory.id }}"
+                                 data-controller="category"
+                                 data-category-current-page-value="1"
+                                 data-category-total-pages-value="{{ (parentCategory.children|length / 6)|round(0, 'ceil') }}">
+
+                                <!-- Grid Container -->
+                                <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4" data-category-target="grid">
+                                    {% for subCategory in parentCategory.children|slice(0, 6) %}
+                                        <div class="col">
+                                            <a href="#" class="text-decoration-none category-link">
+                                                <div class="category-card-home rounded-4">
+                                                    <div class="p-4 text-center d-flex flex-column align-items-center justify-content-center h-100">
+                                                        <div class="icon-wrapper d-flex align-items-center justify-content-center">
+                                                            {% if subCategory.icon %}
+                                                                <img src="{{ asset('uploads/category/icon/' ~ subCategory.icon) }}"
+                                                                     alt="{{ subCategory.name }}"
+                                                                     class="category-icon">
+                                                            {% endif %}
+                                                        </div>
+                                                        <p class="category-title mb-0">{{ subCategory.name }}</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                <!-- View More Button -->
+                                {% if parentCategory.children|length > 6 %}
+                                    <div class="text-center mt-5">
+                                        <button class="btn-view-more"
+                                                data-category-target="viewMoreButton"
+                                                data-category-id="{{ parentCategory.id }}"
+                                                data-action="category#loadMore">
+                                            <span>View More</span>
+                                            <svg class="ms-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
-    </div><!-- /.container -->
 {% endblock %}
