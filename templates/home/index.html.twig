@@ -7,115 +7,135 @@
 
 {% block body %}
     <div class="bg-light shadow">
-    <div class="d-flex bg-light overflow-hidden container carousel-container"
-         style="height: 500px;"
-         data-controller="carousel"
-         data-carousel-headers-value="{{ headers|map(header => {
-             'id': header.id,
-             'title': header.title,
-             'content': header.content,
-             'buttonTitle': header.buttonTitle,
-             'buttonLink': header.buttonLink,
-             'picture': header.picture
-         })|json_encode()|e('html_attr') }}">
-        <!-- Grille à gauche (60% de la largeur) -->
-        <div class="d-flex w-70 p-3">
-            <!-- Colonne gauche (grande) - Affichage de la card sélectionnée -->
-            <div class="col-8 bg-white rounded overflow-hidden me-3" data-carousel-target="selectedCard">
-                {% if headers|first %}
-                    {% set selectedHeader = headers|first %}
-                    <div class="position-relative h-100 fade-in">
-                        <img src="{{ asset('uploads/header/' ~ selectedHeader.picture) }}"
-                             class="position-absolute w-100 h-100 object-fit-cover" alt="{{ selectedHeader.title }}">
-                        <div class="position-absolute bottom-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-4">
-                            <h2 class="text-white fw-bold mb-3">{{ selectedHeader.title }}</h2>
-                            <p class="text-white mb-4">{{ selectedHeader.content }}</p>
-                            <div class="d-flex justify-content-center">
-                                <a href="{{ selectedHeader.buttonLink }}"
-                                   class="btn btn-primary rounded-pill px-4 py-2">
-                                    {{ selectedHeader.buttonTitle }}
-                                </a>
-                            </div>
-                        </div>
+        <div class="row g-4 mt-3 mx-3">
+            <!-- Carousel Section (Côté gauche) -->
+            <div class="col-lg-8">
+                <div id="myCarousel" class="carousel slide carousel-container" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        {% if headers|length > 1 %}
+                            {% for key,header in headers %}
+                                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="{{ key }}"
+                                        {% if key == 0 %}class="active" aria-current="true"{% endif %}
+                                        aria-label="Slide {{ key + 1 }}"></button>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                {% else %}
-                    <div class="w-100 h-100 d-flex align-items-center justify-content-center text-muted">Sélectionnez
-                        une image
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- Colonne droite (petite) avec liste des images -->
-            <div class="col-3 miniature-grid">
-                {% for header in headers %}
-                    <div class="bg-white rounded shadow-sm overflow-hidden hover-shadow-lg transition thumbnail-container mb-2 {% if loop.first %}selected-thumbnail{% endif %}"
-                         style="height: 100px;"
-                         data-action="click->carousel#updateSelectedCard"
-                         data-carousel-index-param="{{ loop.index0 }}">
-                        <img src="{{ asset('uploads/header/' ~ header.picture) }}"
-                             class="w-100 h-100 object-fit-cover thumbnail" alt="{{ header.title }}">
-                    </div>
-                {% else %}
-                    <div class="bg-light rounded d-flex align-items-center justify-content-center h-100">Aucune image
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- Image polygonale à droite (40% de la largeur) -->
-        <div class="w-30 overflow-hidden d-none d-sm-block">
-            <img src="https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                 class="w-100 h-100 object-fit-cover"
-                 style="clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%);"
-                 alt="Decorative image">
-        </div>
-    </div>
-
-
-    <!-- Container for marketing content -->
-    <div class="container border-top-0 bg-light">
-        <div class="container-fluid py-5 border-top-0">
-            <!-- START THE FEATURETTES -->
-            <h2 class="text-center mb-5 display-4 fs-1 fw-bold fs-md-3">Our Featured Products</h2>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-                {% for product in productsInHomepage %}
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm product-card bg-light">
-                            <div class="d-flex justify-content-center align-items-center position-relative" style="height: 200px;">
-                                <img src="/uploads/products/{{ product.picture }}"
-                                     class="card-img-top w-75 w-md-100 img-fluid"
-                                     alt="{{ product.name }}">
-                                <div class="product-overlay d-flex align-items-center justify-content-center position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50">
-                                    <a href="{{ path('app_product', { slug : product.slug }) }}"
-                                       class="btn btn-outline-light btn-sm">View Product</a>
+                    <div class="carousel-inner rounded-4 overflow-hidden">
+                        {% for key,header in headers %}
+                            <div class="carousel-item {% if key == 0 %}active{% endif %}">
+                                <div class="carousel-image-container">
+                                    <img src="/uploads/header/{{ header.picture }}"
+                                         class="w-100 object-fit-cover"
+                                         alt="{{ header.title }}">
+                                </div>
+                                <div class="carousel-caption text-start p-4">
+                                    <h1>{{ header.title }}</h1>
+                                    <p class="opacity-75">{{ header.content }}</p>
+                                    <p><a class="btn btn-lg btn-tertiary rounded-pill"
+                                          href="{{ header.buttonLink }}">{{ header.buttonTitle }}</a></p>
                                 </div>
                             </div>
-                            <div class="card-body text-center">
-                                <h3 class="card-title h5">{{ product.name }}</h3>
-                                <p class="card-text small text-muted">{{ product.description|striptags|slice(0, 100) }}...</p>
-                                <p class="card-text fw-bold">{{ product.price|price }}</p>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                    {% if headers|length > 1 %}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    {% endif %}
+                </div>
             </div>
 
-            <!-- START THE COMPANY VALUES -->
-            <div class="container-fluid company-values-sections" data-controller="reveal">
-                <h2 class="text-center mb-5 display-4 fs-1 fw-bold fs-md-3">Our Company Values</h2>
-
-                {% for value in companyValues %}
-                    <div class="company-value-section" data-reveal-target="section"
-                         style="background-image: url('{{ asset('uploads/company_values/' ~ value.picture) }}');">
-                        <div class="company-value-content">
-                            <h3 class="value-title">{{ value.title }}</h3>
-                            <p class="value-description">{{ value.content }}</p>
+            <!-- Recommended Products Section (Côté droit) -->
+            <div class="col-lg-4">
+                <h4 class="mb-4">RECOMMENDED FOR YOU</h4>
+                <div class="d-flex flex-column gap-3">
+{#                    {% for product in products %}#}
+                        <div class="card border-0 shadow-sm">
+                            <div class="row g-0">
+                                <div class="col-4">
+                                    <img src=""
+                                         class="img-fluid rounded-start h-100 object-fit-cover"
+                                         alt="">
+                                </div>
+                                <div class="col-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-2 fs-6"></h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+{#                                            {% if product.discountPrice %}#}
+                                                <div>
+                                                    <span class="text-decoration-line-through text-muted">€</span>
+                                                    <span class="text-primary fw-bold">€</span>
+                                                </div>
+                                                <span class="badge bg-success">-%</span>
+{#                                            {% else %}#}
+                                                <span class="text-primary fw-bold">€</span>
+{#                                            {% endif %}#}
+                                        </div>
+                                        <div class="mt-2">
+                                            <i class="bi bi-steam"></i>
+                                            <i class="bi bi-globe"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+{#                    {% endfor %}#}
+                </div>
             </div>
         </div>
 
-    </div>
+
+        <!-- Container for marketing content -->
+        <div class="container border-top-0 bg-light">
+            <div class="container-fluid py-5 border-top-0">
+                <!-- START THE FEATURETTES -->
+                <h2 class="text-center mb-5 display-4 fs-1 fw-bold fs-md-3">Our Featured Products</h2>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                    {% for product in productsInHomepage %}
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm product-card bg-light">
+                                <div class="d-flex justify-content-center align-items-center position-relative"
+                                     style="height: 200px;">
+                                    <img src="/uploads/products/{{ product.picture }}"
+                                         class="card-img-top w-75 w-md-100 img-fluid"
+                                         alt="{{ product.name }}">
+                                    <div class="product-overlay d-flex align-items-center justify-content-center position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50">
+                                        <a href="{{ path('app_product', { slug : product.slug }) }}"
+                                           class="btn btn-outline-light btn-sm">View Product</a>
+                                    </div>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h3 class="card-title h5">{{ product.name }}</h3>
+                                    <p class="card-text small text-muted">{{ product.description|striptags|slice(0, 100) }}
+                                        ...</p>
+                                    <p class="card-text fw-bold">{{ product.price|price }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- START THE COMPANY VALUES -->
+                <div class="container-fluid company-values-sections" data-controller="reveal">
+                    <h2 class="text-center mb-5 display-4 fs-1 fw-bold fs-md-3">Our Company Values</h2>
+
+                    {% for value in companyValues %}
+                        <div class="company-value-section" data-reveal-target="section"
+                             style="background-image: url('{{ asset('uploads/company_values/' ~ value.picture) }}');">
+                            <div class="company-value-content">
+                                <h3 class="value-title">{{ value.title }}</h3>
+                                <p class="value-description">{{ value.content }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
     </div><!-- /.container -->
 {% endblock %}

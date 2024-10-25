@@ -49,22 +49,27 @@ a:hover {
     fill: currentColor;
 }
 
-.nav-scroller {
-    position: relative;
-    z-index: 2;
-    height: 2.75rem;
-    overflow-y: hidden;
+.btn-tertiary {
+    transition: all 0.3s ease;
+    background-color: #FF4500;
+    border: 1px solid rgba(108, 99, 255, 0.1);
+    color: white;
+    font-weight: 500;
+    padding: 6px 16px;
+    font-size: 0.95rem;
+    border-radius: 5px;
 }
 
-.nav-scroller .nav {
-    display: flex;
-    flex-wrap: nowrap;
-    padding-bottom: 1rem;
-    margin-top: -1px;
-    overflow-x: auto;
-    text-align: center;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
+.btn-tertiary:hover,
+.btn-tertiary:focus,
+.btn-tertiary:active {
+    color: #FF4500;
+    outline: 2px solid #FF4500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: scale(1.02);
+    border-color: transparent;
+    border-radius: 8px;
+    background-color: rgba(255, 69, 0, 0.1) !important;
 }
 
 .btn-bd-primary {
@@ -101,102 +106,8 @@ a:hover {
     text-decoration: none;
 }
 
-.navbar-account .nav-link-account {
-    margin-right: 15px;
-}
-
-.navbar-account .nav-link-account:hover {
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    color: #007bff;
-}
-
-.card-single {
-    max-width: 250px;
-    margin: 0 auto;
-}
-
-.offcanvas {
-    margin: 0;
-    padding: 0;
-}
-
-.form-control:focus {
-    outline: 0;
-    box-shadow: none;
-}
-
-.search-placeholder::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-    opacity: 1;
-}
-
-.support-box:hover {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
-}
-
-.dropdown-menu .dropdown-item:hover {
-    background-color: #4a4a4a !important; /* Dark gray background on hover */
-    color: #ffffff !important; /* Ensure the text color is white */
-    padding: 0.30rem 1rem;
-}
-
 .coupon-input::placeholder {
     color: grey;
-}
-
-
-@media screen and (max-width: 991px) {
-
-    .offcanvas-body .nav-item {
-        font-weight: 700;
-        border-bottom: 1px solid #d1d1d1;
-    }
-
-    .offcanvas-body .filter-categories {
-        width: 100%;
-        margin-bottom: 20px !important;
-        border: 1px solid #d1d1d1 !important;
-        padding: 14px;
-        border-radius: 8px;
-    }
-
-    .dropdown-menu {
-        padding: 0;
-        border: none;
-        line-height: 1.4;
-        font-size: 0.9em;
-    }
-
-    .dropdown-menu a {
-        padding-left: 0;
-    }
-
-    .dropdown-toggle::after {
-        position: absolute;
-        right: 0;
-        top: 21px;
-    }
-
-    img{
-        width: 100px;
-    }
-}
-
-@media (max-width: 768px) {
-    /* Réduire la taille du texte pour mobile */
-    .list-group-item h5 {
-        font-size: 1.2rem;
-    }
-    .list-group-item p {
-        font-size: 0.9rem;
-    }
-    .btn {
-        font-size: 0.9rem;
-    }
-    .small-text-mobile {
-        font-size: 0.8rem;
-    }
 }
 
 .toast-body {
@@ -294,9 +205,67 @@ a:hover {
     }
 }
 
+/*******************************
+    CAROUSEL SECTION
+********************************/
 
+.carousel-container {
+    max-height: 400px; /* Hauteur maximale du carousel */
+    position: relative;
+    overflow: hidden;
+}
 
+.carousel-inner {
+    height: 100%;
+}
 
+.carousel-item {
+    height: 400px; /* Même hauteur que le container */
+    background: #f8f9fa;
+}
 
+.carousel-image-container {
+    width: 100%;
+    height: 400px; /* Même hauteur que le carousel-item */
+    position: relative;
+    overflow: hidden;
+}
 
+.carousel-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Au lieu de 'cover' */
+    background-color: #000; /* Pour les bandes noires */
+}
 
+/* Style du dégradé et du texte */
+.carousel-caption {
+    background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: left;
+    z-index: 2;
+}
+
+/* Animation au hover (optionnel) */
+.carousel-item img {
+    transition: transform 0.3s ease;
+    filter: brightness(0.8);
+}
+
+.carousel-item:hover img {
+    transform: scale(1.02);
+}
+
+/*******************************
+    CARD SECTION
+********************************/
+
+.card {
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
