@@ -4,13 +4,13 @@
         <!-- Logo -->
         <a class="navbar-brand mx-5" href="{{ path('app_home') }}">
             <img src="{{ asset('build/images/logosf.png') }}" alt="Logo" height="32" class="d-inline-block align-top">
-            <span class="ms-2 fs-4 d-none d-lg-inline">SF7 Ecommerce Gaming</span>
+            <span class="ms-2 fs-4 d-none d-lg-inline text-light">SF7 Ecommerce Gaming</span>
         </a>
 
         <!-- Barre de recherche (affichée en mobile et desktop) -->
         <form class="d-flex mx-auto" style="width: 30%;">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-secondary" type="submit">
+            <input class="form-control search-form-glow me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-search" type="submit">
                 <i class="bi bi-search"></i>
             </button>
         </form>
@@ -28,7 +28,7 @@
                         id="accountDropdown" data-action="click->navbar-dropdown#toggleUserMenu"
                         data-navbar-dropdown-target="userMenuButton">
                     <i class="bi bi-person fs-4"></i>
-                    <span class="d-none d-lg-inline">My Account</span>
+                    <span class="d-none d-lg-inline">Account</span>
                 </button>
                 {% if app.user %}
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown"
@@ -62,19 +62,19 @@
     </div>
 
     <!-- Barre de séparation -->
-    <div class="border-top w-100"></div>
+    <div class="separator-glow w-100"></div>
 
     {# Main Navigation Menu #}
-    <div class="collapse navbar-collapse justify-content-between w-100 py-2 d-none d-lg-flex" id="navbarNav">
+    <div class="collapse navbar-collapse justify-content-between w-100 py-2 d-lg-flex" id="navbarNav">
         <ul class="navbar-nav mx-5">
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_home') }}">Home</a>
+                <a class="nav-link text-light" href="{{ path('app_home') }}">Home</a>
             </li>
 
             {# Loop through Parent Categories #}
             {% for parentCategory in categories %}
                 <li class="nav-item mega-menu-item">
-                    <a class="nav-link" href="javascript:void(0);">{{ parentCategory.name }}</a>
+                    <a class="nav-link text-light" href="javascript:void(0);">{{ parentCategory.name }}</a>
                     <div class="mega-menu-container dropdown-menu">
                         <div class="container py-4">
                             <div id="mega-menu-row" class="row">
@@ -104,10 +104,29 @@
                 </li>
             {% endfor %}
             <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
+                <a class="nav-link text-light" href="#">Contact</a>
             </li>
         </ul>
 
+        {# Announcements - News Ticker #}
+        <div class="news-ticker-container mx-3 d-none d-lg-flex align-items-center">
+            <div class="news-ticker-label bg-danger text-white px-3 py-1 rounded-start">
+                <i class="bi bi-broadcast me-2"></i>NEWS
+            </div>
+            <div class="news-ticker-wrapper">
+                <div class="news-ticker">
+                    <div class="news-ticker-content">
+                        <span class="me-4">🎮 New Release: Elden Ring 2 available now!</span>
+                        <span class="me-4">🏷️ Use code SUMMER24 for 15% off on all games</span>
+                        <span class="me-4">🚀 Pre-order GTA 6 and get exclusive content</span>
+                        <span class="me-4">⚡ Flash Sale: -50% on Selected Games</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {# Language Dropdown #}
         <div class="dropdown mx-5">
             <button class="btn btn-link dropdown-toggle text-decoration-none" type="button" id="languageDropdown"
                     data-action="click->navbar-dropdown#toggleLanguage" data-navbar-dropdown-target="languageButton">

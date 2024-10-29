@@ -7,9 +7,8 @@
     display: none;
     position: absolute;
     top: 100%;
-    left: 50%;
+    left: 43%;
     transform: translateX(-50%);
-    background: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     z-index: 1000;

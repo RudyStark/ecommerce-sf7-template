@@ -1,0 +1,18 @@
+{% for subCategory in subCategories %}
+    <div class="col">
+        <a href="#" class="text-decoration-none category-link">
+            <div class="category-card-home rounded-4">
+                <div class="p-4 text-center d-flex flex-column align-items-center justify-content-center h-100">
+                    <div class="icon-wrapper d-flex align-items-center justify-content-center">
+                        {% if subCategory.icon %}
+                            <img src="{{ asset('uploads/category/icon/' ~ subCategory.icon) }}"
+                                 alt="{{ subCategory.name }}"
+                                 class="category-icon">
+                        {% endif %}
+                    </div>
+                    <p class="category-title mb-0">{{ subCategory.name }}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+{% endfor %}

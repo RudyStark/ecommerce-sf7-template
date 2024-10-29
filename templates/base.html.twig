@@ -24,15 +24,14 @@
     {{ encore_entry_script_tags('app') }}
     {% endblock %}
 </head>
-<body>
+<body class="bg-dark-subtle">
 <header>
     {% include 'partials/_header_nav.html.twig' %}
     {% include 'partials/_search_offcanvas.html.twig' %}
 </header>
 
-<main class="container">
+<main>
     <!-- Flash messages -->
-    <div class="container">
         {% for type, messages in app.flashes %}
             {% for message in messages %}
                 <div class="alert mt-4 alert-{{ type }} alert-dismissible fade show" role="alert">
@@ -41,15 +40,13 @@
                 </div>
             {% endfor %}
         {% endfor %}
-    </div>
 
-
-    {% block body %}
-
-    {% endblock %}
+    <section class="container my-5">
+        {% block body %}{% endblock %}
+    </section>
 
     <!-- FOOTER -->
-    <footer class="container container-fluid shadow">
+    <footer class="shadow">
         {{ include('partials/_footer.html.twig') }}
     </footer>
 </main>
