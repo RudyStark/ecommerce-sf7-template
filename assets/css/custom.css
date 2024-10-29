@@ -11,10 +11,10 @@
     background: linear-gradient(145deg, #1E1E2E, #2A2A3A);
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-}
+/*html, body {*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*}*/
 
 a {
     text-decoration: none;

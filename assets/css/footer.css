@@ -1,83 +1,30 @@
-/* Footer Général */
-footer {
-    background-color: #f8f9fa;
-    color: #343a40;
-    font-size: 0.875rem;
+.bg-footer {
+    background: linear-gradient(145deg, #1E1E2E, #2A2A3A);
 }
 
-footer h6 {
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    color: #007bff;
+.text-orange-gamer {
+    color: #FF4500;
 }
 
-footer a {
-    color: #343a40;
+.footer-social {
+    color: white;
+    font-size: 18px;
+    transition: color 0.3s;
+    text-shadow: #FF4500 0px 0px 8px;
     text-decoration: none;
 }
 
-footer a:hover {
-    color: #007bff;
+.footer-social:hover {
+    color: #FF4500;
+    text-shadow: #FF4500 0px 0px 10px;
 }
 
-footer .form-control {
-    border-radius: 0;
-    border: 1px solid #007bff;
-    background-color: #ffffff;
-    color: #343a40;
+.footer-link {
+    color: #FF4500;
+    text-decoration: none;
+    transition: color 0.3s;
 }
 
-footer .btn-primary {
-    background-color: #007bff;
-    border: none;
-    color: #fff;
-    font-size: 0.875rem;
-}
-
-footer .btn-primary:hover {
-    background-color: #0056b3;
-}
-
-footer .fab {
-    font-size: 1.25rem;
-}
-
-footer .row.align-items-center {
-    padding-bottom: 10px;
-    border-bottom: 1px solid #dee2e6;
-}
-
-footer .small {
-    font-size: 0.75rem;
-}
-
-footer .text-muted {
-    font-size: 0.75rem;
-    color: #6c757d;
-}
-
-footer .img-fluid {
-    max-width: 80px;
-    height: auto;
-}
-
-/* Responsive Footer : afficher uniquement les réseaux sociaux et le copyright */
-@media (max-width: 768px) {
-
-    footer .social-icons {
-        display: flex; /* S'assurer que les icônes sociales sont visibles */
-    }
-
-    footer .fab {
-        font-size: 1.5rem;
-        margin: 0 10px;
-    }
-
-    footer .row.mt-3 {
-        display: block; /* Toujours afficher le copyright en mobile */
-    }
-
-    footer .text-muted {
-        font-size: 0.8rem;
-    }
+.footer-link:hover {
+    color: white;
 }
