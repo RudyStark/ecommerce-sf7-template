@@ -42,6 +42,12 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?bool $isHomepage = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $studioPicture = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $studioLabel = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -158,6 +164,30 @@ class Product
     public function setIsHomepage(?bool $isHomepage): static
     {
         $this->isHomepage = $isHomepage;
+
+        return $this;
+    }
+
+    public function getStudioPicture(): ?string
+    {
+        return $this->studioPicture;
+    }
+
+    public function setStudioPicture(string $studioPicture): static
+    {
+        $this->studioPicture = $studioPicture;
+
+        return $this;
+    }
+
+    public function getStudioLabel(): ?string
+    {
+        return $this->studioLabel;
+    }
+
+    public function setStudioLabel(string $studioLabel): static
+    {
+        $this->studioLabel = $studioLabel;
 
         return $this;
     }

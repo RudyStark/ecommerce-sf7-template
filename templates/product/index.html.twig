@@ -55,7 +55,7 @@
                             <h1 class="text-light mb-2">{{ product.name }}</h1>
                             <div class="game-publisher">
                                 <span class="publisher-badge">
-                                    <img src="{{ asset('build/images/test-studio.png') }}" class="publisher-logo" alt="Publisher">
+                                    <img src="/uploads/products/studios/{{ product.studioPicture }}" class="publisher-logo" alt="Publisher">
                                 </span>
                                 <div class="gaming-icon-button ms-auto">
                                     <i class="bi bi-heart fs-2 text-danger"></i>
@@ -134,8 +134,12 @@
                             <div class="requirements-grid">
                                 <h4 class="text-orange-gamer mb-3">System Requirements</h4>
                                 <div class="req-row">
+                                    <span class="req-label">Studio</span>
+                                    <span class="req-value">{{ product.studioLabel }}</span>
+                                </div>
+                                <div class="req-row">
                                     <span class="req-label">Platform</span>
-                                    <span class="req-value">PlayStation 5</span>
+                                    <span class="req-value">{{ product.subCategory.name }}</span>
                                 </div>
                                 <div class="req-row">
                                     <span class="req-label">Storage</span>

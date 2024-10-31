@@ -31,6 +31,7 @@
     "dependencies": {
         "@hotwired/stimulus-webpack-helpers": "^1.0.1",
         "@symfony/stimulus-bridge": "^3.2.2",
+        "feather-icons": "^4.29.2",
         "flowbite": "^2.5.2"
     }
 }

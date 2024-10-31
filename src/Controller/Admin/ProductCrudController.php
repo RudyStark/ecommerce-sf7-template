@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductCrudController extends AbstractCrudController
 {
@@ -42,6 +43,14 @@ class ProductCrudController extends AbstractCrudController
             TextField::new('name')->setLabel('Name'),
             BooleanField::new('isHomepage')->setLabel('Show on homepage')->setHelp('Check this box to show the product on the homepage'),
             SlugField::new('slug')->setTargetFieldName('name')->setLabel('Slug')->setHelp('The slug is used in the URL to identify the product'),
+            TextField::new('studioLabel')->setLabel('Studio Label')->setHelp('The label of the studio'),
+            ImageField::new('studioPicture')
+                ->setLabel('Studio Picture')
+                ->setHelp('The picture of the studio')
+                ->setUploadDir('public/uploads/products/studios')
+                ->setBasePath('uploads/products/studios')
+                ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')
+                ->setRequired($required),
             TextEditorField::new('description')->setLabel('Description')->setHelp('The description of the product'),
             ImageField::new('picture')->setLabel('Image')->setHelp('Image should be 600x600px')->setUploadDir('public/uploads/products')->setBasePath('uploads/products')->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')->setRequired($required),
             NumberField::new('price')->setLabel('Price excluding VAT')->setHelp('The price of the product excluding VAT and without currency symbol'),
