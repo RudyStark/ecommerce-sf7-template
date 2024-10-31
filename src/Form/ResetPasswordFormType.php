@@ -40,12 +40,6 @@ class ResetPasswordFormType extends AbstractType
                 ],
                 'mapped' => false,
             ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Update password',
-                'attr' => [
-                    'class' => 'btn btn-dark',
-                ],
-            ])
         ;
     }
 

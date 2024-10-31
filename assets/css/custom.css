@@ -1,6 +1,8 @@
 /* Import Bootstrap first */
 @import './bootstrap.min.css';
 @import './mega-menu.css';
+@import './carousel.css';
+@import './home.css';
 
 :root {
     --gaming-blue: #1E2A44; /* Bleu foncé gaming de base */
@@ -11,10 +13,16 @@
     background: linear-gradient(145deg, #1E1E2E, #2A2A3A);
 }
 
+.bg-dark-block {
+    background: linear-gradient(145deg, #1E1E2E, #2A2A3A);
+}
+
 /*html, body {*/
 /*    margin: 0;*/
 /*    padding: 0;*/
 /*}*/
+
+/* Link styles */
 
 a {
     text-decoration: none;
@@ -22,6 +30,37 @@ a {
 
 a:hover {
     text-decoration: none;
+}
+
+/* Style des liens */
+.gaming-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.gaming-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #FF4500;
+    transition: width 0.3s ease;
+}
+
+.gaming-link:hover {
+    color: #FF4500;
+    background: rgba(255, 69, 0, 0.1);
+}
+
+.gaming-link:hover::after {
+    width: 100%;
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
 }
 
 .bd-placeholder-img {
@@ -131,467 +170,76 @@ a:hover {
     fill: red;
 }
 
-/* Company Values */
-/* Company Values Full-Width Sections */
-.company-values-sections {
-    margin-top: 50px;
-    padding: 0;
-}
+/******************************* */
+/* FORM STYLES */
+/* ********************************/
 
-.section-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 50px;
-    color: #ff6f61; /* Couleur vive, inspirée de l'été et de la plage */
-}
-
-/* Chaque section de valeur de l'entreprise */
-.company-value-section {
+.gaming-input-wrapper {
     position: relative;
-    min-height: 400px;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
+    width: 100%;
+}
+
+.gaming-input {
+    width: 100%;
+    padding: 12px 20px;
+    background: rgba(30, 30, 46, 0.8);
     color: white;
-    transition: transform 0.4s ease-in-out;
-    opacity: 0;
-    transform: translateY(50px); /* Départ en dehors de la vue pour l'effet de révélation */
-}
-
-.company-value-section.active {
-    opacity: 1;
-    transform: translateY(0); /* Effet de révélation lors du scroll */
-}
-
-/* Contenu de la valeur (titre et description) */
-.company-value-content {
-    background: rgba(0, 0, 0, 0.6); /* Overlay noir transparent pour rendre le texte lisible */
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    max-width: 600px;
-}
-
-.value-title {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #ffde59; /* Couleur dorée pour rappeler l'été, la plage et le luxe */
-}
-
-.value-description {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: #fff;
-}
-
-.shadow-custom {
-    box-shadow: 0px 0 8px rgba(0, 0, 0, 0.2), /* Ombre à droite */
-    -4px 0 8px rgba(0, 0, 0, 0.2); /* Ombre à gauche */
-}
-
-/* Effets de survol */
-.company-value-section:hover {
-    transform: scale(1.02); /* Légère mise en avant au survol */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Ombre légère */
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .company-value-section {
-        min-height: 300px;
-    }
-
-    .value-title {
-        font-size: 1.5rem;
-    }
-
-    .value-description {
-        font-size: 1rem;
-    }
-}
-
-/*******************************
-    CAROUSEL SECTION
-********************************/
-
-.carousel-container {
-    max-height: 400px; /* Hauteur maximale du carousel */
-    position: relative;
-    overflow: hidden;
-}
-
-.carousel-inner {
-    height: 100%;
-}
-
-.carousel-item {
-    height: 400px; /* Même hauteur que le container */
-    background: #f8f9fa;
-}
-
-.carousel-image-container {
-    width: 100%;
-    height: 400px; /* Même hauteur que le carousel-item */
-    position: relative;
-    overflow: hidden;
-}
-
-.carousel-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Au lieu de 'cover' */
-    background-color: #000; /* Pour les bandes noires */
-}
-
-/* Style du dégradé et du texte */
-.carousel-caption {
-    background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
-    left: 0;
-    right: 0;
-    bottom: 0;
-    text-align: left;
-    z-index: 2;
-}
-
-/* Animation au hover (optionnel) */
-.carousel-item img {
-    transition: transform 0.3s ease;
-    filter: brightness(0.8);
-}
-
-.carousel-item:hover img {
-    transform: scale(1.02);
-}
-
-/*******************************
-    CARD SECTION
-********************************/
-
-.product-card-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    transition: all 0.3s ease;
-    width: 100%;
-    max-width: 280px; /* Largeur maximale de la card */
-}
-
-.product-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Utilise toute la hauteur disponible */
-    background-color: white;
-    border-radius: 24px; /* Augmenté */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-    overflow: hidden;
-}
-
-/* Hover effect */
-.product-card-link:hover {
-    text-decoration: none;
-    color: inherit;
-}
-
-.product-card-link:hover .product-card {
-    transform: translateY(-3px);
-    outline: 2px solid #FF4500;
-    box-shadow: 0 5px 15px rgba(255, 69, 0, 0.3);
-}
-
-.product-image-container {
-    height: 180px; /* Hauteur fixe pour les images */
-    background-color: #1a1a1a;
-    overflow: hidden;
-}
-
-.product-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-grow: 1;
-    padding: 1rem;
-}
-
-.product-title {
-    font-size: 1rem;
-    font-weight: 500;
-    text-align: center;
-    margin-bottom: 1rem;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    height: 40px; /* Limite la hauteur du titre */
-}
-
-.platform-icons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.platform-icon {
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.platform-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.platform-icon i {
-    font-size: 24px;
-}
-
-.price-tag {
-    background-color: #FF4500;
-    color: white;
-    font-weight: 700;
-    font-size: 1.5rem;
-    padding: 0.75rem;
-    border-radius: 12px;
-    text-align: center;
-    margin-top: auto;
-}
-
-.discount-badge {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: #4CAF50;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-}
-/*******************************
-    CATEGORY SECTION
-********************************/
-/* Styles des boutons de navigation */
-.nav-button {
-    background: white;
-    border: none;
-    color: #666;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.nav-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.nav-button.active {
-    background: #FF4500 !important;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
-}
-
-/* Card Styles */
-.category-link {
-    display: block;
-    position: relative;
-    text-decoration: none;
-    isolation: isolate;
-    padding: 0.5rem;
-}
-
-.category-card-home {
-    position: relative;
-    min-height: 160px;
-    background: white;
-    transition: all 0.3s ease;
-    z-index: 1;
-    overflow: hidden;
-}
-
-.category-card-home::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-            45deg,
-            transparent,
-            rgba(26, 35, 126, 0.1),
-            transparent
+    border: 2px solid #FF4500;
+    /* Forme asymétrique avec clip-path */
+    clip-path: polygon(
+            0 0,
+            calc(100% - 20px) 0,
+            100% 20px,
+            100% 100%,
+            20px 100%,
+            0 calc(100% - 20px)
     );
-    transform: rotate(45deg) translateX(-100%);
-    transition: transform 0.6s ease;
-    pointer-events: none;
-}
-
-.category-link:hover .category-card-home::before {
-    transform: rotate(45deg) translateX(100%);
-}
-
-.category-link:hover .category-card-home {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.icon-wrapper {
-    position: relative;
-    background: var(--gaming-blue);
-    width: 70px;
-    height: 70px;
-    border-radius: 15px;
     transition: all 0.3s ease;
-    border: 1px solid var(--gaming-blue-hover);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 6px rgba(30, 42, 68, 0.3);
 }
 
-/* Effet néon au survol */
-.category-link:hover .icon-wrapper {
-    background: #FF4500;
-    transform: scale(1.05);
+/* Effet néon au focus */
+.gaming-input:focus {
+    outline: none;
+    background: rgba(30, 30, 46, 0.9);
+    border-color: #FF4500;
     box-shadow:
-            0 0 20px #FF4500,
-            0 0 35px var(--gaming-blue-glow),
-            inset 0 0 15px rgba(255, 255, 255, 0.3);
-    border-color: transparent;
+            0 0 5px #FF4500,
+            0 0 10px #FF4500,
+            0 0 15px #FF4500;
 }
 
-.category-icon {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
+/* Style du placeholder */
+.gaming-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Effet au hover */
+.gaming-input:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
+}
+
+/* Style du checkbox "Remember me" */
+.form-check-input {
+    width: 18px;
+    height: 18px;
+    background-color: transparent;
+    border: 2px solid #FF4500;
+    cursor: pointer;
     transition: all 0.3s ease;
-    filter: brightness(0) invert(1); /* Pour rendre l'icône blanche */
 }
 
-/* Animation de l'icône au survol */
-.category-link:hover .category-icon {
-    transform: scale(1.1) rotate(5deg);
-    filter: brightness(1.2) drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
-    animation: iconPulse 1.5s infinite;
+.form-check-input:checked {
+    background-color: #FF4500;
+    border-color: #FF4500;
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
 }
 
-@keyframes iconPulse {
-    0% {
-        filter:
-                brightness(1.2)
-                drop-shadow(0 0 5px rgba(255, 255, 255, 0.8))
-                drop-shadow(0 0 10px rgba(255, 69, 0, 0.6));
-    }
-    50% {
-        filter:
-                brightness(1.4)
-                drop-shadow(0 0 8px rgba(255, 255, 255, 0.9))
-                drop-shadow(0 0 15px rgba(255, 69, 0, 0.8));
-    }
-    100% {
-        filter:
-                brightness(1.2)
-                drop-shadow(0 0 5px rgba(255, 255, 255, 0.8))
-                drop-shadow(0 0 10px rgba(255, 69, 0, 0.6));
-    }
-}
-
-/* Title Styles */
-.category-title {
-    margin-top: 1rem;
-    font-weight: 500;
-    color: #333;
+.form-check-label {
+    cursor: pointer;
     transition: color 0.3s ease;
 }
 
-.category-link:hover .category-title {
-    color: #FF4500;
-}
-
-/* View More Button - New Gaming Style */
-.btn-view-more {
-    position: relative;
-    background: #FF4500;
-    color: white;
-    padding: 1rem 3rem;
-    border: none;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    transition: all 0.3s ease;
-    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
-    overflow: hidden;
-}
-
-.btn-view-more::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-            45deg,
-            transparent,
-            rgba(255, 255, 255, 0.2),
-            transparent
-    );
-    transform: translateX(-100%);
-    transition: transform 0.6s ease;
-}
-
-.btn-view-more:hover::before {
-    transform: translateX(100%);
-}
-
-.btn-view-more:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 20px rgba(255, 69, 0, 0.4);
-}
-
-.btn-view-more svg {
-    transition: transform 0.3s ease;
-}
-
-.btn-view-more:hover svg {
-    transform: translateY(3px);
-}
-
-.btn-view-more.fade-out {
-    opacity: 0;
-    transform: translateY(20px);
-    pointer-events: none;
-}
-
-/* Animation des transitions */
-.tab-pane {
-    transition: all 0.3s ease-in-out;
-}
-
-.tab-pane.fade {
-    transform: translateY(10px);
-    opacity: 0;
-}
-
-.tab-pane.show {
-    transform: translateY(0);
-    opacity: 1;
+.form-check:hover .form-check-label {
+    color: #FF4500 !important;
 }

@@ -1,145 +1,188 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <div class="bg-light shadow">
-    <!-- Header avec bannière et titre -->
-    <header class="bg-dark text-white py-4 mb-5" style="background-image: url('/path/to/banner.jpg'); background-size: cover; background-position: center;">
-        <div class="container text-center">
-            <h1 class="display-5">{{ product.name }}</h1>
-            <p class="lead">Discover the best {{ product.name }} on our store</p>
-        </div>
-    </header>
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/css/product.css') }}">
+{% endblock %}
 
+{% block body %}
     <div id="toasts" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11; width: 100%; max-width: 400px;">
         <div id="liveToast">
             <!-- Les toasts apparaissent ici -->
         </div>
     </div>
 
-    <!-- Détails du produit -->
-    <div class="container">
-        <small><i>
-                <!-- Lien vers la catégorie parent -->
-                <a href="{{ path('app_category', { slug: product.parentCategory.slug }) }}" class="text-decoration-none text-dark">
-                    {{ product.parentCategory.name }}
-                </a>
-                {% if product.subCategory %}
-                    <!-- Lien vers la sous-catégorie si elle existe -->
-                    >
-                    <a href="{{ path('app_category', { slug: product.subCategory.slug }) }}" class="text-decoration-none text-dark">
-                        {{ product.subCategory.name }}
-                    </a>
-                {% endif %}
-                <!-- Nom du produit sans lien -->
-                > {{ product.name }}
-            </i></small>
-        <div class="row mb-5 mt-5">
-            <!-- Carousel de produit -->
-            <div class="col-lg-6 mb-4">
-                <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                            <div class="">
-                                <img src="/uploads/products/{{ product.picture }}" class="d-block w-100" style="height: 400px; object-fit: cover;" alt="{{ product.name }}">
-                            </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Détails du produit -->
-            <div class="col-lg-6">
-
-                <div class="d-inline-flex align-items-center">
-                    <h2 class="mb-0">{{ product.name }}</h2>
-                    {% if app.user %}
-                            {% if product in app.user.wishlists %}
-                                <a href="{{ path('app_account_wishlist_remove', { id : product.id }) }}" class="link-danger">
-                                <i class="bi bi-heart-fill mx-2" style="cursor: pointer; font-size: 1.5rem; color: red;"></i>
-                            {% else %}
-                                <a href="{{ path('app_account_wishlist_add', { id : product.id }) }}" class="link-danger">
-                                <i class="bi bi-heart mx-2" style="cursor: pointer; font-size: 1.5rem;"></i>
-                            {% endif %}
-                        </a>
-                    {% else %}
-                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="link-danger">
-                            <i class="bi bi-heart mx-2" style="cursor: pointer; font-size: 1.5rem;"></i>
-                        </a>
-                    {% endif %}
-                </div>
-                <div class="collapse" id="collapseExample">
-                    <div>
-                        To use the wishlist feature, you must be <a href="{{ path('app_login') }}" class="link-dark link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">logged in</a> or <a href="{{ path('app_register') }}" class="link-dark link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">create an account</a>.
-                    </div>
-                </div>
-                <p class="lead">{{ product.pricewt|price }}</p>
-                <form action="{{ path('app_cart_add', { id : product.id } ) }}" method="post" data-turbo-frame="cart-qty">
-                    <div class="mb-4">
-                        <label for="quantity" class="form-label">Quantité</label>
-                        <input type="number" id="quantity" name="quantity" class="form-control w-25" value="1" min="1">
-                        <ul class="list-group mt-3">
-                            <li class="list-group-item"><strong>Color:</strong> White</li>
-                            <li class="list-group-item d-flex align-items-center">
-                                <strong class="me-3">Size:</strong>
-                                <select class="form-select w-auto" name="size" id="size">
-                                    <option value="XS">XS</option>
-                                    <option value="S">S</option>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                </select>
-                            </li>
-                            <li class="list-group-item"><strong>Available stock:</strong> Yes</li>
-                        </ul>
-                    </div>
-                    <button type="submit" class="btn btn-lg btn-dark w-100">Ajouter au panier <i class="bi bi-cart-fill ms-2"></i></button>
-                </form>
-                <!-- Caractéristiques du produit -->
-                <div class="mt-5 border border-1 bg-body-secondary">
-                    <div class="p-3">
-                        <h4>Product Details</h4>
-                        <p class="text-muted">{{ product.description|raw }}</p>
-                    </div>
-                </div>
-            </div>
+    <div class="container mt-4">
+        <!-- Breadcrumb -->
+        <div class="gaming-breadcrumb">
+            <a href="#" class="gaming-link gaming-breadcrumb">
+                <i class="bi bi-chevron-right"></i> PlayStation 5
+            </a>
+            <span><i class="bi bi-chevron-right"></i> {{ product.name }}</span>
         </div>
 
-        <!-- Section des produits similaires -->
-        <div class="mt-5">
-            <h3>Similar Products</h3>
-            <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                        <div class="card h-100">
-                            <img src="/uploads/products/nophoto.png" class="card-img-top" alt="" style="height: 200px; object-fit: cover;">
-                            <div class="card-body">
-                                <h5 class="card-title">Lorem</h5>
-                                <p class="card-text">20 €</p>
-                                <a href="" class="btn btn-outline-dark">View Product</a>
+        <div class="bg-dark-block p-4 rounded-4">
+            <div class="row g-4">
+                <!-- Image et Caractéristiques principales -->
+                <div class="col-lg-6">
+                    <div class="gaming-card h-100">
+                        <img src="/uploads/products/{{ product.picture }}" class="w-100"
+                             style="height: 400px; object-fit: cover;" alt="{{ product.name }}">
+
+                        <!-- Features badges -->
+                        <div class="game-features-badges">
+                            <div class="feature-badge">
+                                <i class="bi bi-display text-orange-gamer"></i>
+                                4K Ultra HD
+                            </div>
+                            <div class="feature-badge">
+                                <i class="bi bi-people-fill text-orange-gamer"></i>
+                                Multiplayer
+                            </div>
+                            <div class="feature-badge">
+                                <i class="bi bi-calendar3 text-orange-gamer"></i>
+                                Release: 2024
                             </div>
                         </div>
                     </div>
-            </div>
-        </div>
+                </div>
 
-        <!-- Section des avis clients -->
-        <div class="mt-5">
-            <h3>Customer Reviews</h3>
-            <div class="row">
-                    <div class="col-lg-6 mb-4">
-                        <div class="card p-3 bg-body-tertiary">
-                            <div class="d-flex justify-content-between">
-                                <h5>Charles</h5>
-                                <p class="text-muted">10/10/2024</p>
+                <!-- Infos principales et achat -->
+                <div class="col-lg-6">
+                    <div class="game-details-container">
+                        <!-- Header avec titre et publisher -->
+                        <div class="game-header">
+                            <h1 class="text-light mb-2">{{ product.name }}</h1>
+                            <div class="game-publisher">
+                                <span class="publisher-badge">
+                                    <img src="{{ asset('build/images/test-studio.png') }}" class="publisher-logo" alt="Publisher">
+                                </span>
+                                <div class="gaming-icon-button ms-auto">
+                                    <i class="bi bi-heart fs-2 text-danger"></i>
+                                </div>
                             </div>
-                            <p class="mb-0">Lorem ipsum dolor sit amet.</p>
-                            <div class="mt-2">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star text-warning"></i>
+                        </div>
+
+                        <!-- Game Rating -->
+                        <div class="game-rating mb-4">
+                            <div class="rating-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <span class="rating-count">(128)</span>
+                            </div>
+                        </div>
+
+                        <!-- Prix et Options -->
+                        <div class="purchase-options">
+                            <div class="edition-selector mb-4">
+                                <div class="edition-option selected">
+                                    <div class="edition-info">
+                                        <span class="edition-name">Digital Standard Edition</span>
+                                        <div class="gaming-price-tag">
+                                            {{ product.priceWt|price }}
+                                        </div>
+                                    </div>
+                                    <div class="edition-features">
+                                        <span class="feature-item">
+                                            <i class="bi bi-check-circle-fill"></i>
+                                            Base Game
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Platform & Availability -->
+                            <div class="platform-info mb-4">
+                                <div class="platform-badge">
+                                    <i class="bi bi-playstation"></i>
+                                    PlayStation Network Key
+                                </div>
+                                <div class="status-badge available">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Digital Download Available
+                                </div>
+                            </div>
+
+                            <!-- Bouton d'achat -->
+                            <div class="purchase-actions">
+                                <button class="gaming-preorder-btn">
+                                    <i class="bi bi-cart-fill me-2"></i>
+                                    ADD TO CART
+                                </button>
+                                <small class="delivery-info">
+                                    <i class="bi bi-clock"></i>
+                                    Instant Delivery after purchase
+                                </small>
                             </div>
                         </div>
                     </div>
-                    <p class="text-center">No reviews yet.</p>
+                </div>
+            </div>
+
+            <!-- About et System Requirements -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="gaming-info-section">
+                        <h3 class="text-orange-gamer mb-4">About This Game</h3>
+                        <div class="gaming-card p-4">
+                            <p class="text-light mb-4">{{ product.description }}</p>
+
+                            <!-- System Requirements -->
+                            <div class="requirements-grid">
+                                <h4 class="text-orange-gamer mb-3">System Requirements</h4>
+                                <div class="req-row">
+                                    <span class="req-label">Platform</span>
+                                    <span class="req-value">PlayStation 5</span>
+                                </div>
+                                <div class="req-row">
+                                    <span class="req-label">Storage</span>
+                                    <span class="req-value">125 GB</span>
+                                </div>
+                                <div class="req-row">
+                                    <span class="req-label">Online</span>
+                                    <span class="req-value">Required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Avis clients -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3 class="text-orange-gamer mb-4">Customer Reviews</h3>
+                    <div class="row g-4">
+                        <!-- Review Card -->
+                        <div class="col-md-6">
+                            <div class="gaming-card review-card">
+                                <div class="review-header">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="review-user">
+                                            <h5 class="text-light mb-0">John Doe</h5>
+                                            <small class="text-orange-gamer">Verified Purchase</small>
+                                        </div>
+                                        <div class="review-rating">
+                                            <i class="bi bi-star-fill text-orange-gamer"></i>
+                                            <i class="bi bi-star-fill text-orange-gamer"></i>
+                                            <i class="bi bi-star-fill text-orange-gamer"></i>
+                                            <i class="bi bi-star-fill text-orange-gamer"></i>
+                                            <i class="bi bi-star-fill text-orange-gamer"></i>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">Posted on 10/10/2024</small>
+                                </div>
+                                <div class="review-content">
+                                    <p class="text-light mb-0">Amazing game with stunning graphics!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 {% endblock %}

@@ -83,7 +83,7 @@
             0 0 2px #FF4500,
             0 0 2px #FF4500,
             0 0 6px #FF4500;
-    outline: none; /* Pour supprimer l'outline par défaut */
+    outline: none;
 }
 
 /* Style de base de l'input */
@@ -268,7 +268,6 @@
 /*******************************
     HOVER EFFECTS (DESKTOP)
 ********************************/
-.nav-item a:hover,
 .dropdown .dropdown-menu .dropdown-item:hover {
     color: #FF4500 !important;
     outline: 2px solid #FF4500;

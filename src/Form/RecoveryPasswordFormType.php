@@ -20,12 +20,6 @@ class RecoveryPasswordFormType extends AbstractType
                 ],
                 'help' => 'We will send you an email to reset your password',
             ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Send email',
-                'attr' => [
-                    'class' => 'btn btn-dark',
-                ],
-            ])
         ;
     }
 

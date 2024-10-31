@@ -8,18 +8,17 @@
 {% endblock %}
 
 {% block body %}
-    <div class="bg-light shadow">
         <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-            <div class="card shadow-lg border-0 my-5" style="max-width: 600px; width: 100%; border-radius: 15px; overflow: hidden;">
+            <div class="card shadow-lg border-0 bg-dark-block" style="max-width: 600px; width: 100%; border-radius: 15px; overflow: hidden;">
 
                 <!-- Image Block -->
                 <div class="card-header bg-transparent p-0" style="height: 200px; overflow: hidden;">
-                    <img src="{{ asset('build/images/login-header.jpg') }}" alt="Login Image" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                    <img src="{{ asset('build/images/login-header.webp') }}" alt="Login Image" class="img-fluid w-100 h-100" style="object-fit: cover;">
                 </div>
 
                 <!-- Login Form -->
                 <div class="card-body p-4">
-                    <h2 class="text-center mb-4">Welcome Back</h2>
+                    <h2 class="text-center mb-4 text-light">Welcome Back</h2>
 
                     <form method="post">
                         {% if error %}
@@ -34,45 +33,53 @@
 
                         <!-- Email input with animation -->
                         <div class="mb-3 position-relative">
-                            <label for="username" class="form-label">Email</label>
-                            <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control animated-input" autocomplete="email" required autofocus>
-                            <div class="invalid-feedback">Please enter a valid email.</div>
+                            <div class="gaming-input-wrapper">
+                                <input type="email" value="{{ last_username }}" name="_username" id="username" class="gaming-input" autocomplete="email" placeholder="Please enter your email" required autofocus>
+                            </div>
+                            <div class="invalid-feedback text-light">Please enter a valid email.</div>
                         </div>
 
                         <!-- Password input with animation -->
                         <div class="mb-3 position-relative">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" name="_password" id="password" class="form-control animated-input" autocomplete="current-password" required>
-                            <div class="invalid-feedback">Please enter your password.</div>
+                            <div class="gaming-input-wrapper">
+                                <input type="password" name="_password" id="password" class="form-control gaming-input" autocomplete="current-password" placeholder="Then your password" required>
+                            </div>
+                            <div class="invalid-feedback text-light">Please enter your password.</div>
                         </div>
 
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                        <!-- Sign in button with 3D animation -->
-                        <button class="btn btn-lg w-50 mb-3 animated-button" type="submit" style="font-size: 1rem;">
-                            Sign in
-                        </button>
+                        <div class="text-center mt-5">
+                            <button class="btn-view-more" type="submit" style="font-size: 0.8rem;">
+                                <span>Sign in</span>
+                                <svg class="ms-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M10 17L15 12L10 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M15 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
 
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <!-- Remember me checkbox -->
+                        <!-- Remember me & Forgot password -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
                             <div class="form-check mb-0">
                                 <input type="checkbox" class="form-check-input" name="_remember_me" id="_remember_me">
-                                <label class="form-check-label" for="_remember_me" style="font-size: 0.875rem;">Remember me</label>
+                                <label class="form-check-label text-light" for="_remember_me">Remember me</label>
                             </div>
 
-                            <!-- Forgot password link -->
-                            <a href="{{ path('app_account_recovery_password') }}" class="text-secondary-emphasis text-decoration-none" style="font-size: 0.875rem;">
+                            <a href="{{ path('app_account_recovery_password') }}" class="gaming-link">
                                 Forgot your password?
                             </a>
                         </div>
 
                         <!-- Register link -->
-                        <a href="{{ path('app_register') }}" class="text-muted text-center mb-3" style="font-size: 0.8rem;">
-                            Not a member? Register
-                        </a>
+                        <div class="text-center mt-3">
+                            <a href="{{ path('app_register') }}" class="gaming-link">
+                                <i class="bi bi-person-plus me-2"></i>Not a member? Register
+                            </a>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
 {% endblock %}

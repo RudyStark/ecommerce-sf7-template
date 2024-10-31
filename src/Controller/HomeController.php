@@ -36,7 +36,7 @@ class HomeController extends AbstractController
             6
         );
 
-        return $this->render('home/_subcategories.html.twig', [
+        return $this->render('home/partials/_subcategories.html.twig', [
             'subCategories' => $subCategories
         ]);
     }

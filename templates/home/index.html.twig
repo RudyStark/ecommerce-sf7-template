@@ -56,7 +56,7 @@
                 <div class="row row-cols-2 g-3">
                     {% for product in productsInHomepage %}
                         <div class="col">
-                            <a href="#" class="text-decoration-none product-card-link text-dark">
+                            <a href="{{ path('app_product', {'slug': product.slug}) }}" class="text-decoration-none product-card-link text-dark">
                                 <div class="card h-100 d-flex flex-column border-0 rounded-4 product-card">
                                     <!-- Image -->
                                     <div class="product-image-container">
@@ -104,7 +104,7 @@
                         <ul class="nav nav-pills gap-3 d-flex justify-content-center">
                             {% for parentCategory in categories %}
                                 <li class="nav-item">
-                                    <button class="nav-button rounded-pill px-4 py-2 {% if loop.first %}active{% endif %}"
+                                    <button class="cat-button rounded-pill px-4 py-2 {% if loop.first %}active{% endif %}"
                                             id="filter-{{ parentCategory.id }}"
                                             data-bs-toggle="pill"
                                             data-bs-target="#content-{{ parentCategory.id }}">
@@ -119,55 +119,8 @@
                             {% endfor %}
                         </ul>
                     </div>
-
                     <!-- Category Grid -->
-                    <div class="tab-content" id="categoryContent">
-                        {% for parentCategory in categories %}
-                            <div class="tab-pane fade {% if loop.first %}show active{% endif %}"
-                                 id="content-{{ parentCategory.id }}"
-                                 data-controller="category"
-                                 data-category-current-page-value="1"
-                                 data-category-total-pages-value="{{ (parentCategory.children|length / 6)|round(0, 'ceil') }}">
-
-                                <!-- Grid Container -->
-                                <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4" data-category-target="grid">
-                                    {% for subCategory in parentCategory.children|slice(0, 6) %}
-                                        <div class="col">
-                                            <a href="#" class="text-decoration-none category-link">
-                                                <div class="category-card-home rounded-4">
-                                                    <div class="p-4 text-center d-flex flex-column align-items-center justify-content-center h-100">
-                                                        <div class="icon-wrapper d-flex align-items-center justify-content-center">
-                                                            {% if subCategory.icon %}
-                                                                <img src="{{ asset('uploads/category/icon/' ~ subCategory.icon) }}"
-                                                                     alt="{{ subCategory.name }}"
-                                                                     class="category-icon">
-                                                            {% endif %}
-                                                        </div>
-                                                        <p class="category-title mb-0">{{ subCategory.name }}</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-
-                                <!-- View More Button -->
-                                {% if parentCategory.children|length > 6 %}
-                                    <div class="text-center mt-5">
-                                        <button class="btn-view-more"
-                                                data-category-target="viewMoreButton"
-                                                data-category-id="{{ parentCategory.id }}"
-                                                data-action="category#loadMore">
-                                            <span>View More</span>
-                                            <svg class="ms-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {{ include('home/partials/_category.html.twig') }}
                 </div>
             </div>
         </div>

@@ -1,0 +1,360 @@
+.gaming-card {
+    background: rgba(24, 24, 27, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.gaming-breadcrumb {
+    color: #FF4500;
+    font-size: 0.9rem;
+}
+
+.gaming-price-tag {
+    background: rgba(255, 69, 0, 0.1);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #FF4500;
+    position: relative;
+    font-size: 1.5rem; /* Réduit de 2rem à 1.5rem */
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    max-width: fit-content;
+}
+
+.gaming-price-label {
+    background: #FF4500;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    margin-left: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.gaming-price-label i {
+    font-size: 0.8rem;
+}
+
+.feature-badge {
+    background: rgba(255, 69, 0, 0.1);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem;
+    border: 1px solid rgba(255, 69, 0, 0.3);
+}
+
+.gaming-preorder-btn {
+    background: #FF4500;
+    border: none;
+    color: white;
+    padding: 0.8rem 1.5rem; /* Réduit de 1rem 2rem à 0.8rem 1.5rem */
+    font-size: 1rem; /* Réduit de 1.2rem à 1rem */
+    font-weight: bold;
+    border-radius: 8px;
+    width: 100%;
+    transition: all 0.3s ease;
+    clip-path: polygon(0 0, 100% 0, 97% 100%, 0% 100%); /* Ajusté de 95% à 97% */
+    text-transform: uppercase;
+    letter-spacing: 1px; /* Réduit de 2px à 1px */
+    box-shadow: 0 0 15px rgba(255, 69, 0, 0.2); /* Ombre plus subtile */
+}
+
+.gaming-preorder-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
+}
+
+.requirements-grid {
+    background: rgba(255, 69, 0, 0.1);
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.req-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.req-label {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.req-value {
+    color: #FF4500;
+    font-weight: bold;
+}
+
+.review-card {
+    padding: 1.5rem;
+}
+
+.review-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.review-content {
+    padding-top: 1rem;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.status-badge.available {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+}
+
+.game-details-container {
+    height: 100%;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+.game-publisher {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.publisher-badge {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 80px;
+}
+
+.publisher-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.game-rating {
+    color: #FF4500;
+    font-size: 1.2rem;
+}
+
+.rating-count {
+    color: white;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+}
+
+.edition-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.edition-option {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edition-option.selected {
+    border-color: #FF4500;
+    background: rgba(255, 69, 0, 0.1);
+}
+
+.edition-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.edition-name {
+    color: white;
+    font-weight: 500;
+}
+
+.edition-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.feature-item {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.platform-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.platform-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+.delivery-info {
+    display: block;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+}
+
+/* Ajustements responsives */
+@media (max-width: 991.98px) {
+    /* Container principal */
+    .game-details-container {
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+
+    /* Image du jeu */
+    .gaming-card img {
+        height: 300px !important; /* Hauteur réduite pour mobile */
+    }
+
+    /* Features badges */
+    .game-features-badges {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .feature-badge {
+        margin: 0;
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    /* En-tête du jeu */
+    .game-header {
+        text-align: center;
+    }
+
+    .game-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .game-publisher {
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .gaming-icon-button {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
+
+    /* Rating */
+    .game-rating {
+        justify-content: center;
+        display: flex;
+        margin: 1rem 0;
+    }
+
+    /* Prix et options */
+    .edition-info {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    .gaming-price-tag {
+        margin: 0 auto;
+    }
+
+    /* Platform info */
+    .platform-info {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    /* Reviews */
+    .review-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .review-user {
+        margin-bottom: 0.5rem;
+    }
+
+    /* Breadcrumb */
+    .gaming-breadcrumb {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        justify-content: center;
+    }
+}
+
+/* Ajustements pour très petits écrans */
+@media (max-width: 575.98px) {
+    .game-details-container {
+        padding: 0.8rem;
+    }
+
+    .game-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .gaming-price-tag {
+        font-size: 1.2rem;
+        padding: 0.8rem 1.2rem;
+    }
+
+    .feature-badge {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .requirements-grid {
+        padding: 1rem;
+    }
+
+    .req-row {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+}
