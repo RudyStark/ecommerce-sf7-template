@@ -31,18 +31,14 @@
 
                         <!-- Features badges -->
                         <div class="game-features-badges">
-                            <div class="feature-badge">
-                                <i class="bi bi-display text-orange-gamer"></i>
-                                4K Ultra HD
-                            </div>
-                            <div class="feature-badge">
-                                <i class="bi bi-people-fill text-orange-gamer"></i>
-                                Multiplayer
-                            </div>
-                            <div class="feature-badge">
-                                <i class="bi bi-calendar3 text-orange-gamer"></i>
-                                Release: 2024
-                            </div>
+                            {% if product.feature %}
+                                {% for feature in product.feature %}
+                                    <div class="feature-badge">
+                                        <i class="{{ feature.iconPicture }} text-orange-gamer fs-6"></i>
+                                        <span>{{ feature.label }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -55,7 +51,7 @@
                             <h1 class="text-light mb-2">{{ product.name }}</h1>
                             <div class="game-publisher">
                                 <span class="publisher-badge">
-                                    <img src="{{ asset('build/images/test-studio.png') }}" class="publisher-logo" alt="Publisher">
+                                    <img src="/uploads/products/studios/{{ product.studioPicture }}" class="publisher-logo" alt="Publisher">
                                 </span>
                                 <div class="gaming-icon-button ms-auto">
                                     <i class="bi bi-heart fs-2 text-danger"></i>
@@ -134,16 +130,20 @@
                             <div class="requirements-grid">
                                 <h4 class="text-orange-gamer mb-3">System Requirements</h4>
                                 <div class="req-row">
+                                    <span class="req-label">Studio</span>
+                                    <span class="req-value">{{ product.studioLabel }}</span>
+                                </div>
+                                <div class="req-row">
                                     <span class="req-label">Platform</span>
-                                    <span class="req-value">PlayStation 5</span>
+                                    <span class="req-value">{{ product.subCategory.name }}</span>
                                 </div>
                                 <div class="req-row">
                                     <span class="req-label">Storage</span>
-                                    <span class="req-value">125 GB</span>
+                                    <span class="req-value">{{ product.storage }}</span>
                                 </div>
                                 <div class="req-row">
                                     <span class="req-label">Online</span>
-                                    <span class="req-value">Required</span>
+                                    <span class="req-value">{{ product.online }}</span>
                                 </div>
                             </div>
                         </div>

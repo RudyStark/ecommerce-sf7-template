@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
@@ -41,6 +43,35 @@ class Product
 
     #[ORM\Column(nullable: true)]
     private ?bool $isHomepage = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $studioPicture = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $studioLabel = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $gameKey = null;
+
+    /**
+     * @var Collection<int, FeatureProduct>
+     */
+    #[ORM\ManyToMany(targetEntity: FeatureProduct::class, inversedBy: 'products')]
+    private Collection $feature;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Storage = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Online = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $digital = null;
+
+    public function __construct()
+    {
+        $this->feature = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -158,6 +189,144 @@ class Product
     public function setIsHomepage(?bool $isHomepage): static
     {
         $this->isHomepage = $isHomepage;
+
+        return $this;
+    }
+
+    public function getStudioPicture(): ?string
+    {
+        return $this->studioPicture;
+    }
+
+    public function setStudioPicture(string $studioPicture): static
+    {
+        $this->studioPicture = $studioPicture;
+
+        return $this;
+    }
+
+    public function getStudioLabel(): ?string
+    {
+        return $this->studioLabel;
+    }
+
+    public function setStudioLabel(string $studioLabel): static
+    {
+        $this->studioLabel = $studioLabel;
+
+        return $this;
+    }
+
+    public function getGameKey(): ?string
+    {
+        return $this->gameKey;
+    }
+
+    public function setGameKey(?string $gameKey): static
+    {
+        $this->gameKey = $gameKey;
+        return $this;
+    }
+
+    /**
+     * Generate a game key
+     * @return string
+     * @throws \Random\RandomException
+     */
+    public function generateGameKeyIfNeeded(): void
+    {
+        if ($this->isDigital() && !$this->gameKey) {
+            $subCategoryName = $this->getSubCategory()?->getName();
+            $format = match ($subCategoryName) {
+                'PlayStation 5' => [
+                    'length' => 12,
+                    'groups' => [4, 4, 4]  // Format XXXX-XXXX-XXXX
+                ],
+                'Xbox Series X|S' => [
+                    'length' => 25,
+                    'groups' => [5, 5, 5, 5, 5]  // Format XXXXX-XXXXX-XXXXX-XXXXX-XXXXX
+                ],
+                default => null
+            };
+
+            if ($format !== null) {
+                $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $gameKey = '';
+
+                // generate the key
+                for ($i = 0; $i < $format['length']; $i++) {
+                    $gameKey .= $characters[random_int(0, strlen($characters) - 1)];
+                }
+
+                // format the key
+                $position = 0;
+                $parts = [];
+                foreach ($format['groups'] as $groupLength) {
+                    $parts[] = substr($gameKey, $position, $groupLength);
+                    $position += $groupLength;
+                }
+
+                $this->gameKey = implode('-', $parts);
+            }
+        }
+    }
+
+    /**
+     * @return Collection<int, FeatureProduct>
+     */
+    public function getFeature(): Collection
+    {
+        return $this->feature;
+    }
+
+    public function addFeature(FeatureProduct $feature): static
+    {
+        if (!$this->feature->contains($feature)) {
+            $this->feature->add($feature);
+        }
+
+        return $this;
+    }
+
+    public function removeFeature(FeatureProduct $feature): static
+    {
+        $this->feature->removeElement($feature);
+
+        return $this;
+    }
+
+    public function getStorage(): ?string
+    {
+        return $this->Storage;
+    }
+
+    public function setStorage(string $Storage): static
+    {
+        $this->Storage = $Storage;
+
+        return $this;
+    }
+
+    public function getOnline(): ?string
+    {
+        return $this->Online;
+    }
+
+    public function setOnline(string $Online): static
+    {
+        $this->Online = $Online;
+
+        return $this;
+    }
+
+    public function isDigital(): ?bool
+    {
+        return $this->digital;
+    }
+
+    public function setDigital(?bool $digital): static
+    {
+        $this->digital = $digital;
 
         return $this;
     }

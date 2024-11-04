@@ -1,0 +1,73 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .ts-wrapper .option {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+        }
+
+        .ts-wrapper .option i {
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+
+        .ts-wrapper .ts-control > span {
+            display: flex;
+            align-items: center;
+        }
+
+        .ts-wrapper .ts-control > span i {
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+
+        .ts-dropdown .optgroup {
+            padding: 6px 8px;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+            color: #666;
+        }
+
+        .ts-dropdown {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+
+        .ts-wrapper.single .ts-control {
+            padding: 8px;
+        }
+    </style>
+{% endblock %}
+
+{% block head_javascript %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('ea.collection.item-added', () => {
+            createTomSelect();
+        });
+
+        function createTomSelect() {
+            document.querySelectorAll('.tom-select:not(.ts-wrapper)').forEach((element) => {
+                new TomSelect(element, {
+                    render: {
+                        option: function(data) {
+                            return `<div>${data.html || data.text}</div>`;
+                        },
+                        item: function(data) {
+                            return `<div>${data.html || data.text}</div>`;
+                        }
+                    }
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createTomSelect();
+        });
+    </script>
+{% endblock %}
