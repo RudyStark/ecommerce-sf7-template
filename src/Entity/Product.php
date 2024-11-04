@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
@@ -47,6 +49,17 @@ class Product
 
     #[ORM\Column(length: 255)]
     private ?string $studioLabel = null;
+
+    /**
+     * @var Collection<int, FeatureProduct>
+     */
+    #[ORM\ManyToMany(targetEntity: FeatureProduct::class, inversedBy: 'products')]
+    private Collection $feature;
+
+    public function __construct()
+    {
+        $this->feature = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -188,6 +201,30 @@ class Product
     public function setStudioLabel(string $studioLabel): static
     {
         $this->studioLabel = $studioLabel;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FeatureProduct>
+     */
+    public function getFeature(): Collection
+    {
+        return $this->feature;
+    }
+
+    public function addFeature(FeatureProduct $feature): static
+    {
+        if (!$this->feature->contains($feature)) {
+            $this->feature->add($feature);
+        }
+
+        return $this;
+    }
+
+    public function removeFeature(FeatureProduct $feature): static
+    {
+        $this->feature->removeElement($feature);
 
         return $this;
     }

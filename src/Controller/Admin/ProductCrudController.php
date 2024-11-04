@@ -51,6 +51,11 @@ class ProductCrudController extends AbstractCrudController
                 ->setBasePath('uploads/products/studios')
                 ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')
                 ->setRequired($required),
+            AssociationField::new('feature')
+                ->setFormTypeOptions([
+                    'by_reference' => false,
+                    'multiple' => true,
+                ]),
             TextEditorField::new('description')->setLabel('Description')->setHelp('The description of the product'),
             ImageField::new('picture')->setLabel('Image')->setHelp('Image should be 600x600px')->setUploadDir('public/uploads/products')->setBasePath('uploads/products')->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')->setRequired($required),
             NumberField::new('price')->setLabel('Price excluding VAT')->setHelp('The price of the product excluding VAT and without currency symbol'),

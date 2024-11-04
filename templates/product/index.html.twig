@@ -31,18 +31,14 @@
 
                         <!-- Features badges -->
                         <div class="game-features-badges">
-                            <div class="feature-badge">
-                                <i class="bi bi-display text-orange-gamer"></i>
-                                4K Ultra HD
-                            </div>
-                            <div class="feature-badge">
-                                <i class="bi bi-people-fill text-orange-gamer"></i>
-                                Multiplayer
-                            </div>
-                            <div class="feature-badge">
-                                <i class="bi bi-calendar3 text-orange-gamer"></i>
-                                Release: 2024
-                            </div>
+                            {% if product.feature %}
+                                {% for feature in product.feature %}
+                                    <div class="feature-badge">
+                                        <i class="{{ feature.iconPicture }} text-orange-gamer fs-6"></i>
+                                        <span>{{ feature.label }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
