@@ -50,6 +50,9 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $studioLabel = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $gameKey = null;
+
     /**
      * @var Collection<int, FeatureProduct>
      */
@@ -212,6 +215,60 @@ class Product
         $this->studioLabel = $studioLabel;
 
         return $this;
+    }
+
+    public function getGameKey(): ?string
+    {
+        return $this->gameKey;
+    }
+
+    public function setGameKey(?string $gameKey): static
+    {
+        $this->gameKey = $gameKey;
+        return $this;
+    }
+
+    /**
+     * Generate a game key
+     * @return string
+     * @throws \Random\RandomException
+     */
+    public function generateGameKeyIfNeeded(): void
+    {
+        if ($this->isDigital() && !$this->gameKey) {
+            $subCategoryName = $this->getSubCategory()?->getName();
+            $format = match ($subCategoryName) {
+                'PlayStation 5' => [
+                    'length' => 12,
+                    'groups' => [4, 4, 4]  // Format XXXX-XXXX-XXXX
+                ],
+                'Xbox Series X|S' => [
+                    'length' => 25,
+                    'groups' => [5, 5, 5, 5, 5]  // Format XXXXX-XXXXX-XXXXX-XXXXX-XXXXX
+                ],
+                default => null
+            };
+
+            if ($format !== null) {
+                $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $gameKey = '';
+
+                // generate the key
+                for ($i = 0; $i < $format['length']; $i++) {
+                    $gameKey .= $characters[random_int(0, strlen($characters) - 1)];
+                }
+
+                // format the key
+                $position = 0;
+                $parts = [];
+                foreach ($format['groups'] as $groupLength) {
+                    $parts[] = substr($gameKey, $position, $groupLength);
+                    $position += $groupLength;
+                }
+
+                $this->gameKey = implode('-', $parts);
+            }
+        }
     }
 
     /**

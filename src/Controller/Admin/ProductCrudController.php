@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -31,6 +32,32 @@ class ProductCrudController extends AbstractCrudController
             ->setDefaultSort(['id' => 'DESC']);
     }
 
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if (!$entityInstance instanceof Product) {
+            return;
+        }
+
+        if ($entityInstance->isDigital() && !$entityInstance->getGameKey()) {
+            $entityInstance->generateGameKeyIfNeeded();
+        }
+
+        parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if (!$entityInstance instanceof Product) {
+            return;
+        }
+
+        if ($entityInstance->isDigital() && !$entityInstance->getGameKey()) {
+            $entityInstance->generateGameKeyIfNeeded();
+        }
+
+        parent::updateEntity($entityManager, $entityInstance);
+    }
+
     public function configureFields(string $pageName): iterable
     {
         $required = true;
@@ -46,6 +73,11 @@ class ProductCrudController extends AbstractCrudController
             BooleanField::new('isHomepage')->setLabel('Show on homepage')->setHelp('Check this box to show the product on the homepage'),
             SlugField::new('slug')->setTargetFieldName('name')->setLabel('Slug')->setHelp('The slug is used in the URL to identify the product'),
             TextField::new('studioLabel')->setLabel('Studio Label')->setHelp('The label of the studio'),
+            AssociationField::new('feature')
+                ->setFormTypeOptions([
+                    'by_reference' => false,
+                    'multiple' => true,
+                ]),
             ImageField::new('studioPicture')
                 ->setLabel('Studio Picture')
                 ->setHelp('The picture of the studio')
@@ -92,6 +124,9 @@ class ProductCrudController extends AbstractCrudController
                 ->setQueryBuilder(function ($queryBuilder) {
                     return $queryBuilder->andWhere('entity.parent IS NOT NULL');
                 }),
+            TextField::new('gameKey')
+                ->onlyOnIndex()
+                ->setHelp('Generated automatically for digital products'),
         ];
     }
 }
