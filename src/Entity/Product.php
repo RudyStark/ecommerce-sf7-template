@@ -56,6 +56,12 @@ class Product
     #[ORM\ManyToMany(targetEntity: FeatureProduct::class, inversedBy: 'products')]
     private Collection $feature;
 
+    #[ORM\Column(length: 255)]
+    private ?string $Storage = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Online = null;
+
     public function __construct()
     {
         $this->feature = new ArrayCollection();
@@ -225,6 +231,30 @@ class Product
     public function removeFeature(FeatureProduct $feature): static
     {
         $this->feature->removeElement($feature);
+
+        return $this;
+    }
+
+    public function getStorage(): ?string
+    {
+        return $this->Storage;
+    }
+
+    public function setStorage(string $Storage): static
+    {
+        $this->Storage = $Storage;
+
+        return $this;
+    }
+
+    public function getOnline(): ?string
+    {
+        return $this->Online;
+    }
+
+    public function setOnline(string $Online): static
+    {
+        $this->Online = $Online;
 
         return $this;
     }

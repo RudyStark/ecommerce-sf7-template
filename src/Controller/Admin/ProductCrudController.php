@@ -8,13 +8,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\Validator\Constraints as Assert;
-
+use EasyCorp\Bundle\EasyAdminBundle\Field\Panel;
 class ProductCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
@@ -40,6 +40,8 @@ class ProductCrudController extends AbstractCrudController
         }
 
         return [
+            // Bloc Game Information
+            FormField::addPanel('Game Information'),
             TextField::new('name')->setLabel('Name'),
             BooleanField::new('isHomepage')->setLabel('Show on homepage')->setHelp('Check this box to show the product on the homepage'),
             SlugField::new('slug')->setTargetFieldName('name')->setLabel('Slug')->setHelp('The slug is used in the URL to identify the product'),
@@ -51,13 +53,22 @@ class ProductCrudController extends AbstractCrudController
                 ->setBasePath('uploads/products/studios')
                 ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')
                 ->setRequired($required),
-            AssociationField::new('feature')
-                ->setFormTypeOptions([
-                    'by_reference' => false,
-                    'multiple' => true,
-                ]),
             TextEditorField::new('description')->setLabel('Description')->setHelp('The description of the product'),
-            ImageField::new('picture')->setLabel('Image')->setHelp('Image should be 600x600px')->setUploadDir('public/uploads/products')->setBasePath('uploads/products')->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')->setRequired($required),
+
+            // Bloc System Requirements
+            FormField::addPanel('System Requirements'),
+            TextField::new('Storage')->setLabel('Storage')->setHelp('Size of the game'),
+            TextField::new('online')->setLabel('Online')->setHelp('If the game requires an internet connection'),
+            ImageField::new('picture')
+                ->setLabel('Image')
+                ->setHelp('Image should be 600x600px')
+                ->setUploadDir('public/uploads/products')
+                ->setBasePath('uploads/products')
+                ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')
+                ->setRequired($required),
+
+            // Bloc Pricing Information
+            FormField::addPanel('Pricing Information'),
             NumberField::new('price')->setLabel('Price excluding VAT')->setHelp('The price of the product excluding VAT and without currency symbol'),
             ChoiceField::new('tva')->setLabel('VAT')->setChoices([
                 '0%' => '0',
@@ -66,15 +77,14 @@ class ProductCrudController extends AbstractCrudController
                 '20%' => '20',
             ])->setHelp('The VAT rate of the product'),
 
-            // Filter only main categories (those that don't have a parent)
+            // Bloc Category Information
+            FormField::addPanel('Category Information'),
             AssociationField::new('parentCategory')
                 ->setLabel('Main Category')
                 ->setHelp('The main category of this product')
                 ->setQueryBuilder(function ($queryBuilder) {
                     return $queryBuilder->andWhere('entity.parent IS NULL');
                 }),
-
-            // Filter only subcategories (those that have a parent)
             AssociationField::new('subCategory')
                 ->setLabel('Subcategory')
                 ->setHelp('The subcategory of this product')
