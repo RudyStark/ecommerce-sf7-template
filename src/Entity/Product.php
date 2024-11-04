@@ -62,6 +62,9 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $Online = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $digital = null;
+
     public function __construct()
     {
         $this->feature = new ArrayCollection();
@@ -255,6 +258,18 @@ class Product
     public function setOnline(string $Online): static
     {
         $this->Online = $Online;
+
+        return $this;
+    }
+
+    public function isDigital(): ?bool
+    {
+        return $this->digital;
+    }
+
+    public function setDigital(?bool $digital): static
+    {
+        $this->digital = $digital;
 
         return $this;
     }

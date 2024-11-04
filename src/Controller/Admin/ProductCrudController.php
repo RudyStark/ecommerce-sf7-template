@@ -54,6 +54,7 @@ class ProductCrudController extends AbstractCrudController
                 ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')
                 ->setRequired($required),
             TextEditorField::new('description')->setLabel('Description')->setHelp('The description of the product'),
+            BooleanField::new('digital')->setLabel('Digital')->setHelp('If the product is digital'),
 
             // Bloc System Requirements
             FormField::addPanel('System Requirements'),
