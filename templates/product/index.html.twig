@@ -54,7 +54,26 @@
                                     <img src="/uploads/products/studios/{{ product.studioPicture }}" class="publisher-logo" alt="Publisher">
                                 </span>
                                 <div class="gaming-icon-button ms-auto">
-                                    <i class="bi bi-heart fs-2 text-danger"></i>
+                                    {% if app.user %}
+                                        {% if product in app.user.wishlists %}
+                                            <a href="{{ path('app_account_wishlist_remove', { id : product.id }) }}" class="link-danger">
+                                                <i class="bi bi-heart-fill mx-2 fs-2 text-danger" style="cursor: pointer; font-size: 1.5rem; color: red;"></i>
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ path('app_account_wishlist_add', { id : product.id }) }}" class="link-danger">
+                                                <i class="bi bi-heart mx-2 fs-2 text-danger" style="cursor: pointer; font-size: 1.5rem;"></i>
+                                            </a>
+                                        {% endif %}
+                                    {% else %}
+                                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="link-danger">
+                                            <i class="bi bi-heart mx-2 fs-2 text-danger" style="cursor: pointer; font-size: 1.5rem;"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <div class="collapse" id="collapseExample">
+                                    <div class="text-warning">
+                                        To use the wishlist feature, you must be <a href="{{ path('app_login') }}" class="text-orange-gamer link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">logged in</a> or <a href="{{ path('app_register') }}" class="text-orange-gamer link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">create an account</a>.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -93,8 +112,15 @@
                             <!-- Platform & Availability -->
                             <div class="platform-info mb-4">
                                 <div class="platform-badge">
-                                    <i class="bi bi-playstation"></i>
-                                    PlayStation Network Key
+                                    {% if 'PlayStation' in product.subCategory.name %}
+                                        <i class="bi bi-playstation"></i> PlayStation Network Key
+                                    {% elseif 'Xbox' in product.subCategory.name %}
+                                        <i class="bi bi-microsoft"></i> Microsoft Store Key
+                                    {% elseif 'PC' in product.subCategory.name %}
+                                        <i class="bi bi-microsoft"></i> Microsoft Store Key
+                                    {% elseif 'Steam' in product.subCategory.name %}
+                                        <i class="bi bi-steam"></i> Steam Key
+                                    {% endif %}
                                 </div>
                                 <div class="status-badge available">
                                     <i class="bi bi-check-circle-fill"></i>
@@ -104,10 +130,12 @@
 
                             <!-- Bouton d'achat -->
                             <div class="purchase-actions">
-                                <button class="gaming-preorder-btn">
-                                    <i class="bi bi-cart-fill me-2"></i>
-                                    ADD TO CART
-                                </button>
+                                <form action="{{ path('app_cart_add', { id : product.id } ) }}" method="post" data-turbo-frame="cart-qty">"
+                                    <button class="gaming-preorder-btn">
+                                        <i class="bi bi-cart-fill me-2"></i>
+                                        ADD TO CART
+                                    </button>
+                                </form>
                                 <small class="delivery-info">
                                     <i class="bi bi-clock"></i>
                                     Instant Delivery after purchase
@@ -124,7 +152,7 @@
                     <div class="gaming-info-section">
                         <h3 class="text-orange-gamer mb-4">About This Game</h3>
                         <div class="gaming-card p-4">
-                            <p class="text-light mb-4">{{ product.description }}</p>
+                            <p class="text-light mb-4">{{ product.description|raw }}</p>
 
                             <!-- System Requirements -->
                             <div class="requirements-grid">

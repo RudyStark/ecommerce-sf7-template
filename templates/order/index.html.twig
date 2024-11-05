@@ -1,80 +1,204 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/css/product.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/css/cart.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/css/delivery.css') }}">
+{% endblock %}
+
 {% block body %}
-    <div class="container my-5">
+    <div class="container py-3">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="my-3">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="{{ path('app_home') }}" class="text-orange-gamer text-decoration-none">
+                        <i class="bi bi-house-fill"></i> Home
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ path('app_cart') }}" class="text-orange-gamer text-decoration-none">
+                        <i class="bi bi-cart-fill"></i> Cart
+                    </a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <i class="bi bi-truck-fill"></i> Delivery
+                </li>
+            </ol>
+        </nav>
+
         {% if cart|length == 0 %}
-            <div class="alert alert-info" role="alert">
-                Your cart is empty!
+            <div class="gaming-card p-4 text-center">
+                <i class="bi bi-cart-x fs-1 text-orange-gamer mb-2"></i>
+                <p class="text-light mb-3">Your cart is empty!</p>
+                <a href="{{ path('app_home') }}" class="gaming-btn">
+                    <i class="bi bi-controller me-2"></i>Browse Games
+                </a>
             </div>
         {% else %}
-            <div class="row d-flex align-items-stretch">
-                <!-- Colonne principale -->
-                <div class="col-lg-8 d-flex flex-column">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-light">
-                            <span class="text-dark">My Order</span>
-                        </h4>
-                        <div class="d-flex align-items-center">
-                            <a href="{{ path('app_home') }}" class="btn btn-outline-secondary d-inline-flex align-items-center small-text-mobile me-2">
-                                <i class="bi bi-arrow-left me-1"></i>
-                                Back to shopping
-                            </a>
-                            <a href="{{ path('app_cart') }}" class="btn btn-toolbar d-inline-flex align-items-center">
-                                <i class="bi bi-cart me-1"></i>
-                            </a>
-                        </div>
-                    </div>
+            <div class="bg-dark-block p-3 rounded-3">
+                <div class="row g-3">
+                    <!-- Main Content -->
+                    <div class="col-lg-8">
+                        <div class="delivery-form-container">
+                            <div class="{{ app.user ? '' : 'delivery-form-blur' }}">
+                                {{ form_start(deliveryForm, {'attr': {'data-turbo': 'false'}}) }}
 
-                    {{ form_start(deliveryForm, {'attr': {'data-turbo': 'false'}}) }} <!-- Démarrage du formulaire -->
+                                {# Check if cart contains digital/physical products #}
+                                {% set has_digital = false %}
+                                {% set has_physical = false %}
 
-                    <!-- Section d'adresse de livraison -->
-                    <div class="card shadow mb-3">
-                        <div class="card-header">
-                            <h5 class="fw-bold">Shipping Address</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group mb-3" data-controller="form-guest-address">
-                                {% if app.user %}
-                                    <!-- Si l'utilisateur est connecté, afficher ses adresses -->
-                                    {{ form_row(deliveryForm.addresses) }}
-                                    <a href="{{ path('app_account_address_form') }}" class="btn btn-secondary mt-2">Add a new address</a>
-                                {% else %}
-                                    <!-- Si l'utilisateur n'est pas connecté, proposer de se connecter -->
-                                    <a href="{{ path('app_login') }}" class="btn btn-outline-dark btn-sm mt-2">Sign in</a>
+                                {% for item in cart %}
+                                    {% if item.object.digital %}
+                                        {% set has_digital = true %}
+                                    {% else %}
+                                        {% set has_physical = true %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                {# Pour produits digitaux uniquement, on rend le carrier email en caché #}
+                                {% if has_digital and not has_physical %}
+                                    {% for choice in deliveryForm.carriers %}
+                                        {% if choice.vars.value == 'email' %}
+                                            {{ form_widget(choice, {
+                                                'attr': {
+                                                    'style': 'display: none'
+                                                },
+                                                'checked': true
+                                            }) }}
+                                        {% endif %}
+                                    {% endfor %}
                                 {% endif %}
+
+                                <div class="gaming-card mb-3">
+                                    <div class="card-header py-3 px-4 border-bottom border-orange">
+                                        <h5 class="text-orange-gamer mb-0 d-flex align-items-center">
+                                            <i class="bi bi-geo-alt-fill me-2"></i>
+                                            {% if has_digital and not has_physical %}
+                                                Contact Information
+                                            {% else %}
+                                                Shipping Address
+                                            {% endif %}
+                                        </h5>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        {% if app.user %}
+                                            <div class="delivery-option-container">
+                                                {% if has_digital and not has_physical %}
+                                                    <div class="alert gaming-alert mb-3">
+                                                        <i class="bi bi-info-circle me-2"></i>
+                                                        Digital products will be sent to: <strong>{{ app.user.email }}</strong>
+                                                    </div>
+                                                {% else %}
+                                                    {{ form_row(deliveryForm.addresses, {
+                                                        'attr': {'class': 'form-select gaming-select'}
+                                                    }) }}
+                                                    <a href="{{ path('app_account_address_form') }}" class="gaming-btn-outline mt-3 d-inline-block">
+                                                        <i class="bi bi-plus-circle me-2"></i>Add New Address
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <!-- Delivery -->
+                                {% if not (has_digital and not has_physical) %}
+                                    <div class="gaming-card mb-3">
+                                        <div class="card-header py-3 px-4 border-bottom border-orange">
+                                            <h5 class="text-orange-gamer mb-0 d-flex align-items-center">
+                                                <i class="bi bi-truck-fill me-2"></i>Delivery Method
+                                            </h5>
+                                        </div>
+                                        <div class="card-body p-4">
+                                            <div class="delivery-option-container">
+                                                {% if has_digital and has_physical %}
+                                                    <div class="alert gaming-alert mb-3">
+                                                        <i class="bi bi-info-circle me-2"></i>
+                                                        Your order contains both digital and physical products. Digital items will be delivered by email, and physical items will be shipped.
+                                                    </div>
+                                                {% endif %}
+
+                                                {# Display delivery options #}
+                                                {% for choice in deliveryForm.carriers %}
+                                                    <div class="form-check gaming-radio-group mb-3">
+                                                        {{ form_widget(choice) }}
+                                                        {{ form_label(choice, null, {
+                                                            'label_attr': {
+                                                                'class': 'form-check-label'
+                                                            }
+                                                        }) }}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                <!-- Submit -->
+                                <div class="text-center mt-4">
+                                    {{ form_widget(deliveryForm.submit, {
+                                        'attr': {
+                                            'class': 'gaming-btn px-5'
+                                        },
+                                        'label': 'Continue'
+                                    }) }}
+                                </div>
+
+                                {{ form_end(deliveryForm, {'render_rest': false}) }}
                             </div>
+
+                            {% if not app.user %}
+                                <div class="auth-overlay">
+                                    <h3><i class="bi bi-lock-fill me-2"></i>Authentication Required</h3>
+                                    <p>Please sign in to your account or create a new one to continue with the delivery process. This helps us ensure a secure and personalized shopping experience.</p>
+                                    <div class="auth-buttons">
+                                        <a href="{{ path('app_login') }}" class="gaming-btn">
+                                            <i class="bi bi-person-fill me-2"></i>Sign In
+                                        </a>
+                                        <a href="{{ path('app_register') }}" class="gaming-btn-outline">
+                                            <i class="bi bi-person-plus-fill me-2"></i>Create Account
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 
-                    <!-- Section de méthode de livraison -->
-                    <div class="card shadow mb-3">
-                        <div class="card-header">
-                            <h5 class="fw-bold">Delivery Method</h5>
-                        </div>
-                        <div class="card-body">
-                            {{ form_row(deliveryForm.carriers) }}
-                        </div>
-                    </div>
-
-                    <!-- Bouton de confirmation -->
-                    <div class="text-end">
-                        {{ form_widget(deliveryForm.submit, {'attr': {'class': 'btn btn-success'}}) }}
-                    </div>
-
-                    {{ form_end(deliveryForm) }} <!-- Fin du formulaire -->
-                </div>
-
-                <!-- Sidebar avec des informations supplémentaires -->
-                <div class="col-lg-4 d-flex flex-column">
-                    <div class="card shadow mb-3">
-                        <div class="card-header">
-                            <h5 class="fw-bold">Need Help?</h5>
-                        </div>
-                        <div class="card-body">
-                            <p>For any issues, contact our customer support at:</p>
-                            <p><strong>Email:</strong> support@example.com</p>
-                            <p><strong>Phone:</strong> +1 (800) 123-4567</p>
-                            <a href="#" class="btn btn-outline-primary">Contact Support</a>
+                    <!-- Support Sidebar -->
+                    <div class="col-lg-4">
+                        <div class="gaming-card support-card h-100">
+                            <div class="card-header py-3 px-4 border-bottom border-orange">
+                                <h5 class="text-orange-gamer mb-0 d-flex align-items-center">
+                                    <i class="bi bi-headset me-2"></i>24/7 Support
+                                </h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="support-items mb-4">
+                                    <div class="support-item">
+                                        <div class="support-icon">
+                                            <i class="bi bi-envelope-fill"></i>
+                                        </div>
+                                        <div class="support-content">
+                                            <h6 class="mb-1">Email Support</h6>
+                                            <a href="mailto:support@example.com" class="text-decoration-none">support@example.com</a>
+                                        </div>
+                                    </div>
+                                    <div class="support-item">
+                                        <div class="support-icon">
+                                            <i class="bi bi-telephone-fill"></i>
+                                        </div>
+                                        <div class="support-content">
+                                            <h6 class="mb-1">Phone Support</h6>
+                                            <a href="tel:+18001234567" class="text-decoration-none">+1 (800) 123-4567</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="gaming-btn w-100">
+                                    <i class="bi bi-chat-dots-fill me-2"></i>Start Live Chat
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
