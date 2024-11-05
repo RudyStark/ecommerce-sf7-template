@@ -90,14 +90,8 @@ class PaymentController extends AbstractController
             $entityManager->flush();
         }
 
-        // Vérification des produits digitaux directement depuis l'Order
-        $hasDigitalProducts = false;
-        foreach($order->getOrderDetails() as $detail) {
-            if(str_contains($detail->getProductName(), 'Digital') || str_contains($detail->getProductName(), 'digital')) {
-                $hasDigitalProducts = true;
-                break;
-            }
-        }
+        // Si le carrier est Email, c'est forcément un produit digital
+        $hasDigitalProducts = ($order->getCarrierName() === 'Email');
 
         return $this->render('payment/success.html.twig', [
             'order' => $order,
