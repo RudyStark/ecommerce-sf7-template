@@ -1,101 +1,136 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/css/product.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/css/cart.css') }}">
+{% endblock %}
+
 {% block body %}
-    <div class="container my-5">
-        <div class="row d-flex align-items-stretch">
-            <div class="col-lg-8 d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <!-- Titre du panier et lien pour retourner à la boutique -->
-                    <h4 class="text-light">
-                        <span class="text-dark">Cart ({{ cart|length }} items)</span>
-                    </h4>
-                    <div class="d-flex align-items-center">
-                        <!-- Clear Cart Button/Trash Icon -->
-                        <!-- Desktop version -->
-                        <a href="{{ path('app_cart_clear') }}" class="btn btn-danger d-none d-md-inline-block me-3">
-                            Clear Cart
-                        </a>
+    <div class="container py-4 py-lg-5">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="gaming-breadcrumb mb-4">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="{{ path('app_home') }}" class="text-decoration-none text-orange-gamer">
+                        <i class="bi bi-house-fill"></i> Home
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <i class="bi bi-cart-fill me-1"></i>Shopping Cart
+                </li>
+            </ol>
+        </nav>
 
-                        <!-- Mobile version -->
-                        <a href="{{ path('app_cart_clear') }}" class="btn btn-outline-danger d-inline-block d-md-none me-3 small-text-mobile">
-                            <i class="bi bi-trash"></i>
-                        </a>
-
-                        <!-- Back to shopping -->
-                        <a href="{{ path('app_home') }}" class="btn btn-outline-secondary d-inline-flex align-items-center small-text-mobile">
-                            <i class="bi bi-arrow-left me-1"></i>
-                            Back to shopping
-                        </a>
-                    </div>
+        <div class="bg-dark-block p-3 p-lg-4 rounded-4">
+            <!-- Cart Header -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
+                <h2 class="text-light mb-0 fs-4 fs-md-3">Your Gaming Cart ({{ cart|length }} items)</h2>
+                <div class="d-flex gap-2">
+                    <a href="{{ path('app_cart_clear') }}" class="btn gaming-danger-btn d-flex align-items-center gap-2">
+                        <i class="bi bi-trash-fill"></i>
+                        <span class="d-none d-sm-inline">Clear Cart</span>
+                    </a>
+                    <a href="{{ path('app_home') }}" class="btn gaming-secondary-btn d-flex align-items-center gap-2">
+                        <i class="bi bi-controller"></i>
+                        <span class="d-none d-sm-inline">Continue Shopping</span>
+                    </a>
                 </div>
-
-                <!-- Displaying the cart -->
-                <ul class="list-group flex-grow-1 shadow">
-                    {% for product in cart %}
-                        <li class="list-group-item text-dark h100">
-                            <div class="row flex-column flex-md-row">
-                                <div class="col-md-4 col-12 mb-3 mb-md-0">
-                                    <a href="{{ path('app_product', { slug: product.object.slug }) }}">
-                                        <img src="/uploads/products/{{ product.object.picture }}" class="img-fluid rounded w-100" alt="{{ product.object.name }}">
-                                    </a>
-                                </div>
-                                <div class="col-md-8 col-12 text-center text-md-start"> <!-- for mobile, text-center is used to center the text -->
-                                    <h5 class="fw-bold">{{ product.object.name }}</h5>
-                                    <p class="mb-1">Color: White</p>
-                                    <p class="mb-1">Size: M</p>
-                                    <p class="mb-1">Price: {{ product.object.priceWt|price }}</p>
-
-                                    <div class="d-flex align-items-center justify-content-center justify-content-md-start mt-2">
-                                        <a href="{{ path('app_cart_decrease', { id: product.object.id }) }}" class="btn btn-outline-light btn-sm me-2 border-black text-dark">-</a>
-                                        <input type="text" class="form-control text-center me-2 bg-dark text-light input-quantity" value="{{ product.quantity }}" readonly>
-                                        <a href="{{ path('app_cart_add', { id: product.object.id }) }}" class="btn btn-outline-light btn-sm border-black text-dark" data-action="cart#increaseQuantity">+</a>
-                                    </div>
-
-                                    <!-- favorite button -->
-                                    <a href="@" class="btn btn-outline-danger btn-sm mt-2">
-                                        <i class="bi bi-heart"></i> Add to favorites
-                                    </a>
-
-
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
             </div>
-            {%  if cart|length != 0 %}
-                <div class="col-lg-4 d-flex flex-column mt-2">
-                    <h4 class="d-flex justify-content-between align-items-center mb-3 text-light">
-                        <span class="text-dark">Total :</span>
-                    </h4>
-                    <div class="card shadow">
-                        <div class="card-header">
-                            <h4>Details</h4>
+
+            <div class="row g-4">
+                <!-- Cart Items -->
+                <div class="col-lg-8">
+                    {% for product in cart %}
+                        <div class="gaming-card cart-item mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-4 col-lg-3 position-relative">
+                                    <img src="/uploads/products/{{ product.object.picture }}"
+                                         class="img-fluid rounded-start h-100 w-100 object-fit-cover"
+                                         alt="{{ product.object.name }}">
+                                </div>
+                                <div class="col-md-8 col-lg-9">
+                                    <div class="card-body d-flex flex-column h-100">
+                                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start gap-3 mb-3">
+                                            <h5 class="text-light mb-0">{{ product.object.name }}</h5>
+                                        </div>
+
+                                        <div class="platform-badge mb-3 align-self-start">
+                                            {% if 'PlayStation' in product.object.subCategory.name %}
+                                                <i class="bi bi-playstation"></i> PlayStation Network Key
+                                            {% elseif 'Xbox' in product.object.subCategory.name %}
+                                                <i class="bi bi-microsoft"></i> Microsoft Store Key
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="gaming-price-tag">{{ product.object.priceWt|price }}</div>
+
+                                        <div class="quantity-controls mt-auto">
+                                            <div class="d-flex align-items-center">
+                                                <a href="{{ path('app_cart_decrease', { id: product.object.id }) }}"
+                                                   class="btn gaming-quantity-btn">
+                                                    <i class="bi bi-dash"></i>
+                                                </a>
+                                                <input type="text" class="gaming-quantity-input" value="{{ product.quantity }}" readonly>
+                                                <a href="{{ path('app_cart_add', { id: product.object.id }) }}"
+                                                   class="btn gaming-quantity-btn">
+                                                    <i class="bi bi-plus"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <small class="delivery-info">
+                                            <i class="bi bi-clock"></i>
+                                            Instant Delivery after purchase
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled mb-4">
-                                <li class="d-flex justify-content-between mb-3">
-                                    <span>Total products</span>
-                                    <span> {{ fullCartQuantity }}</span>
-                                </li>
-                                <li class="d-flex justify-content-between mb-3">
-                                    <span>Total <small>(excl. VAT)</small></span>
-                                    <strong>{{ totalWithoutTaxes|price }}</strong>
-                                </li>
-                                <li class="d-flex justify-content-between mb-3">
-                                    <span>Total <small>(incl. VAT)</small></span>
-                                    <strong>{{ totalWt|price }}</strong>
-                                </li>
-                            </ul>
-                            <a href="{{ path('app_order') }}" class="btn btn-primary w-100">Go to Checkout</a>
-                            <div class="mt-3">
-                                <label for="coupon">Add a discount code (optional)</label>
-                                <input type="text" class="form-control" id="coupon" placeholder="Coupon code">
+                    {% endfor %}
+                </div>
+
+                <!-- Cart Summary -->
+                {% if cart|length != 0 %}
+                    <div class="col-lg-4">
+                        <div class="gaming-card position-sticky" style="top: 2rem;">
+                            <div class="card-body">
+                                <h3 class="text-orange-gamer mb-4 fs-4">Order Summary</h3>
+
+                                <div class="summary-items mb-4">
+                                    <div class="summary-item">
+                                        <span>Total Products</span>
+                                        <span class="fw-bold">{{ fullCartQuantity }}</span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Subtotal (excl. VAT)</span>
+                                        <span>{{ totalWithoutTaxes|price }}</span>
+                                    </div>
+                                    <div class="summary-item total">
+                                        <span>Total (incl. VAT)</span>
+                                        <span>{{ totalWt|price }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-3">
+                                    <a href="{{ path('app_order') }}" class="gaming-preorder-btn w-100 d-flex align-items-center justify-content-center gap-2">
+                                        <i class="bi bi-credit-card-fill"></i>
+                                        Proceed to Checkout
+                                    </a>
+
+                                    <div class="input-group">
+                                        <input type="text"
+                                               class="form-control gaming-input"
+                                               placeholder="Enter coupon code">
+                                        <button class="btn gaming-secondary-btn">
+                                            Apply
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

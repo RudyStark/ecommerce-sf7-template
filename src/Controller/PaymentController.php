@@ -77,10 +77,7 @@ class PaymentController extends AbstractController
     #[Route('/success/{stripe_session_id}', name: 'app_payment_success')]
     public function success($stripe_session_id, OrderRepository $orderRepository, EntityManagerInterface $entityManager, CartService $cartService): Response
     {
-        $order = $orderRepository->findOneBy([
-            'stripe_session_id' => $stripe_session_id,
-            'user' => $this->getUser()
-        ]);
+        $order = $orderRepository->findCompleteOrder($stripe_session_id, $this->getUser());
 
         if (!$order) {
             $this->addFlash('warning', 'You are not allowed to access this order.');
@@ -93,8 +90,18 @@ class PaymentController extends AbstractController
             $entityManager->flush();
         }
 
+        // Vérification des produits digitaux directement depuis l'Order
+        $hasDigitalProducts = false;
+        foreach($order->getOrderDetails() as $detail) {
+            if(str_contains($detail->getProductName(), 'Digital') || str_contains($detail->getProductName(), 'digital')) {
+                $hasDigitalProducts = true;
+                break;
+            }
+        }
+
         return $this->render('payment/success.html.twig', [
-            'order' => $order
+            'order' => $order,
+            'hasDigitalProducts' => $hasDigitalProducts
         ]);
     }
 }

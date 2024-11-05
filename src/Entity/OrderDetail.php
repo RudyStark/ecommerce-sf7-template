@@ -23,6 +23,9 @@ class OrderDetail
     #[ORM\Column(length: 255)]
     private ?string $productPicture = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $productGameKey = null;
+
     #[ORM\Column]
     private ?int $productQuantity = null;
 
@@ -99,6 +102,18 @@ class OrderDetail
     public function setProductPrice(float $productPrice): static
     {
         $this->productPrice = $productPrice;
+
+        return $this;
+    }
+
+    public function getProductGameKey(): ?string
+    {
+        return $this->productGameKey;
+    }
+
+    public function setProductGameKey(string $productGameKey): static
+    {
+        $this->productGameKey = $productGameKey;
 
         return $this;
     }
