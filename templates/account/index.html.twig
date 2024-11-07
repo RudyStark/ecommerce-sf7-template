@@ -1,3 +1,4 @@
+{# account/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
@@ -6,24 +7,58 @@
 {% endblock %}
 
 {% block body %}
-<div class="shadow bg-light">
-    <div class="container">
-        <!-- Navigation en haut -->
-        <div class="dashboard-nav dashboard-container p-2 rounded">
-            {% include '/account/_menu.html.twig' %}
-        </div>
-{#        <div class="row g-4">#}
-                {% set current_route = app.request.attributes.get('_route') %}
-                {% if current_route == 'app_account' %}
-                    {{ include('account/includes/_dashboard.html.twig') }}
-                {% elseif current_route == 'app_account_order' %}
-                    {{ include('account/order/includes/_details_order.html.twig') }}
-                {% elseif current_route == 'app_account_addresses' %}
-                    {{ include('account/address/includes/_index.html.twig') }}
-                {% elseif current_route == 'app_account_wishlist' %}
-                    {{ include('account/wishlist/_index.html.twig') }}
+    <div class="gaming-account-wrapper">
+        <div class="container py-4">
+            {# Menu de navigation #}
+            <div class="gaming-nav-section">
+                {% include 'account/_menu.html.twig' %}
+            </div>
+
+            {# Contenu principal #}
+            <div class="gaming-content-section">
+                {# Welcome Banner - Seulement sur la page dashboard #}
+                {% if app.request.attributes.get('_route') == 'app_account' %}
+                    <div class="gaming-welcome-banner">
+                        <div class="welcome-content">
+                            <h2 class="welcome-title">
+                                Welcome back, <span class="player-name">{{ app.user.firstname }}</span>
+                            </h2>
+                            <p class="welcome-subtitle">Ready to continue your gaming journey?</p>
+                        </div>
+                        <div class="player-stats">
+                            <div class="stat-item">
+                                <i class="bi bi-trophy"></i>
+                                <span class="stat-value">{{ app.user.orders|length }}</span>
+                                <span class="stat-label">Games Owned</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="bi bi-heart"></i>
+                                <span class="stat-value">{{ app.user.wishlists|length }}</span>
+                                <span class="stat-label">Wishlist</span>
+                            </div>
+                        </div>
+                    </div>
                 {% endif %}
-{#        </div>#}
+
+                {# Contenu dynamique #}
+                <div class="gaming-main-content">
+                    {% set current_route = app.request.attributes.get('_route') %}
+                    {% if current_route == 'app_account' %}
+                        {{ include('account/includes/_dashboard.html.twig') }}
+                    {% elseif current_route == 'app_account_order' %}
+                        {{ include('account/order/includes/_details_order.html.twig') }}
+                    {% elseif current_route == 'app_account_addresses' %}
+                        {{ include('account/address/includes/_index.html.twig') }}
+                    {% elseif current_route == 'app_account_wishlist' %}
+                        {{ include('account/wishlist/_index.html.twig') }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/js/account.js') }}"></script>
 {% endblock %}
