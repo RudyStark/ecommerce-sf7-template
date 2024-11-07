@@ -6,18 +6,26 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class CartService
 {
-    public function __construct(private RequestStack $requestStack)
-    {
-    }
+    public function __construct(
+        private RequestStack $requestStack
+    ) {}
 
-    /**
-     * function add product to cart
-     * @param $product
-     * @return void
-     */
     public function add($product)
     {
         $cart = $this->requestStack->getSession()->get('cart', []);
+
+        if ($product->isDigital()) {
+            $availableKeys = $product->getAvailableGameKeys()->count();
+            dump('Available Keys for ' . $product->getName() . ': ' . $availableKeys);
+
+            $cart = $this->requestStack->getSession()->get('cart', []);
+            $currentQuantity = isset($cart[$product->getId()]) ? $cart[$product->getId()]['quantity'] : 0;
+            dump('Current Quantity in Cart: ' . $currentQuantity);
+
+            if ($availableKeys < ($currentQuantity + 1)) {
+                throw new \Exception('This product is currently out of stock');
+            }
+        }
 
         if (isset($cart[$product->getId()])) {
             $cart[$product->getId()]['quantity']++;
@@ -31,11 +39,6 @@ class CartService
         $this->requestStack->getSession()->set('cart', $cart);
     }
 
-    /**
-     * function decrease product quantity
-     * @param $id
-     * @return void
-     */
     public function decrease($id)
     {
         $cart = $this->requestStack->getSession()->get('cart', []);
@@ -51,20 +54,11 @@ class CartService
         $this->requestStack->getSession()->set('cart', $cart);
     }
 
-    /**
-     * function clear cart
-     * @return void
-     */
     public function remove()
     {
         $this->requestStack->getSession()->remove('cart');
     }
 
-    /**
-     * function remove item from cart
-     * @param $id
-     * @return void
-     */
     public function removeItem($id)
     {
         $cart = $this->requestStack->getSession()->get('cart', []);
@@ -76,19 +70,11 @@ class CartService
         $this->requestStack->getSession()->set('cart', $cart);
     }
 
-    /**
-     * function get cart
-     * @return array
-     */
     public function getCart(): array
     {
         return $this->requestStack->getSession()->get('cart', []);
     }
 
-    /**
-     * function get total quantity
-     * @return int
-     */
     public function getTotalQuantity(): int
     {
         $cart = $this->getCart();
@@ -97,10 +83,6 @@ class CartService
         }, 0);
     }
 
-    /**
-     * function get total with taxes
-     * @return float
-     */
     public function getTotalWithoutTaxes(): float
     {
         $cart = $this->getCart();
@@ -119,9 +101,9 @@ class CartService
         $total = 0;
 
         foreach ($cart as $product) {
-            $total += $product['object']->getPrice() * $product['quantity'];
+            $total += $product['object']->getPriceWt() * $product['quantity'];
         }
 
-        return $total * 1.2;
+        return $total;
     }
 }

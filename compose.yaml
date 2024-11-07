@@ -8,6 +8,9 @@ services:
     volumes:
       - ./:/var/www/html
       - ./php.ini:/usr/local/etc/php/php.ini
+      - ./docker/cron/crontab:/etc/cron.d/symfony-cron:ro
+      - ./docker/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint.sh:ro
+      - ./var/log/cron.log:/var/log/cron.log
     networks:
       - symfony-network
 
