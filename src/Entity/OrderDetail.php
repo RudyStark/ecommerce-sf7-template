@@ -23,9 +23,6 @@ class OrderDetail
     #[ORM\Column(length: 255)]
     private ?string $productPicture = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $productGameKey = null;
-
     #[ORM\Column]
     private ?int $productQuantity = null;
 
@@ -34,6 +31,9 @@ class OrderDetail
 
     #[ORM\Column]
     private ?float $productVat = null;
+
+    #[ORM\OneToOne(mappedBy: 'orderDetail', cascade: ['persist', 'remove'])]
+    private ?GameKey $gameKey = null;
 
     public function getId(): ?int
     {
@@ -106,18 +106,6 @@ class OrderDetail
         return $this;
     }
 
-    public function getProductGameKey(): ?string
-    {
-        return $this->productGameKey;
-    }
-
-    public function setProductGameKey(string $productGameKey): static
-    {
-        $this->productGameKey = $productGameKey;
-
-        return $this;
-    }
-
     public function getProductVat(): ?float
     {
         return $this->productVat;
@@ -126,6 +114,28 @@ class OrderDetail
     public function setProductVat(float $productVat): static
     {
         $this->productVat = $productVat;
+
+        return $this;
+    }
+
+    public function getGameKey(): ?GameKey
+    {
+        return $this->gameKey;
+    }
+
+    public function setGameKey(?GameKey $gameKey): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($gameKey === null && $this->gameKey !== null) {
+            $this->gameKey->setOrderDetail(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($gameKey !== null && $gameKey->getOrderDetail() !== $this) {
+            $gameKey->setOrderDetail($this);
+        }
+
+        $this->gameKey = $gameKey;
 
         return $this;
     }

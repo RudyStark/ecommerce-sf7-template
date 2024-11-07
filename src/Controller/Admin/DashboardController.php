@@ -6,10 +6,12 @@ use App\Entity\Carrier;
 use App\Entity\Category;
 use App\Entity\CompanyValues;
 use App\Entity\FeatureProduct;
+use App\Entity\GameKey;
 use App\Entity\Header;
 use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -37,6 +39,13 @@ class DashboardController extends AbstractDashboardController
             ->setTitle('Ecommerce Sf7');
     }
 
+    public function configureAssets(): Assets
+    {
+        return Assets::new()
+            ->addJsFile('build/js/admin/game-key-formatter.js')
+            ;
+    }
+
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
@@ -45,6 +54,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Products', 'fas fa-boxes')->setSubItems([
             MenuItem::linkToCrud('Products List', 'fas fa-box', Product::class),
             MenuItem::linkToCrud('Feature Products', 'fas fa-star', FeatureProduct::class),
+            MenuItem::linkToCrud('Game Keys', 'fas fa-key', GameKey::class),
         ]);
         yield MenuItem::linkToCrud('Carrier', 'fas fa-truck', Carrier::class);
         yield MenuItem::linkToCrud('Order', 'fas fa-shopping-cart', Order::class);

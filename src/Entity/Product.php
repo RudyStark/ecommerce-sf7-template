@@ -50,9 +50,6 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $studioLabel = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $gameKey = null;
-
     /**
      * @var Collection<int, FeatureProduct>
      */
@@ -68,9 +65,16 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?bool $digital = null;
 
+    /**
+     * @var Collection<int, GameKey>
+     */
+    #[ORM\OneToMany(targetEntity: GameKey::class, mappedBy: 'product', orphanRemoval: true)]
+    private Collection $gameKeys;
+
     public function __construct()
     {
         $this->feature = new ArrayCollection();
+        $this->gameKeys = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -217,60 +221,6 @@ class Product
         return $this;
     }
 
-    public function getGameKey(): ?string
-    {
-        return $this->gameKey;
-    }
-
-    public function setGameKey(?string $gameKey): static
-    {
-        $this->gameKey = $gameKey;
-        return $this;
-    }
-
-    /**
-     * Generate a game key
-     * @return string
-     * @throws \Random\RandomException
-     */
-    public function generateGameKeyIfNeeded(): void
-    {
-        if ($this->isDigital() && !$this->gameKey) {
-            $subCategoryName = $this->getSubCategory()?->getName();
-            $format = match ($subCategoryName) {
-                'PlayStation 5' => [
-                    'length' => 12,
-                    'groups' => [4, 4, 4]  // Format XXXX-XXXX-XXXX
-                ],
-                'Xbox Series X|S' => [
-                    'length' => 25,
-                    'groups' => [5, 5, 5, 5, 5]  // Format XXXXX-XXXXX-XXXXX-XXXXX-XXXXX
-                ],
-                default => null
-            };
-
-            if ($format !== null) {
-                $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                $gameKey = '';
-
-                // generate the key
-                for ($i = 0; $i < $format['length']; $i++) {
-                    $gameKey .= $characters[random_int(0, strlen($characters) - 1)];
-                }
-
-                // format the key
-                $position = 0;
-                $parts = [];
-                foreach ($format['groups'] as $groupLength) {
-                    $parts[] = substr($gameKey, $position, $groupLength);
-                    $position += $groupLength;
-                }
-
-                $this->gameKey = implode('-', $parts);
-            }
-        }
-    }
-
     /**
      * @return Collection<int, FeatureProduct>
      */
@@ -327,6 +277,59 @@ class Product
     public function setDigital(?bool $digital): static
     {
         $this->digital = $digital;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GameKey>
+     */
+    public function getGameKeys(): Collection
+    {
+        return $this->gameKeys;
+    }
+
+    public function getAvailableGameKeys(): Collection
+    {
+//        dd([
+//            'Product' => $this->getName(),
+//            'SubCategory' => $this->getSubCategory()->getName(),
+//            'Game Keys' => $this->gameKeys->toArray(),
+//            'Keys Count' => $this->gameKeys->count()
+//        ]);
+
+        return $this->gameKeys->filter(function(GameKey $key) {
+            return $key->getStatus() === 'AVAILABLE' &&
+                (
+                    ($this->getSubCategory()->getName() === 'PlayStation 5' && $key->getType() === 'PLAYSTATION') ||
+                    ($this->getSubCategory()->getName() === 'Xbox Series X|S' && $key->getType() === 'MICROSOFT')
+                );
+        });
+    }
+
+    public function hasAvailableKeys(): bool
+    {
+        return $this->getAvailableGameKeys()->count() > 0;
+    }
+
+    public function addGameKey(GameKey $gameKey): static
+    {
+        if (!$this->gameKeys->contains($gameKey)) {
+            $this->gameKeys->add($gameKey);
+            $gameKey->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGameKey(GameKey $gameKey): static
+    {
+        if ($this->gameKeys->removeElement($gameKey)) {
+            // set the owning side to null (unless already changed)
+            if ($gameKey->getProduct() === $this) {
+                $gameKey->setProduct(null);
+            }
+        }
 
         return $this;
     }

@@ -18,9 +18,11 @@
   "build/css/account.css": "/build/css/account.css",
   "build/css/product.css": "/build/css/product.css",
   "build/css/custom.css": "/build/css/custom.css",
+  "build/css/delivery.css": "/build/css/delivery.css",
   "build/css/cart.css": "/build/css/cart.css",
   "build/css/header.css": "/build/css/header.css",
   "build/css/mega-menu.css": "/build/css/mega-menu.css",
+  "build/js/admin/game-key-formatter.js": "/build/js/admin/game-key-formatter.js",
   "build/css/carousel.css": "/build/css/carousel.css",
   "build/css/admin/iconPicture.css": "/build/css/admin/iconPicture.css",
   "build/css/payment.css": "/build/css/payment.css",
@@ -28,6 +30,5 @@
   "build/css/footer.css": "/build/css/footer.css",
   "build/js/global.js": "/build/js/global.js",
   "build/css/login.css": "/build/css/login.css",
-  "build/images/category-banner.webp": "/build/images/category-banner.webp",
-  "build/css/delivery.css": "/build/css/delivery.css"
+  "build/images/category-banner.webp": "/build/images/category-banner.webp"
 }
