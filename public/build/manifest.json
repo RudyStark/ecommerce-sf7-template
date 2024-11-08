@@ -31,5 +31,10 @@
   "build/js/global.js": "/build/js/global.js",
   "build/css/login.css": "/build/css/login.css",
   "build/images/category-banner.webp": "/build/images/category-banner.webp",
-  "build/css/order-details.css": "/build/css/order-details.css"
+  "build/css/order-details.css": "/build/css/order-details.css",
+  "build/css/account/order-history.css": "/build/css/account/order-history.css",
+  "build/css/account/game-key.css": "/build/css/account/game-key.css",
+  "build/js/game-keys.js": "/build/js/game-keys.js",
+  "build/js/account/game-keys.js": "/build/js/account/game-keys.js",
+  "build/js/account/game-key.js": "/build/js/account/game-key.js"
 }

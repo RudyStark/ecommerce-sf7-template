@@ -45,6 +45,10 @@
                     {% set current_route = app.request.attributes.get('_route') %}
                     {% if current_route == 'app_account' %}
                         {{ include('account/includes/_dashboard.html.twig') }}
+                    {% elseif current_route == 'app_account_game_keys' %}
+                        {{ include('account/game_key/_index.html.twig') }}
+                    {% elseif current_route == 'app_account_orders' %}
+                        {{ include('account/order/includes/_history.html.twig') }}
                     {% elseif current_route == 'app_account_order' %}
                         {{ include('account/order/includes/_details_order.html.twig') }}
                     {% elseif current_route == 'app_account_addresses' %}
@@ -61,4 +65,5 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('build/js/account.js') }}"></script>
+    <script src="{{ asset('build/js/account/game-key.js') }}"></script>
 {% endblock %}

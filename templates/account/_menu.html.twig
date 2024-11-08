@@ -13,13 +13,14 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="gaming-nav-link {{ app.request.get('_route') == 'app_account_library' ? 'active' : '' }}" href="">
-                    <i class="bi bi-collection-play"></i>
-                    <span class="nav-text">Game Library</span>
+                <a class="gaming-nav-link {{ app.request.get('_route') == 'app_account_game_keys' ? 'active' : '' }}"
+                   href="{{ path('app_account_game_keys') }}">
+                    <i class="bi bi-key-fill"></i>
+                    <span class="nav-text">Game Keys</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="gaming-nav-link {{ app.request.get('_route') == 'app_account_orders' ? 'active' : '' }}" href="">
+                <a class="gaming-nav-link {{ app.request.get('_route') == 'app_account_orders' ? 'active' : '' }}" href="{{ path('app_account_orders') }}">
                     <i class="bi bi-bag-check"></i>
                     <span class="nav-text">Purchase History</span>
                 </a>

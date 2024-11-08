@@ -1,0 +1,219 @@
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/css/account/game-key.css') }}">
+{% endblock %}
+
+<div class="gaming-keys-container">
+    <div class="keys-header mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="text-light">
+                    <i class="bi bi-key-fill text-orange-gamer me-2"></i>
+                    Your Game Keys
+                </h2>
+                <p class="text-orange-gamer">All your game keys in one place</p>
+            </div>
+
+            {# Platform Filter #}
+            <div class="platform-filter">
+                <div class="btn-group">
+                    <button class="btn btn-gaming-outline active" data-platform="all">
+                        All Platforms
+                    </button>
+                    <button class="btn btn-gaming-outline" data-platform="ps5">
+                        <i class="bi bi-playstation"></i> PlayStation 5
+                    </button>
+                    <button class="btn btn-gaming-outline" data-platform="xbox">
+                        <i class="bi bi-xbox"></i> Xbox Series
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12">
+            {# Activation Guides Quick Access #}
+            <div class="activation-guides mb-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="guide-card playstation">
+                            <div class="guide-icon">
+                                <i class="bi bi-playstation"></i>
+                            </div>
+                            <div class="guide-content">
+                                <h5>PlayStation Network</h5>
+                                <p>How to redeem your key on PSN</p>
+                                <button class="btn btn-gaming-outline btn-sm" data-bs-toggle="modal" data-bs-target="#psnGuide">
+                                    View Guide
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="guide-card xbox">
+                            <div class="guide-icon">
+                                <i class="bi bi-xbox"></i>
+                            </div>
+                            <div class="guide-content">
+                                <h5>Xbox Store</h5>
+                                <p>How to redeem your key on Xbox</p>
+                                <button class="btn btn-gaming-outline btn-sm" data-bs-toggle="modal" data-bs-target="#xboxGuide">
+                                    View Guide
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Game Keys List #}
+            <div class="gaming-card">
+                <div class="card-body p-0">
+                    {% set keys = [] %}
+                    {% for order in app.user.orders %}
+                        {% for detail in order.orderDetails %}
+                            {% if detail.gameKey %}
+                                {% set keys = keys|merge([{
+                                    name: detail.productName,
+                                    image: detail.productPicture,
+                                    key: detail.gameKey.gameKey,
+                                    platform: detail.gameKey.type,
+                                    purchaseDate: order.createdAt
+                                }]) %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+
+                    {% if keys|length > 0 %}
+                        <div class="game-keys-list">
+                            {% for key in keys %}
+                                <div class="key-item" data-platform="{{ key.platform|lower }}">
+                                    <div class="d-flex align-items-center">
+                                        <img src="/uploads/products/{{ key.image }}"
+                                             alt="{{ key.name }}"
+                                             class="key-game-image">
+
+                                        <div class="key-info">
+                                            <h5 class="key-game-title">{{ key.name }}</h5>
+                                            <div class="key-details">
+                                                <span class="platform-badge {{ key.platform|lower }}">
+                                                    <i class="bi bi-{{ key.platform == 'PLAYSTATION' ? 'playstation' : 'xbox' }}"></i>
+                                                    {{ key.platform }}
+                                                </span>
+                                                <span class="purchase-date">
+                                                    <i class="bi bi-calendar3"></i>
+                                                    {{ key.purchaseDate|date('M j, Y') }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="key-actions ms-auto">
+                                            <div class="key-display">
+                                                <code class="game-key">{{ key.key }}</code>
+                                                <button class="btn-copy" data-key="{{ key.key }}">
+                                                    <i class="bi bi-clipboard"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="bi bi-key"></i>
+                            <h3>No Game Keys Found</h3>
+                            <p>Your purchased game keys will appear here</p>
+                            <a href="{{ path('app_home') }}" class="btn btn-gaming-primary">
+                                Browse Games
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Activation Guide Modals #}
+{# PlayStation Guide #}
+<div class="modal fade" id="psnGuide" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-light">Activate on PlayStation Network</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <span class="step-number">1</span>
+                        <p>Sign in to your PlayStation Network account</p>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-number">2</span>
+                        <p>Select PlayStation Store from the home screen</p>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-number">3</span>
+                        <p>Scroll down and select "Redeem Codes"</p>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-number">4</span>
+                        <p>Enter your 12-digit code and select Continue</p>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-number">5</span>
+                        <p>Follow the on-screen instructions to complete redemption</p>
+                    </div>
+                </div>
+                <div class="guide-support mt-4">
+                    <p class="text-muted">Need help? Visit the <a href="https://www.playstation.com/support" target="_blank">PlayStation Support</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Xbox Guide Modal #}
+<div class="modal fade" id="xboxGuide" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-light">Activate on Xbox Store</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <span class="step-number">1</span>
+                        <p>Sign in to your Xbox account</p>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-number">2</span>
+                        <p>Press the Xbox button on your controller to open the guide</p>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-number">3</span>
+                        <p>Select 'Store' and then choose 'Use a code'</p>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-number">4</span>
+                        <p>Enter the 25-digit code</p>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-number">5</span>
+                        <p>Select 'Next' to confirm and start your download</p>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-number">6</span>
+                        <p>Your game will begin downloading automatically once redeemed</p>
+                    </div>
+                </div>
+                <div class="guide-support mt-4">
+                    <p class="text-muted">Need help? Visit <a href="https://support.xbox.com/help" target="_blank">Xbox Support</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
