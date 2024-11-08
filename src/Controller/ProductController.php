@@ -18,8 +18,14 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
+        // Get the count of available game keys
+        $availableKeysCount = $product->getAvailableGameKeys()->count();
+
         return $this->render('product/index.html.twig', [
             'product' => $product,
+            'availableKeysCount' => $availableKeysCount
         ]);
     }
+
+
 }

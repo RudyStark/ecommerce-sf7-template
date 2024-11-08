@@ -108,21 +108,86 @@
     padding-top: 1rem;
 }
 
-.status-badge {
+/* Stock Badge Styles */
+.stock-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stock-badge.in-stock {
+    background: rgba(46, 125, 50, 0.15);
+    color: #4CAF50;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.stock-badge.low-stock {
+    background: rgba(255, 152, 0, 0.15);
+    color: #FFA726;
+    border: 1px solid rgba(255, 152, 0, 0.3);
+    animation: pulse 2s infinite;
+}
+
+.stock-badge.out-of-stock {
+    background: rgba(211, 47, 47, 0.15);
+    color: #EF5350;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+/* Animation for low stock */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Platform badge adjustments */
+.platform-badge {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #fff;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-weight: 500;
 }
 
-.status-badge.available {
-    background: rgba(76, 175, 80, 0.1);
-    color: #4CAF50;
-    border: 1px solid rgba(76, 175, 80, 0.3);
-    font-size: 0.85rem;
-    padding: 0.4rem 0.8rem;
+.platform-badge i {
+    font-size: 1.2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .platform-info .d-flex {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .stock-badge {
+        justify-content: center;
+    }
+}
+
+/* Désactiver le bouton d'achat si plus de stock */
+.gaming-preorder-btn[disabled] {
+    background: #666;
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 
 .game-details-container {
