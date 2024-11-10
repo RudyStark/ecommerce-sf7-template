@@ -32,7 +32,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="gaming-nav-link {{ app.request.get('_route') == 'app_account_settings' ? 'active' : '' }}" href="">
+                <a class="gaming-nav-link {{ app.request.get('_route') == 'app_account_settings' ? 'active' : '' }}" href="{{ path('app_account_settings') }}">
                     <i class="bi bi-sliders"></i>
                     <span class="nav-text">Settings</span>
                 </a>

@@ -1,0 +1,28 @@
+<div class="gaming-notification-center position-fixed top-0 end-0 p-4" style="z-index: 1050;">
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="gaming-notification">
+                <div class="notification-icon">
+                    {% if type == 'success' %}
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                    {% elseif type == 'error' %}
+                        <i class="bi bi-x-circle-fill text-danger"></i>
+                    {% elseif type == 'warning' %}
+                        <i class="bi bi-exclamation-circle-fill text-warning"></i>
+                    {% else %}
+                        <i class="bi bi-info-circle-fill text-info"></i>
+                    {% endif %}
+                </div>
+                <div class="notification-content">
+                    <h6 class="notification-title">
+                        {% if type == 'success' %}Success{% endif %}
+                        {% if type == 'error' %}Error{% endif %}
+                        {% if type == 'warning' %}Warning{% endif %}
+                        {% if type == 'info' %}Info{% endif %}
+                    </h6>
+                    <p class="notification-message">{{ message }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>

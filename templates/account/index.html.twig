@@ -1,4 +1,4 @@
-{# account/index.html.twig #}
+{# account/_settings.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
@@ -55,6 +55,8 @@
                         {{ include('account/address/includes/_index.html.twig') }}
                     {% elseif current_route == 'app_account_wishlist' %}
                         {{ include('account/wishlist/_index.html.twig') }}
+                    {% elseif current_route == 'app_account_settings' %}
+                        {{ include('account/settings/_settings.html.twig') }}
                     {% endif %}
                 </div>
             </div>
@@ -66,4 +68,7 @@
     {{ parent() }}
     <script src="{{ asset('build/js/account.js') }}"></script>
     <script src="{{ asset('build/js/account/game-key.js') }}"></script>
+    <script src="{{ asset('build/js/account/wishlist.js') }}"></script>
+    <script src="{{ asset('build/js/account/settings.js') }}"></script>
+
 {% endblock %}

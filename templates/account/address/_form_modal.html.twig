@@ -1,0 +1,182 @@
+<div class="modal fade gaming-modal"
+     id="addressFormModal"
+     data-controller="modal-form"
+     data-modal-form-target="modal"
+     tabindex="-1"
+     aria-labelledby="addressFormModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content gaming-modal-content">
+            <!-- Header -->
+            <div class="modal-header gaming-modal-header">
+                <h5 class="modal-title" id="addressFormModalLabel">
+                    <i class="bi bi-geo-alt me-2"></i>
+                    {% if addressForm.vars.data.id %}Edit Address{% else %}New Address{% endif %}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body gaming-modal-body p-4">
+                {{ form_start(addressForm, {
+                    'attr': {
+                        'class': 'gaming-form',
+                        'data-turbo': 'false',
+                        'data-controller': 'address-form',
+                        'data-action': 'submit->modal-form#submitForm',
+                        'data-modal-form-target': 'form'
+                    }
+                }) }}
+
+                <!-- Progress Steps -->
+                <div class="progress-steps mb-4" data-address-form-target="navigation">
+                    <div class="step active" data-step="1">
+                        <i class="bi bi-tag-fill"></i>
+                        <span>Category</span>
+                    </div>
+                    <div class="step" data-step="2">
+                        <i class="bi bi-person-fill"></i>
+                        <span>Identity</span>
+                    </div>
+                    <div class="step" data-step="3">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <span>Address</span>
+                    </div>
+                    <div class="step" data-step="4">
+                        <i class="bi bi-telephone-fill"></i>
+                        <span>Contact</span>
+                    </div>
+                </div>
+
+                <!-- Form Steps -->
+                <div class="form-steps">
+                    <!-- Step 1: Category -->
+                    <div class="form-step active" data-step="1">
+                        <div class="gaming-form-group">
+                            {{ form_label(addressForm.title, 'Address Title', {'label_attr': {'class': 'gaming-label'}}) }}
+                            {{ form_widget(addressForm.title, {
+                                'attr': {
+                                    'class': 'gaming-input',
+                                    'placeholder': 'e.g., Home, Work, Gaming Setup'
+                                }
+                            }) }}
+                            {{ form_errors(addressForm.title) }}
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Identity -->
+                    <div class="form-step" data-step="2">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="gaming-form-group">
+                                    {{ form_label(addressForm.firstname, 'First Name', {'label_attr': {'class': 'gaming-label'}}) }}
+                                    {{ form_widget(addressForm.firstname, {
+                                        'attr': {
+                                            'class': 'gaming-input',
+                                            'placeholder': 'Your first name'
+                                        }
+                                    }) }}
+                                    {{ form_errors(addressForm.firstname) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="gaming-form-group">
+                                    {{ form_label(addressForm.lastname, 'Last Name', {'label_attr': {'class': 'gaming-label'}}) }}
+                                    {{ form_widget(addressForm.lastname, {
+                                        'attr': {
+                                            'class': 'gaming-input',
+                                            'placeholder': 'Your last name'
+                                        }
+                                    }) }}
+                                    {{ form_errors(addressForm.lastname) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Address -->
+                    <div class="form-step" data-step="3">
+                        <div class="gaming-form-group mb-4">
+                            {{ form_label(addressForm.address, 'Street Address', {'label_attr': {'class': 'gaming-label'}}) }}
+                            {{ form_widget(addressForm.address, {
+                                'attr': {
+                                    'class': 'gaming-input',
+                                    'placeholder': 'Enter your street address'
+                                }
+                            }) }}
+                            {{ form_errors(addressForm.address) }}
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="gaming-form-group">
+                                    {{ form_label(addressForm.city, 'City', {'label_attr': {'class': 'gaming-label'}}) }}
+                                    {{ form_widget(addressForm.city, {
+                                        'attr': {
+                                            'class': 'gaming-input',
+                                            'placeholder': 'Your city'
+                                        }
+                                    }) }}
+                                    {{ form_errors(addressForm.city) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="gaming-form-group">
+                                    {{ form_label(addressForm.postal, 'Postal Code', {'label_attr': {'class': 'gaming-label'}}) }}
+                                    {{ form_widget(addressForm.postal, {
+                                        'attr': {
+                                            'class': 'gaming-input',
+                                            'placeholder': 'Postal code'
+                                        }
+                                    }) }}
+                                    {{ form_errors(addressForm.postal) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gaming-form-group mt-4">
+                            {{ form_label(addressForm.country, 'Country', {'label_attr': {'class': 'gaming-label'}}) }}
+                            {{ form_widget(addressForm.country, {
+                                'attr': {
+                                    'class': 'gaming-select'
+                                }
+                            }) }}
+                            {{ form_errors(addressForm.country) }}
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Contact -->
+                    <div class="form-step" data-step="4">
+                        <div class="gaming-form-group">
+                            {{ form_label(addressForm.phone, 'Phone Number', {'label_attr': {'class': 'gaming-label'}}) }}
+                            {{ form_widget(addressForm.phone, {
+                                'attr': {
+                                    'class': 'gaming-input',
+                                    'placeholder': 'Your phone number'
+                                }
+                            }) }}
+                            {{ form_errors(addressForm.phone) }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="form-navigation mt-4 d-flex gap-3 justify-content-between">
+                    <button type="button" class="btn-gaming-secondary prev-step"
+                            data-action="address-form#previousStep"
+                            style="display: none;">
+                        <i class="bi bi-arrow-left me-2"></i>Previous
+                    </button>
+                    <button type="button" class="btn-gaming-primary next-step"
+                            data-action="address-form#nextStep">
+                        Next<i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                    <button type="submit" class="btn-gaming-primary submit-step" style="display: none;">
+                        {% if addressForm.vars.data.id %}Update{% else %}Save{% endif %} Address
+                        <i class="bi bi-check-lg ms-2"></i>
+                    </button>
+                </div>
+
+                {{ form_end(addressForm) }}
+            </div>
+        </div>
+    </div>
+</div>

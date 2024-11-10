@@ -5,9 +5,9 @@ namespace App\Controller\Account;
 use App\Entity\Address;
 use App\Form\AddressUserType;
 use App\Repository\AddressRepository;
-use App\Services\CartService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,77 +15,90 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/account/addresses')]
 class AddressController extends AbstractController
 {
-    private $entityManager;
+    public function __construct(
+        private EntityManagerInterface $entityManager
+    ) {}
 
-    public function __construct(EntityManagerInterface $entityManager)
+    #[Route('/add', name: 'app_account_address_add', methods: ['POST'])]
+    public function add(Request $request): Response
     {
-        $this->entityManager = $entityManager;
-    }
-
-    #[Route('/', name: 'app_account_addresses')]
-    public function index(): Response
-    {
-        return $this->render('account/index.html.twig', [
-            'current_route' => 'app_account_addresses',
-        ]);
-    }
-
-    #[Route('/add/{id}', name: 'app_account_address_form', defaults: ['id' => null])]
-    public function form(Request $request, $id, AddressRepository $addressRepository, CartService $cartService): Response
-    {
-        if ($id) {
-            // Check if the address exists and belongs to the user
-            $address = $addressRepository->findOneBy(['id' => $id, 'user' => $this->getUser()]);
-
-            if (!$address) {
-                $this->addFlash('danger', 'Address not found!');
-
-                return $this->redirectToRoute('app_account_addresses');
-            }
-        } else {
-            $address = new Address();
-            $address->setUser($this->getUser());
-        }
+        $address = new Address();
+        $address->setUser($this->getUser());
 
         $form = $this->createForm(AddressUserType::class, $address);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($address);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Your address has been added successfully!');
+            $this->addFlash('success', 'Address added successfully!');
 
-            if ($cartService->getTotalQuantity() > 0) {
-                return $this->redirectToRoute('app_order');
-            }
-
-            return $this->redirectToRoute('app_account_addresses');
+            return new JsonResponse([
+                'success' => true,
+                'message' => 'Address added successfully'
+            ]);
         }
 
-        return $this->render('account/address/form.html.twig', [
-            'addressForm' => $form->createView(),
-        ]);
+        return new JsonResponse([
+            'success' => false,
+            'errors' => $this->getFormErrors($form)
+        ], Response::HTTP_BAD_REQUEST);
     }
 
-    #[Route('/delete/{id}', name: 'app_account_address_delete')]
-    public function delete($id, AddressRepository $addressRepository): Response
+    #[Route('/edit/{id}', name: 'app_account_address_edit', methods: ['POST'])]
+    public function edit(Request $request, int $id, AddressRepository $addressRepository): Response
     {
         $address = $addressRepository->findOneBy(['id' => $id, 'user' => $this->getUser()]);
 
         if (!$address) {
-            $this->addFlash('danger', 'Address not found!');
+            return new JsonResponse([
+                'success' => false,
+                'message' => 'Address not found'
+            ], Response::HTTP_NOT_FOUND);
+        }
 
-            return $this->redirectToRoute('app_account_addresses');
+        $form = $this->createForm(AddressUserType::class, $address);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->flush();
+
+            return new JsonResponse([
+                'success' => true,
+                'message' => 'Address updated successfully'
+            ]);
+        }
+
+        return new JsonResponse([
+            'success' => false,
+            'errors' => $this->getFormErrors($form)
+        ], Response::HTTP_BAD_REQUEST);
+    }
+
+    #[Route('/delete/{id}', name: 'app_account_address_delete')]
+    public function delete(int $id, AddressRepository $addressRepository): Response
+    {
+        $address = $addressRepository->findOneBy(['id' => $id, 'user' => $this->getUser()]);
+
+        if (!$address) {
+            $this->addFlash('error', 'Address not found');
+            return $this->redirectToRoute('app_account_settings', ['tab' => 'addresses']);
         }
 
         $this->entityManager->remove($address);
         $this->entityManager->flush();
 
-        $this->addFlash('success', 'Your address has been deleted successfully!');
-
-        return $this->redirectToRoute('app_account_addresses');
+        $this->addFlash('success', 'Address deleted successfully');
+        return $this->redirectToRoute('app_account_settings', ['tab' => 'addresses']);
     }
 
+    private function getFormErrors($form): array
+    {
+        $errors = [];
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+        return $errors;
+    }
 }

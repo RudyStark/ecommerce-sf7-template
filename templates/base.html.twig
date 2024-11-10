@@ -10,6 +10,7 @@
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
         <link href="{{ asset('build/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('build/css/notification.css') }}">
         <link rel="stylesheet" href="{{ asset('build/css/style.css') }}">
         <!-- Custom styles for this template -->
         <link href="{{ asset('build/css/carousel.css') }}" rel="stylesheet">
@@ -31,15 +32,8 @@
 </header>
 
 <main>
-    <!-- Flash messages -->
-        {% for type, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="alert mt-4 alert-{{ type }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endfor %}
+    {# Notification Message #}
+    {% include 'partials/_gaming_notification_msg.html.twig' %}
 
     <section class="container my-3">
         {% block body %}{% endblock %}
@@ -54,6 +48,14 @@
 {% block javascripts %}
     <script src="{{ asset('build/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('build/js/global.js') }}"></script>
+    <script>
+        document.querySelectorAll('.gaming-notification').forEach(notification => {
+            // Supprime la notification après 3.3 secondes (3s + 0.3s d'animation)
+            setTimeout(() => {
+                notification.remove();
+            }, 3300);
+        });
+    </script>
 {% endblock %}
 </body>
 </html>

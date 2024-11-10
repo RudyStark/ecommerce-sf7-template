@@ -20,7 +20,7 @@ class WishlistController extends AbstractController
         ]);
     }
 
-    #[Route('/add/{id}', name: 'app_account_wishlist_add')]
+    #[Route('/add/{id}', name: 'app_account_wishlist_add', methods: ['POST'])]
     public function add(int $id, ProductRepository $productRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
         $product = $productRepository->findOneById($id);
@@ -36,20 +36,19 @@ class WishlistController extends AbstractController
     }
 
     #[Route('/remove/{id}', name: 'app_account_wishlist_remove')]
-    public function remove(int $id, ProductRepository $productRepository, EntityManagerInterface $entityManager, Request $request): Response
+    public function remove(int $id, ProductRepository $productRepository, EntityManagerInterface $entityManager): Response
     {
         $product = $productRepository->findOneById($id);
 
-        // Check if the product exists in the wishlist of the user
         if ($product && $this->getUser()->getWishlists()->contains($product)) {
             $this->getUser()->removeWishlist($product);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Product removed from wishlist');
+            $this->addFlash('success', 'Game removed from your wishlist');
         } else {
-            $this->addFlash('danger', 'Product not found in your wishlist');
+            $this->addFlash('error', 'Unable to remove game from wishlist');
         }
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirectToRoute('app_account_wishlist');
     }
 }

@@ -36,5 +36,10 @@
   "build/css/account/game-key.css": "/build/css/account/game-key.css",
   "build/js/game-keys.js": "/build/js/game-keys.js",
   "build/js/account/game-keys.js": "/build/js/account/game-keys.js",
-  "build/js/account/game-key.js": "/build/js/account/game-key.js"
+  "build/js/account/game-key.js": "/build/js/account/game-key.js",
+  "build/css/account/wishlist.css": "/build/css/account/wishlist.css",
+  "build/js/account/wishlist.js": "/build/js/account/wishlist.js",
+  "build/css/notification.css": "/build/css/notification.css",
+  "build/css/account/settings.css": "/build/css/account/settings.css",
+  "build/js/account/settings.js": "/build/js/account/settings.js"
 }

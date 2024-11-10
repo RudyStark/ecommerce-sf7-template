@@ -1,0 +1,627 @@
+/* Settings Page Layout
+-------------------------------------------------- */
+.gaming-settings-container {
+    padding: 2rem;
+    color: #fff;
+}
+
+/* Gaming Card Styles
+-------------------------------------------------- */
+.gaming-card {
+    background: rgba(24, 24, 27, 0.9);
+    border: 1px solid rgba(255, 69, 0, 0.1);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.gaming-card-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(255, 69, 0, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+.gaming-card-header i {
+    font-size: 1.5rem;
+    color: #FF4500;
+    margin-right: 0.75rem;
+}
+
+.gaming-card-header h5 {
+    margin: 0;
+    color: #fff;
+}
+
+.gaming-card-body {
+    padding: 1.5rem;
+}
+
+/* Settings Navigation
+-------------------------------------------------- */
+.settings-nav {
+    background: rgba(24, 24, 27, 0.9);
+    border: 1px solid rgba(255, 69, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.settings-nav-item {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    text-align: left;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+}
+
+.settings-nav-item i {
+    font-size: 1.2rem;
+}
+
+.settings-nav-item:hover {
+    background: rgba(255, 69, 0, 0.1);
+    color: #fff;
+}
+
+.settings-nav-item.active {
+    background: rgba(255, 69, 0, 0.15);
+    color: #FF4500;
+    border-left-color: #FF4500;
+}
+
+/* Tabs Content
+-------------------------------------------------- */
+.settings-tab {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.settings-tab.active {
+    display: block;
+}
+
+/* Address Cards
+-------------------------------------------------- */
+.address-card {
+    background: rgba(24, 24, 27, 0.9);
+    border: 1px solid rgba(255, 69, 0, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.address-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 69, 0, 0.3);
+}
+
+.address-card .card-title {
+    color: #FF4500;
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.address-card .card-title i {
+    font-size: 1.5rem;
+}
+
+.address-details {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.address-details .detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.address-details .detail-item:last-child {
+    margin-bottom: 0;
+}
+
+.address-details .detail-item i {
+    color: #FF4500;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+}
+
+.address-details .detail-content {
+    flex: 1;
+}
+
+.address-actions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: rgba(24, 24, 27, 0.95);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.address-card:hover .address-actions {
+    transform: translateY(0);
+}
+
+.btn-address-edit,
+.btn-address-delete {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-address-edit {
+    background: transparent;
+    border: 1px solid #FF4500;
+    color: #FF4500;
+}
+
+.btn-address-edit:hover {
+    background: rgba(255, 69, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.btn-address-delete {
+    background: transparent;
+    border: 1px solid #ff4444;
+    color: #ff4444;
+}
+
+.btn-address-delete:hover {
+    background: rgba(255, 68, 68, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Type Badge */
+.address-type {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: rgba(255, 69, 0, 0.1);
+    color: #FF4500;
+    border: 1px solid rgba(255, 69, 0, 0.2);
+}
+
+.address-card-add {
+    border: 2px dashed rgba(255, 69, 0, 0.3);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.address-card-add:hover {
+    background: rgba(255, 69, 0, 0.05);
+    border-color: #FF4500;
+}
+
+.address-card-add i {
+    transition: transform 0.3s ease;
+}
+
+.address-card-add:hover i {
+    transform: scale(1.1);
+}
+
+.address-card-add span {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Form Elements
+-------------------------------------------------- */
+.gaming-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.gaming-label {
+    display: block;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.gaming-input,
+.gaming-select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 69, 0, 0.2);
+    border-radius: 8px;
+    color: #fff !important; /* Force white text */
+    transition: all 0.3s ease;
+}
+
+.gaming-input:focus,
+.gaming-select:focus {
+    outline: none;
+    border-color: #FF4500;
+    background: rgba(255, 69, 0, 0.1);
+    box-shadow: 0 0 0 2px rgba(255, 69, 0, 0.1);
+}
+
+.gaming-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.gaming-select option {
+    background: rgb(24, 24, 27);
+    color: #fff;
+}
+
+/* Buttons
+-------------------------------------------------- */
+.btn-gaming-primary {
+    background: #FF4500;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-gaming-primary:hover {
+    background: #ff5722;
+    transform: translateY(-2px);
+}
+
+.btn-gaming-secondary {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-gaming-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.btn-gaming-danger {
+    background: rgba(220, 53, 69, 0.1);
+    color: #ff4444;
+    border: 1px solid #ff4444;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-gaming-danger:hover {
+    background: #ff4444;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Progress Steps
+-------------------------------------------------- */
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.progress-steps::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 69, 0, 0.2);
+    z-index: 1;
+}
+
+.step {
+    position: relative;
+    z-index: 2;
+    background: rgba(24, 24, 27, 0.95);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 69, 0, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.step.active {
+    color: #FF4500;
+    border-color: #FF4500;
+    background: rgba(255, 69, 0, 0.1);
+}
+
+/* Form Steps
+-------------------------------------------------- */
+.form-step {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.form-step.active {
+    display: block;
+}
+
+/* Modal Styles
+-------------------------------------------------- */
+.gaming-modal .modal-content {
+    background: rgba(24, 24, 27, 0.95);
+    border: 1px solid rgba(255, 69, 0, 0.2);
+    border-radius: 15px;
+}
+
+.gaming-modal .modal-header {
+    border-bottom: 1px solid rgba(255, 69, 0, 0.1);
+    padding: 1.5rem;
+    color: #fff;
+}
+
+.gaming-modal .modal-body {
+    padding: 1.5rem;
+    color: #fff;
+}
+
+.gaming-modal .modal-footer {
+    border-top: 1px solid rgba(255, 69, 0, 0.1);
+    padding: 1.5rem;
+}
+
+/* Form Navigation Buttons
+-------------------------------------------------- */
+.form-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.form-navigation .btn-gaming-primary,
+.form-navigation .btn-gaming-secondary {
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.prev-step,
+.next-step,
+.submit-step {
+    transition: all 0.3s ease;
+}
+
+.next-step i,
+.submit-step i {
+    transition: transform 0.3s ease;
+}
+
+.next-step:hover i,
+.submit-step:hover i {
+    transform: translateX(3px);
+}
+
+.prev-step i {
+    transition: transform 0.3s ease;
+}
+
+.prev-step:hover i {
+    transform: translateX(-3px);
+}
+
+/* Form Validation States
+-------------------------------------------------- */
+.gaming-input.is-invalid {
+    border-color: #ff4444;
+    background-color: rgba(255, 68, 68, 0.1);
+}
+
+.gaming-input.is-invalid:focus {
+    box-shadow: 0 0 0 2px rgba(255, 68, 68, 0.1);
+}
+
+.invalid-feedback {
+    color: #ff4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Gaming Switch Styles
+-------------------------------------------------- */
+.gaming-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    margin: 0;
+}
+
+.gaming-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.gaming-switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    transition: 0.4s;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 69, 0, 0.2);
+}
+
+.gaming-switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 3px;
+    background-color: #fff;
+    transition: 0.4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Switch ON state */
+.gaming-switch input:checked + .slider {
+    background: #FF4500;
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
+}
+
+.gaming-switch input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+/* Switch hover effects */
+.gaming-switch:hover .slider {
+    border-color: #FF4500;
+}
+
+.gaming-switch input:checked:hover + .slider {
+    background: #ff5722;
+}
+
+/* Notification Options Layout */
+.notification-option {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(255, 69, 0, 0.1);
+}
+
+.notification-option:last-child {
+    border-bottom: none;
+}
+
+.notification-info {
+    flex: 1;
+}
+
+.notification-info h6 {
+    color: #fff;
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+}
+
+.notification-info p {
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+/* Disabled state with gaming style */
+.gaming-switch input:disabled + .slider {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.gaming-switch input:disabled:checked + .slider {
+    background: rgba(255, 69, 0, 0.5);
+}
+
+.gaming-switch input:disabled + .slider:before {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Animation for switch toggle */
+@keyframes switchOn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.gaming-switch input:checked + .slider:before {
+    animation: switchOn 0.3s ease-out;
+}
+
+/* Animations
+-------------------------------------------------- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments
+-------------------------------------------------- */
+@media (max-width: 768px) {
+    .gaming-settings-container {
+        padding: 1rem;
+    }
+
+    .gaming-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .settings-nav-item {
+        padding: 0.75rem 1rem;
+    }
+
+    .btn-gaming-primary,
+    .btn-gaming-secondary,
+    .btn-gaming-danger {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .progress-steps {
+        display: none;
+    }
+
+    .form-navigation {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
