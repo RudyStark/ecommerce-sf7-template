@@ -1,0 +1,445 @@
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/css/account/settings.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="gaming-settings-container">
+
+        {# Header #}
+        <div class="settings-header mb-4">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-sliders text-orange-gamer me-2 fs-3"></i>
+                <div>
+                    <h2 class="text-light mb-0">Settings</h2>
+                    <p class="text-orange-gamer mb-0">Configure your gaming experience</p>
+                </div>
+            </div>
+        </div>
+
+        {# Settings Navigation #}
+        <div class="row">
+            <div class="col-md-3">
+                <div class="settings-nav">
+                    <button class="settings-nav-item {{ activeTab == 'account' ? 'active' }}" data-tab="account">
+                        <i class="bi bi-person-gear"></i>
+                        Account
+                    </button>
+                    <button class="settings-nav-item {{ activeTab == 'addresses' ? 'active' }}" data-tab="addresses">
+                        <i class="bi bi-geo-alt"></i>
+                        Addresses
+                    </button>
+                    <button class="settings-nav-item {{ activeTab == 'security' ? 'active' }}" data-tab="security">
+                        <i class="bi bi-shield-lock"></i>
+                        Security
+                    </button>
+                    <button class="settings-nav-item {{ activeTab == 'notifications' ? 'active' }}" data-tab="notifications">
+                        <i class="bi bi-bell"></i>
+                        Notifications
+                    </button>
+                    <button class="settings-nav-item {{ activeTab == 'appearance' ? 'active' }}" data-tab="appearance">
+                        <i class="bi bi-palette"></i>
+                        Appearance
+                    </button>
+                    <button class="settings-nav-item {{ activeTab == 'language' ? 'active' }}" data-tab="language">
+                        <i class="bi bi-translate"></i>
+                        Language
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="settings-content">
+                    {# Account Tab #}
+                    <div class="settings-tab {{ activeTab == 'account' ? 'active' }}" id="account">
+                        <div class="gaming-card mb-4">
+                            <div class="gaming-card-header d-flex align-items-center">
+                                <i class="bi bi-person-badge me-2"></i>
+                                <h5 class="mb-0">Account Information</h5>
+                            </div>
+                            <div class="gaming-card-body">
+                                <div class="gaming-form-group">
+                                    <label>Email</label>
+                                    <input type="email" class="gaming-input" value="{{ app.user.email }}" disabled>
+                                </div>
+                                <div class="gaming-form-group mb-0">
+                                    <label>Member Since</label>
+                                    <input type="text" class="gaming-input" value="{{ app.user.createdAt|date('F j, Y') }}" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="gaming-card">
+                            <div class="gaming-card-header d-flex align-items-center">
+                                <i class="bi bi-trophy me-2"></i>
+                                <h5 class="mb-0">Gaming Profile</h5>
+                            </div>
+                            <div class="gaming-card-body">
+                                <div class="gaming-form-group">
+                                    <label>Favorite Platform</label>
+                                    <select class="gaming-select" disabled>
+                                        <option>PlayStation 5</option>
+                                        <option>Xbox Series X</option>
+                                        <option>PC</option>
+                                        <option>Nintendo Switch</option>
+                                    </select>
+                                </div>
+                                <div class="gaming-form-group mb-0">
+                                    <label>Preferred Game Genres</label>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-orange-gamer">Action</span>
+                                        <span class="badge bg-orange-gamer">Adventure</span>
+                                        <span class="badge bg-orange-gamer">RPG</span>
+                                        <span class="badge bg-secondary">Add More...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Addresses Tab #}
+                    <div class="settings-tab {{ activeTab == 'addresses' ? 'active' }}" id="addresses"
+                         data-controller="delete-address">
+                        <div class="gaming-card">
+                            <div class="gaming-card-header d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-geo-alt me-2"></i>
+                                    <h5 class="mb-0">My Addresses</h5>
+                                </div>
+                                <button type="button" class="btn-gaming-primary" data-bs-toggle="modal" data-bs-target="#addressFormModal">
+                                    <i class="bi bi-plus-lg me-2"></i>Add Address
+                                </button>
+                            </div>
+                            <div class="gaming-card-body">
+                                <div class="row g-4">
+                                    {% for address in app.user.addresses %}
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="address-card">
+                                                <span class="address-type">{{ address.title }}</span>
+
+                                                <h3 class="card-title">
+                                                    <i class="bi bi-geo-alt-fill"></i>
+                                                    {{ address.firstname }} {{ address.lastname }}
+                                                </h3>
+
+                                                <div class="address-details">
+                                                    <div class="detail-item">
+                                                        <i class="bi bi-house-fill"></i>
+                                                        <div class="detail-content">
+                                                            {{ address.address }}<br>
+                                                            {{ address.postal }}, {{ address.city }}<br>
+                                                            {{ address.country }}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="detail-item">
+                                                        <i class="bi bi-telephone-fill"></i>
+                                                        <div class="detail-content">
+                                                            {{ address.phone }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="address-actions">
+                                                    <button type="button"
+                                                            class="btn-address-edit"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#addressFormModal"
+                                                            data-address-id="{{ address.id }}">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                        Edit
+                                                    </button>
+                                                    <a href="{{ path('app_account_address_delete', { id: address.id }) }}"
+                                                       class="btn-address-delete"
+                                                       data-action="delete-address#openModal">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                        Delete
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    {# Add New Address Card #}
+                                    <div class="col-md-6 col-lg-4">
+                                        <button type="button"
+                                                class="address-card address-card-add"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#addressFormModal">
+                                            <div class="d-flex flex-column align-items-center justify-content-center h-100">
+                                                <i class="bi bi-plus-circle-fill text-orange-gamer mb-3" style="font-size: 2.5rem;"></i>
+                                                <span class="text-orange-gamer">Add New Address</span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {# Include the delete confirmation modal #}
+                        {% include 'account/address/_delete_confirmation_modal.html.twig' %}
+                    </div>
+
+                    {# Include the modal template #}
+                    {% include 'account/address/_form_modal.html.twig' with {addressForm: addressForm} %}
+
+                    {# Security Tab #}
+                    <div class="settings-tab {{ activeTab == 'security' ? 'active' }}" id="security">
+                        <div class="gaming-card mb-4">
+                            <div class="gaming-card-header d-flex align-items-center">
+                                <i class="bi bi-shield-lock me-2"></i>
+                                <h5 class="mb-0">Change Password</h5>
+                            </div>
+                            <div class="gaming-card-body">
+                                {{ form_start(changePasswordForm, {'attr': {'data-turbo': 'false'}}) }}
+                                {% if form_errors(changePasswordForm) %}
+                                    <div class="alert alert-danger">
+                                        {{ form_errors(changePasswordForm) }}
+                                    </div>
+                                {% endif %}
+
+                                <!-- Current Password -->
+                                <div class="mb-3">
+                                    <div class="gaming-input-wrapper">
+                                        {{ form_widget(changePasswordForm.actualPassword, {
+                                            'attr': {
+                                                'class': 'gaming-input text-light',
+                                                'placeholder': 'Current Password',
+                                                'autocomplete': 'current-password'
+                                            }
+                                        }) }}
+                                    </div>
+                                    {% if form_errors(changePasswordForm.actualPassword) %}
+                                        <div class="text-danger mt-1">
+                                            {{ form_errors(changePasswordForm.actualPassword) }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- New Password -->
+                                <div class="mb-3">
+                                    <div class="gaming-input-wrapper">
+                                        {{ form_widget(changePasswordForm.plainPassword.first, {
+                                            'attr': {
+                                                'class': 'gaming-input text-light',
+                                                'placeholder': 'New Password',
+                                                'autocomplete': 'new-password'
+                                            }
+                                        }) }}
+                                    </div>
+                                    {% if form_errors(changePasswordForm.plainPassword.first) %}
+                                        <div class="text-danger mt-1">
+                                            {{ form_errors(changePasswordForm.plainPassword.first) }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Confirm New Password -->
+                                <div class="mb-4">
+                                    <div class="gaming-input-wrapper">
+                                        {{ form_widget(changePasswordForm.plainPassword.second, {
+                                            'attr': {
+                                                'class': 'gaming-input text-light',
+                                                'placeholder': 'Confirm New Password',
+                                                'autocomplete': 'new-password'
+                                            }
+                                        }) }}
+                                    </div>
+                                    {% if form_errors(changePasswordForm.plainPassword.second) %}
+                                        <div class="text-danger mt-1">
+                                            {{ form_errors(changePasswordForm.plainPassword.second) }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="text-center">
+                                    {{ form_widget(changePasswordForm.submit, {
+                                        'attr': {
+                                            'class': 'btn-view-more',
+                                            'style': 'font-size: 0.8rem;'
+                                        },
+                                        'label': 'Update Password'
+                                    }) }}
+                                </div>
+                                {{ form_end(changePasswordForm) }}
+                            </div>
+                        </div>
+
+                        <div class="gaming-card">
+                            <div class="gaming-card-header d-flex align-items-center">
+                                <i class="bi bi-shield-exclamation me-2"></i>
+                                <h5 class="mb-0">Security Settings</h5>
+                            </div>
+                            <div class="gaming-card-body">
+                                <div class="notification-option">
+                                    <label class="gaming-switch">
+                                        <input type="checkbox" checked disabled>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="notification-info">
+                                        <h6>Two-Factor Authentication</h6>
+                                        <p>Add an extra layer of security to your account</p>
+                                    </div>
+                                </div>
+                                <div class="notification-option">
+                                    <label class="gaming-switch">
+                                        <input type="checkbox" checked disabled>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="notification-info">
+                                        <h6>Login Notifications</h6>
+                                        <p>Get notified of new login attempts</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Notifications Tab #}
+                    <div class="settings-tab {{ activeTab == 'notifications' ? 'active' }}" id="notifications">
+                        <div class="gaming-card">
+                            <div class="gaming-card-header d-flex align-items-center">
+                                <i class="bi bi-bell me-2"></i>
+                                <h5 class="mb-0">Notification Preferences</h5>
+                            </div>
+                            <div class="gaming-card-body">
+                                <div class="notification-option">
+                                    <label class="gaming-switch">
+                                        <input type="checkbox" checked disabled>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="notification-info">
+                                        <h6>New Game Releases</h6>
+                                        <p>Get notified about new game releases</p>
+                                    </div>
+                                </div>
+                                <div class="notification-option">
+                                    <label class="gaming-switch">
+                                        <input type="checkbox" checked disabled>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="notification-info">
+                                        <h6>Price Alerts</h6>
+                                        <p>Receive notifications for price drops on your wishlist</p>
+                                    </div>
+                                </div>
+                                <div class="notification-option">
+                                    <label class="gaming-switch">
+                                        <input type="checkbox" disabled>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="notification-info">
+                                        <h6>Order Updates</h6>
+                                        <p>Stay informed about your orders</p>
+                                    </div>
+                                </div>
+                                <div class="notification-option">
+                                    <label class="gaming-switch">
+                                        <input type="checkbox" disabled>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="notification-info">
+                                        <h6>Newsletter</h6>
+                                        <p>Weekly gaming news and special offers</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Appearance Tab #}
+                    <div class="settings-tab {{ activeTab == 'appearance' ? 'active' }}" id="appearance">
+                        <div class="gaming-card mb-4">
+                            <div class="gaming-card-header d-flex align-items-center">
+                                <i class="bi bi-palette me-2"></i>
+                                <h5 class="mb-0">Theme Settings</h5>
+                            </div>
+                            <div class="gaming-card-body">
+                                <div class="theme-selector">
+                                    <button class="theme-option active" disabled>
+                                        <i class="bi bi-moon-stars"></i>
+                                        Dark Theme
+                                    </button>
+                                    <button class="theme-option" disabled>
+                                        <i class="bi bi-sun"></i>
+                                        Light Theme
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="gaming-card">
+                            <div class="gaming-card-header d-flex align-items-center">
+                                <i class="bi bi-grid me-2"></i>
+                                <h5 class="mb-0">Layout Preferences</h5>
+                            </div>
+                            <div class="gaming-card-body">
+                                <div class="gaming-form-group">
+                                    <label>Game Grid Size</label>
+                                    <select class="gaming-select" disabled>
+                                        <option>Compact</option>
+                                        <option selected>Standard</option>
+                                        <option>Large</option>
+                                    </select>
+                                </div>
+                                <div class="gaming-form-group mb-0">
+                                    <label>Animation Effects</label>
+                                    <select class="gaming-select" disabled>
+                                        <option>Minimal</option>
+                                        <option selected>Standard</option>
+                                        <option>High</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Language Tab #}
+                    <div class="settings-tab {{ activeTab == 'language' ? 'active' }}" id="language">
+                        <div class="gaming-card mb-4">
+                            <div class="gaming-card-header d-flex align-items-center">
+                                <i class="bi bi-translate me-2"></i>
+                                <h5 class="mb-0">Language Settings</h5>
+                            </div>
+                            <div class="gaming-card-body">
+                                <div class="gaming-form-group">
+                                    <label>Display Language</label>
+                                    <select class="gaming-select" disabled>
+                                        <option selected>English</option>
+                                        <option>Français</option>
+                                        <option>Deutsch</option>
+                                        <option>Español</option>
+                                        <option>Italiano</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="gaming-card">
+                            <div class="gaming-card-header d-flex align-items-center">
+                                <i class="bi bi-globe me-2"></i>
+                                <h5 class="mb-0">Regional Settings</h5>
+                            </div>
+                            <div class="gaming-card-body">
+                                <div class="gaming-form-group">
+                                    <label>Currency</label>
+                                    <select class="gaming-select" disabled>
+                                        <option selected>EUR (€)</option>
+                                        <option>USD ($)</option>
+                                        <option>GBP (£)</option>
+                                    </select>
+                                </div>
+                                <div class="gaming-form-group mb-0">
+                                    <label>Time Zone</label>
+                                    <select class="gaming-select" disabled>
+                                        <option selected>Central European Time (CET)</option>
+                                        <option>Eastern Time (ET)</option>
+                                        <option>Pacific Time (PT)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

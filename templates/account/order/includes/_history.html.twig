@@ -1,0 +1,97 @@
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/css/account/order-history.css') }}">
+{% endblock %}
+
+<div class="gaming-history-container">
+    <div class="history-header mb-4">
+        <h2 class="text-light">
+            <i class="bi bi-collection-play text-orange-gamer me-2"></i>
+            Purchase History
+        </h2>
+        <p class="text-orange-gamer">Your game collection and order history</p>
+    </div>
+
+    {% if orders|length > 0 %}
+        <div class="row g-4">
+            {% for order in orders %}
+                <div class="col-12">
+                    <div class="gaming-card order-card">
+                        <div class="order-card-header">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                <div class="order-info">
+                                    <div class="order-id">#{{ order.id }}</div>
+                                    <div class="order-date">
+                                        <i class="bi bi-calendar-event me-1"></i>
+                                        {{ order.createdAt|date('F j, Y') }}
+                                    </div>
+                                </div>
+                                <div class="order-status-price">
+                                    {{ include('account/order/includes/_state.html.twig', { field: { value: order.state } }) }}
+                                    <div class="order-total">
+                                        <span class="text-orange-gamer">{{ order.totalWt|price }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-card-body">
+                            <div class="purchased-games">
+                                {% for detail in order.orderDetails %}
+                                    <div class="game-item">
+                                        <div class="d-flex align-items-center">
+                                            <img src="/uploads/products/{{ detail.productPicture }}"
+                                                 alt="{{ detail.productName }}"
+                                                 class="game-thumbnail">
+                                            <div class="game-info">
+                                                <h5 class="game-title">{{ detail.productName }}</h5>
+                                                {% if detail.gameKey and order.state == 2 %}
+                                                    <div class="game-key-info">
+                                                        <span class="platform-badge">
+                                                            {% if detail.gameKey.type == 'PLAYSTATION' %}
+                                                                <i class="bi bi-playstation text-info"></i>
+                                                                PlayStation
+                                                            {% else %}
+                                                                <i class="bi bi-xbox text-success"></i>
+                                                                Xbox
+                                                            {% endif %}
+                                                        </span>
+                                                        <div class="key-display">
+                                                            <code class="game-key">{{ detail.gameKey.gameKey }}</code>
+                                                            <button class="btn-copy" data-key="{{ detail.gameKey.gameKey }}">
+                                                                <i class="bi bi-clipboard"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="game-price ms-auto">
+                                                {{ detail.productPriceWt|price }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="order-card-footer">
+                            <a href="{{ path('app_account_order', {'id_order': order.id}) }}"
+                               class="btn btn-gaming-outline">
+                                <i class="bi bi-eye me-2"></i>
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="bi bi-controller"></i>
+            <h3>No purchases yet</h3>
+            <p>Start your gaming journey by exploring our collection</p>
+            <a href="{{ path('app_home') }}" class="btn btn-gaming-primary">
+                Explore Games
+            </a>
+        </div>
+    {% endif %}
+</div>

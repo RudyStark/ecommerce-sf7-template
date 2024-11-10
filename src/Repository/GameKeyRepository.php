@@ -37,11 +37,13 @@ class GameKeyRepository extends ServiceEntityRepository
      */
     public function cleanExpiredReservationsDirectly(\DateTimeInterface $expirationTime): void
     {
-        $qb = $this->_em->createQueryBuilder();
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
 
         $qb->update('App\Entity\GameKey', 'g')
             ->set('g.status', $qb->expr()->literal('AVAILABLE'))
             ->set('g.reservedAt', 'NULL')
+            ->set('g.reservedFor', 'NULL')
             ->where('g.status = :status')
             ->andWhere('g.reservedAt < :time')
             ->setParameter('status', 'RESERVED')

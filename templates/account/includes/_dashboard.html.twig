@@ -1,116 +1,174 @@
-<!-- Dashboard sections -->
+{# account/includes/_dashboard.html.twig #}
+
 <div class="row g-4">
-    <!-- Last Orders Section -->
+    {# Dernières Commandes #}
     <div class="col-md-6">
-        <div class="card shadow-sm card-dashboard">
-            <div class="card-header bg-secondary text-white">
-                <h5 class="mb-0"><i class="bi bi-receipt-cutoff"></i> Last Orders</h5>
+        <div class="gaming-card">
+            <div class="gaming-card-header">
+                <i class="bi bi-receipt-cutoff"></i>
+                <h5>Latest Purchases</h5>
             </div>
-            <div class="card-body">
+            <div class="gaming-card-body">
                 {% if orders|length == 0 %}
-                    <p class="text-muted text-center">You have no orders yet.</p>
+                    <div class="empty-state">
+                        <i class="bi bi-bag-x"></i>
+                        <p>No purchases yet</p>
+                        <a href="{{ path('app_home') }}" class="btn-gaming-primary">Explore Games</a>
+                    </div>
                 {% else %}
-                    <ul class="list-group rounded">
+                    <div class="gaming-list">
                         {% for order in orders|slice(0, 5) %}
-                            <a href="{{ path('app_account_order', { id_order: order.id }) }}" class="text-decoration-none list-group-item list-group-item-action px-4 py-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="fw-bold text-primary">Order #{{ order.id }}</h6>
-                                        <small class="text-muted">Placed on: {{ order.createdAt|date("F j, Y") }}</small>
+                            <a href="{{ path('app_account_order', { id_order: order.id }) }}" class="gaming-list-item">
+                                <div class="order-info">
+                                    <div class="order-main">
+                                        <h6 class="order-id">Order #{{ order.id }}</h6>
+                                        <span class="order-date">{{ order.createdAt|date("F j, Y") }}</span>
                                     </div>
-                                    <div>
-                                        <strong class="text-dark">{{ order.totalWt|price }}</strong>
-                                    </div>
+                                    <div class="order-price">{{ order.totalWt|price }}</div>
+                                </div>
+                                <div class="order-status">
+                                    {{ include('account/order/includes/_state.html.twig', { field: { value: order.state } }) }}
                                 </div>
                             </a>
                         {% endfor %}
-                    </ul>
-                    <div class="d-flex justify-content-center mt-3">
-                        <a href="#" class="btn btn-outline-primary btn-sm">View all orders</a>
+                    </div>
+                    <div class="gaming-card-footer">
+                        <a href="" class="btn-gaming-outline">View All Orders</a>
                     </div>
                 {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- Favorites Products Section -->
+    {# Jeux Favoris #}
     <div class="col-md-6">
-        <div class="card shadow-sm card-dashboard">
-            <div class="card-header bg-secondary text-white">
-                <h5 class="mb-0"><i class="bi bi-heart"></i> Favorite Products</h5>
+        <div class="gaming-card">
+            <div class="gaming-card-header">
+                <i class="bi bi-heart"></i>
+                <h5>Wishlist</h5>
             </div>
-            <div class="card-body">
+            <div class="gaming-card-body">
                 {% if app.user.wishlists|length == 0 %}
-                    <p class="text-muted text-center">You have no favorite products yet.</p>
+                    <div class="empty-state">
+                        <i class="bi bi-heart"></i>
+                        <p>Your wishlist is empty</p>
+                        <a href="{{ path('app_home') }}" class="btn-gaming-primary">Discover Games</a>
+                    </div>
                 {% else %}
-                    <ul class="list-group rounded">
+                    <div class="gaming-list">
                         {% for product in app.user.wishlists|slice(0, 5) %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <!-- Thumbnail Image -->
-                                    <img src="{{ asset('uploads/products/' ~ product.picture) }}" alt="{{ product.name }}" class="img-thumbnail me-3" style="width: 50px; height: auto;">
-
-                                    <!-- Product Name -->
-                                    <span>{{ product.name }}</span>
+                            <div class="gaming-list-item game-item">
+                                <img src="{{ asset('uploads/products/' ~ product.picture) }}" alt="{{ product.name }}" class="game-thumbnail">
+                                <div class="game-info">
+                                    <h6>{{ product.name }}</h6>
+                                    <div class="game-price">{{ product.priceWt|price }}</div>
                                 </div>
-
-                                <!-- View Button -->
-                                <a href="{{ path('app_product', { slug: product.slug }) }}" class="btn btn-outline-danger btn-sm">View</a>
-                            </li>
+                                <a href="{{ path('app_product', { slug: product.slug }) }}" class="btn-gaming-secondary">View</a>
+                            </div>
                         {% endfor %}
-                    </ul>
-                    <div class="d-flex justify-content-center mt-3">
-                        <a href="{{ path('app_account_wishlist') }}" class="btn btn-outline-danger btn-sm">View all favorite products</a>
+                    </div>
+                    <div class="gaming-card-footer">
+                        <a href="{{ path('app_account_wishlist') }}" class="btn-gaming-outline">View Wishlist</a>
                     </div>
                 {% endif %}
             </div>
         </div>
     </div>
-</div>
 
-<!-- Second Row: Favorites Address and Coupons -->
-<div class="row g-4 mt-4">
-    <!-- Favorite Address Section -->
+    {# Game Keys Section #}
     <div class="col-md-6">
-        <div class="card shadow-sm card-dashboard">
-            <div class="card-header bg-secondary text-white">
-                <h5 class="mb-0"><i class="bi bi-geo-alt"></i> Favorite Addresses</h5>
+        <div class="gaming-card">
+            <div class="gaming-card-header">
+                <i class="bi bi-key-fill"></i>
+                <h5>My Game Keys</h5>
             </div>
-            <div class="card-body">
-                <p class="text-muted text-center">You have no favorite addresses yet.</p>
-                <ul class="list-group rounded">
-                    <li class="list-group-item">Test blablabla</li>
-                </ul>
-                <div class="d-flex justify-content-center mt-3">
-                    <a href="{{ path('app_account_addresses') }}" class="btn btn-outline-secondary btn-sm">View all addresses</a>
-                </div>
+            <div class="gaming-card-body">
+                {% if orders|filter(order => order.orderDetails|filter(detail => detail.gameKey)|length > 0)|length == 0 %}
+                    <div class="empty-state">
+                        <i class="bi bi-key"></i>
+                        <p>No game keys available</p>
+                        <a href="{{ path('app_home') }}" class="btn-gaming-primary">Buy Digital Games</a>
+                    </div>
+                {% else %}
+                    <div class="gaming-list">
+                        {% for order in orders|filter(order => order.orderDetails|filter(detail => detail.gameKey)|length > 0) %}
+                            {% for detail in order.orderDetails|filter(detail => detail.gameKey) %}
+                                <div class="gaming-list-item key-item">
+                                    <div class="key-info">
+                                        <h6>{{ detail.productName }}</h6>
+                                        <div class="key-meta">
+                                            <span class="key-platform">
+                                                <i class="bi bi-{{ detail.gameKey.type == 'PLAYSTATION' ? 'playstation' : 'xbox' }}"></i>
+                                                {{ detail.gameKey.type }}
+                                            </span>
+                                            {% if order.state == 2 %}
+                                                <span class="key-value">{{ detail.gameKey.gameKey }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% if order.state == 2 %}
+                                        <button class="btn-copy-key" data-key="{{ detail.gameKey.gameKey }}"
+                                                onclick="navigator.clipboard.writeText('{{ detail.gameKey.gameKey }}')">
+                                            <i class="bi bi-clipboard"></i>
+                                        </button>
+                                    {% else %}
+                                        <span class="key-pending">
+                                            <i class="bi bi-clock-history"></i>
+                                            Pending
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- My Coupons Section -->
-    <div class="col-md-6 mb-5">
-        <div class="card shadow-sm card-dashboard">
-            <div class="card-header bg-secondary text-white">
-                <h5 class="mb-0"><i class="bi bi-ticket-perforated"></i> My Coupons</h5>
+    {# Addresses Section #}
+    <div class="col-md-6">
+        <div class="gaming-card">
+            <div class="gaming-card-header">
+                <i class="bi bi-geo-alt-fill"></i>
+                <h5>My Addresses</h5>
             </div>
-            <div class="card-body">
-                <p class="text-muted text-center">You have no coupons available.</p>
-                <ul class="list-group rounded">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span class="coupon-code">12HG3H2GH3</span>
-                        <strong>20% off</strong>
-                        <a class="copy-btn" href="javascript:void(0)" data-coupon="12HG3H2GH3" onclick="copyToClipboard(this)">
-                            <i class="bi bi-clipboard"></i>
-                        </a>
-                    </li>
-                </ul>
+            <div class="gaming-card-body">
+                {% if app.user.addresses|length == 0 %}
+                    <div class="empty-state">
+                        <i class="bi bi-geo-alt"></i>
+                        <p>No shipping addresses saved</p>
+                        <a href="{{ path('app_account_address_form') }}" class="btn-gaming-primary">Add Address</a>
+                    </div>
+                {% else %}
+                    <div class="gaming-list">
+                        {% for address in app.user.addresses|slice(0, 3) %}
+                            <div class="gaming-list-item address-item">
+                                <div class="address-info">
+                                    <h6>{{ address.title }}</h6>
+                                    <div class="address-details">
+                                        <p>{{ address.firstname }} {{ address.lastname }}<br>
+                                            {{ address.address }}<br>
+                                            {{ address.postal }},{{ address.city }}<br>
+                                            {{ address.country }}</p>
+                                        <span class="address-phone">{{ address.phone }}</span>
+                                    </div>
+                                </div>
+                                <div class="address-actions">
+                                    <a href="" class="btn-gaming-outline btn-sm">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if app.user.addresses|length > 3 %}
+                        <div class="gaming-card-footer">
+                            <a href="{{ path('app_account_addresses') }}" class="btn-gaming-outline">View All Addresses</a>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
-
-<!-- Copy to clipboard script -->
-{% block javascripts %}
-    <script src="{{ asset('build/js/account.js') }}"></script>
-{% endblock %}

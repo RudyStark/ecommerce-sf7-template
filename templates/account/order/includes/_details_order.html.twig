@@ -1,86 +1,161 @@
+{# account/order/_details_order.html.twig #}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/css/order-details.css') }}">
+{% endblock %}
+
 <div class="row justify-content-center">
     <div class="col-lg-10">
-        <div class="card shadow-lg border-0 mb-4">
-            <div class="card-header bg-dark text-white">
-                <h5 class="mb-0">Order Details - #{{ order.id }}</h5>
+        <div class="gaming-card">
+            {# En-tête de commande #}
+            <div class="gaming-card-header d-flex align-items-center">
+                <i class="bi bi-receipt-cutoff text-orange-gamer fs-3 me-2"></i>
+                <div>
+                    <h5 class="mb-0 text-light">Order #{{ order.id }}</h5>
+                    <small class="text-orange-gamer">{{ order.createdAt|date('F j, Y, g:i A') }}</small>
+                </div>
+                <div class="ms-auto">
+                    {{ include('account/order/includes/_state.html.twig', { field: { value: order.state } }) }}
+                </div>
             </div>
-            <div class="card-body p-4">
-                <!-- Order Information Section -->
-                <div class="mb-4">
-                    <h6 class="text-secondary">Order Information</h6>
-                    <ul class="list-unstyled">
-                        <li class="d-flex justify-content-between py-2">
-                            <span class="fw-bold">Order Date:</span>
-                            <span>{{ order.createdAt|date('F j, Y, g:i A') }}</span>
-                        </li>
-                        <li class="d-flex justify-content-between py-2">
-                            <span class="fw-bold">Order Status:</span>
-                            {{ include('account/order/includes/_state.html.twig', { field: { value: order.state } }) }}
-                        </li>
-                    </ul>
-                </div>
 
-                <!-- Customer Information Section -->
-                <div class="mb-4">
-                    <h6 class="text-secondary">Customer Information</h6>
-                    <div class="p-3 border rounded bg-light">
-                        <p class="mb-0"><strong>Name:</strong> {{ order.user.firstname }} {{ order.user.lastname }}</p>
-                        <p class="mb-0"><strong>Email:</strong> {{ order.user.email }}</p>
-                        <p class="mb-0"><strong>Shipping Address:</strong> {{ order.delivery|raw }}</p>
+            <div class="gaming-card-body p-4">
+                <div class="row g-4">
+                    {# Informations Client #}
+                    <div class="col-md-6">
+                        <div class="info-block">
+                            <div class="info-header">
+                                <i class="bi bi-person-badge text-orange-gamer"></i>
+                                <h6 class="text-light">Player Info</h6>
+                            </div>
+                            <div class="info-content">
+                                <p class="text-light mb-2">
+                                    <i class="bi bi-person-fill me-2 text-orange-gamer"></i>
+                                    {{ order.user.firstname }} {{ order.user.lastname }}
+                                </p>
+                                <p class="text-light mb-2">
+                                    <i class="bi bi-envelope-fill me-2 text-orange-gamer"></i>
+                                    {{ order.user.email }}
+                                </p>
+                                {% if order.carrierName != 'Email' %}
+                                    <p class="text-light mb-0">
+                                        <i class="bi bi-geo-alt-fill me-2 text-orange-gamer"></i>
+                                        {{ order.delivery|raw }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Products Section -->
-                <div class="mb-4">
-                    <h6 class="text-secondary">Ordered Products</h6>
-                    <ul class="list-group shadow-sm">
-                        {% for product in order.orderDetails %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <img src="/uploads/products/{{ product.productPicture }}" alt="{{ product.productName }}" class="img-thumbnail me-3" style="width: 60px; height: auto;">
-                                    <div>
-                                        <h6 class="mb-0">{{ product.productName }}</h6>
-                                        <small class="text-muted">Quantity: {{ product.productQuantity }}</small>
+                    {# Informations Livraison #}
+                    <div class="col-md-6">
+                        <div class="info-block">
+                            <div class="info-header">
+                                <i class="bi bi-truck text-orange-gamer"></i>
+                                <h6 class="text-light">Delivery Method</h6>
+                            </div>
+                            <div class="info-content">
+                                <p class="text-light mb-2">
+                                    <i class="bi bi-box-seam me-2 text-orange-gamer"></i>
+                                    {{ order.carrierName }}
+                                </p>
+                                <p class="text-light mb-0">
+                                    <i class="bi bi-credit-card me-2 text-orange-gamer"></i>
+                                    Shipping Cost: {{ order.carrierPrice|price }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Produits Commandés #}
+                    <div class="col-12">
+                        <div class="products-section">
+                            <div class="info-header mb-4">
+                                <i class="bi bi-controller text-orange-gamer"></i>
+                                <h6 class="text-light">Purchased Games</h6>
+                            </div>
+
+                            {% for product in order.orderDetails %}
+                                <div class="game-item mb-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-2">
+                                            <img src="/uploads/products/{{ product.productPicture }}"
+                                                 alt="{{ product.productName }}"
+                                                 class="game-thumbnail">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <h6 class="game-title text-light mb-2">{{ product.productName }}</h6>
+                                            <div class="game-quantity mb-3">
+                    <span class="quantity-badge">
+                        <i class="bi bi-hash text-orange-gamer"></i>
+                        Qty: {{ product.productQuantity }}
+                    </span>
+                                            </div>
+
+                                            {# Affichage de la clé CD si disponible #}
+                                            {% if product.gameKey and order.state == 2 %}
+                                                <div class="game-key-section">
+                                                    <div class="key-header">
+                                                        <i class="bi bi-key-fill text-orange-gamer"></i>
+                                                        <span class="text-light">Game Key:</span>
+                                                    </div>
+                                                    <div class="key-content">
+                                                        <code class="game-key-code">{{ product.gameKey.gameKey }}</code>
+                                                        <button class="btn-copy-key" data-key="{{ product.gameKey.gameKey }}">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="platform-badge">
+                                                        {% if product.gameKey.type == 'PLAYSTATION' %}
+                                                            <i class="bi bi-playstation text-info"></i>
+                                                        {% else %}
+                                                            <i class="bi bi-xbox text-success"></i>
+                                                        {% endif %}
+                                                        {{ product.gameKey.type }}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="price-breakdown">
+                                                <div class="price-row base-price">
+                                                    <div class="price-label">Base Price:</div>
+                                                    <div class="price-value">{{ product.productPrice|price }}</div>
+                                                </div>
+                                                <div class="price-row vat">
+                                                    <div class="price-label">VAT ({{ product.productVAT }}%):</div>
+                                                    <div class="price-value">{{ (product.productPrice * product.productVAT / 100)|price }}</div>
+                                                </div>
+                                                <div class="price-divider"></div>
+                                                <div class="price-row total">
+                                                    <div class="price-label">Total:</div>
+                                                    <div class="price-value">{{ ((product.productPrice * (1 + product.productVAT / 100)) * product.productQuantity)|price }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="text-end">
-                                    <p class="mb-0 fw-bold">Unit Price (excl. VAT): {{ product.productPrice|price }}</p>
-                                    <p class="mb-0 fw-bold">VAT: {{ product.productVAT }}%</p>
-                                    <p class="fw-bold">Total: {{ ((product.productPrice * (1 + product.productVAT / 100)) * product.productQuantity)|price }}</p>
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <!-- Carrier Information -->
-                <div class="mb-4">
-                    <h6 class="text-secondary">Shipping Information</h6>
-                    <div class="p-3 border rounded bg-light">
-                        <p class="mb-0"><strong>Carrier:</strong> {{ order.carrierName }}</p>
-                        <p class="mb-0"><strong>Shipping Cost:</strong> {{ order.carrierPrice|price }}</p>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Total Section -->
-            <div class="card-footer bg-light">
-                <div class="d-flex flex-column align-items-end">
-                    <div class="d-flex justify-content-between align-items-center mb-2" style="width: 100%; max-width: 300px;">
-                        <p class="mb-0 fw-bold text-secondary">Total (excl. VAT):</p>
-                        <p class="mb-0 text-dark">{{ (order.totalWt - order.totalVat)|price }}</p>
+                {# Total Section #}
+                <div class="order-total mt-4">
+                    <div class="total-row">
+                        <span class="text-light">Subtotal:</span>
+                        <span class="text-light">{{ (order.totalWt - order.totalVat)|price }}</span>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mb-2" style="width: 100%; max-width: 300px;">
-                        <p class="mb-0 fw-bold text-secondary">Total VAT:</p>
-                        <p class="mb-0 text-dark">{{ order.totalVat|price }}</p>
+                    <div class="total-row">
+                        <span class="text-light">VAT:</span>
+                        <span class="text-light">{{ order.totalVat|price }}</span>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center" style="width: 100%; max-width: 300px;">
-                        <p class="mb-0 fw-bold text-secondary">Total (incl. VAT):</p>
-                        <p class="mb-0 fw-bold text-primary">{{ order.totalWt|price }}</p>
+                    <div class="total-row grand-total">
+                        <span class="text-orange-gamer">Grand Total:</span>
+                        <span class="text-orange-gamer">{{ order.totalWt|price }}</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-

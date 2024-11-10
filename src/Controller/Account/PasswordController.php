@@ -26,29 +26,6 @@ class PasswordController extends AbstractController
         $this->mailService = $mailService;
     }
 
-    #[Route('/account/change-password', name: 'app_account_change_password')]
-    public function index(Request $request, UserPasswordHasherInterface $passwordHasher): Response
-    {
-        $user = $this->getUser();
-
-        // Create a form to change the password
-        $form = $this->createForm(PasswordUserType::class, $user, [
-            'passwordHasher' => $passwordHasher,
-        ]);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', 'Your password has been updated successfully!');
-            $this->entityManager->flush();
-
-            return $this->redirectToRoute('app_account');
-        }
-
-        return $this->render('account/password/index.html.twig', [
-            'changePasswordForm' => $form->createView(),
-        ]);
-    }
-
     #[Route('/recovery-password', name: 'app_account_recovery_password')]
     public function forgotPassword(Request $request, UserRepository $userRepository): Response
     {

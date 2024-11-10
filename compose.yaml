@@ -7,10 +7,10 @@ services:
     container_name: php_symfony
     volumes:
       - ./:/var/www/html
-      - ./php.ini:/usr/local/etc/php/php.ini
-      - ./docker/cron/crontab:/etc/cron.d/symfony-cron:ro
-      - ./docker/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint.sh:ro
-      - ./var/log/cron.log:/var/log/cron.log
+      - ./docker/supervisor:/etc/supervisor/conf.d:ro
+      - cron_logs:/var/log
+    environment:
+      - APP_ENV=dev
     networks:
       - symfony-network
 
@@ -83,6 +83,8 @@ services:
 ###< symfony/mercure-bundle ###
 
 volumes:
+
+  cron_logs:
 
 ###> symfony/mercure-bundle ###
   mercure_data:

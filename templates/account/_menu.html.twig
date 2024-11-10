@@ -1,53 +1,54 @@
-<nav id="account-nav" class="navbar navbar-light bg-transparent account-menu" data-controller="menu-toggle">    <!-- Bouton toggle pour mobile -->
-    <button class="navbar-toggler d-md-none" type="button" data-action="click->menu-toggle#toggleMenu" aria-label="Toggle navigation menu">
-        <i class="bi bi-list menu-icon"></i>
-        <i class="bi bi-x close-icon d-none"></i>
+{# account/_menu.html.twig #}
+<nav id="account-nav" class="navbar navbar-expand-md gaming-navbar mb-4">
+    <button class="navbar-toggler gaming-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#accountMenu" aria-controls="accountMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="bi bi-controller"></i>
     </button>
 
-    <div class="container-fluid d-flex justify-content-center">
-        <ul class="navbar-nav d-flex flex-row align-items-center d-md-flex d-none" data-menu-toggle-target="menu">
+    <div class="collapse navbar-collapse justify-content-center" id="accountMenu">
+        <ul class="navbar-nav align-items-center gap-2">
             <li class="nav-item">
-                <a class="nav-link nav-link-account" href="{{ path('app_account') }}">
-                    <i class="bi bi-person"></i>
-                    <span class="nav-text d-block text-center">My Account</span>
+                <a class="gaming-nav-link {{ app.request.get('_route') == 'app_account' ? 'active' : '' }}" href="{{ path('app_account') }}">
+                    <i class="bi bi-person-badge"></i>
+                    <span class="nav-text">Player Profile</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-account" href="">
-                    <i class="bi bi-box-seam"></i>
-                    <span class="nav-text d-block text-center">My Orders</span>
+                <a class="gaming-nav-link {{ app.request.get('_route') == 'app_account_game_keys' ? 'active' : '' }}"
+                   href="{{ path('app_account_game_keys') }}">
+                    <i class="bi bi-key-fill"></i>
+                    <span class="nav-text">Game Keys</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-account" href="{{ path('app_account_addresses') }}">
-                    <i class="bi bi-geo-alt"></i>
-                    <span class="nav-text d-block text-center">My Addresses</span>
+                <a class="gaming-nav-link {{ app.request.get('_route') == 'app_account_orders' ? 'active' : '' }}" href="{{ path('app_account_orders') }}">
+                    <i class="bi bi-bag-check"></i>
+                    <span class="nav-text">Purchase History</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-account" href="{{ path('app_account_wishlist') }}">
-                    <i class="bi bi-heart"></i>
-                    <span class="nav-text d-block text-center">My Wishlist</span>
+                <a class="gaming-nav-link {{ app.request.get('_route') == 'app_account_wishlist' ? 'active' : '' }}" href="{{ path('app_account_wishlist') }}">
+                    <i class="bi bi-bookmark-star"></i>
+                    <span class="nav-text">Wishlist</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-account" href="{{ path('app_account_change_password') }}">
-                    <i class="bi bi-gear"></i>
-                    <span class="nav-text d-block text-center">Settings</span>
+                <a class="gaming-nav-link {{ app.request.get('_route') == 'app_account_settings' ? 'active' : '' }}" href="{{ path('app_account_settings') }}">
+                    <i class="bi bi-sliders"></i>
+                    <span class="nav-text">Settings</span>
                 </a>
             </li>
             {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
-                    <a class="nav-link nav-link-account" href="{{ path('admin') }}">
-                        <i class="bi bi-person-lines-fill"></i>
-                        <span class="nav-text d-block text-center">Admin Dashboard</span>
+                    <a class="gaming-nav-link admin" href="{{ path('admin') }}">
+                        <i class="bi bi-shield-lock"></i>
+                        <span class="nav-text">Admin</span>
                     </a>
                 </li>
             {% endif %}
             <li class="nav-item">
-                <a class="nav-link nav-link-account text-danger" href="{{ path('app_logout') }}">
-                    <i class="bi bi-box-arrow-right"></i>
-                    <span class="nav-text d-block text-center">Logout</span>
+                <a class="gaming-nav-link logout" href="{{ path('app_logout') }}">
+                    <i class="bi bi-power"></i>
+                    <span class="nav-text">Log Out</span>
                 </a>
             </li>
         </ul>
