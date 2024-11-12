@@ -19,14 +19,19 @@ class PaymentController extends AbstractController
 {
     public function __construct(
         private GameKeyService $gameKeyService,
-        private LoggerInterface $logger
+        private LoggerInterface $logger,
+        private EntityManagerInterface $entityManager
     ) {}
 
+    /**
+     * Initialize Stripe payment session for an order
+     */
     #[Route('/{id_order}', name: 'app_payment')]
-    public function index($id_order, OrderRepository $orderRepository, EntityManagerInterface $entityManager): Response
+    public function index($id_order, OrderRepository $orderRepository): Response
     {
         Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
 
+        // Find the order for the current user
         $order = $orderRepository->findOneBy([
             'id' => $id_order,
             'user' => $this->getUser()
@@ -37,8 +42,10 @@ class PaymentController extends AbstractController
             return $this->redirectToRoute('app_order');
         }
 
+        // Prepare products for Stripe
         $products_for_stripe = [];
 
+        // Add each order detail as a line item
         foreach ($order->getOrderDetails() as $product) {
             $products_for_stripe[] = [
                 'price_data' => [
@@ -55,6 +62,7 @@ class PaymentController extends AbstractController
             ];
         }
 
+        // Add shipping cost if applicable
         if ($order->getCarrierPrice() > 0) {
             $products_for_stripe[] = [
                 'price_data' => [
@@ -69,6 +77,7 @@ class PaymentController extends AbstractController
         }
 
         try {
+            // Create Stripe checkout session
             $checkout_session = Session::create([
                 'customer_email' => $this->getUser()->getEmail(),
                 'line_items' => $products_for_stripe,
@@ -78,7 +87,7 @@ class PaymentController extends AbstractController
             ]);
 
             $order->setStripeSessionId($checkout_session->id);
-            $entityManager->flush();
+            $this->entityManager->flush();
 
             return new RedirectResponse($checkout_session->url);
 
@@ -92,9 +101,13 @@ class PaymentController extends AbstractController
         }
     }
 
+    /**
+     * Handle successful payment and assign game keys
+     */
     #[Route('/success/{stripe_session_id}', name: 'app_payment_success')]
-    public function success($stripe_session_id, OrderRepository $orderRepository, EntityManagerInterface $entityManager, CartService $cartService): Response
+    public function success($stripe_session_id, OrderRepository $orderRepository, CartService $cartService): Response
     {
+        // Find the order using Stripe session ID
         $order = $orderRepository->findCompleteOrder($stripe_session_id, $this->getUser());
 
         if (!$order) {
@@ -102,32 +115,56 @@ class PaymentController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        if($order->getState() == '1') {
+        // Process only pending orders
+        if ($order->getState() == '1') {
             try {
-                // Changer l'état de la commande
-                $order->setState('2');
-
-                // Récupérer toutes les clés de jeu de la commande
-                $gameKeys = [];
+                // Process each order detail
                 foreach ($order->getOrderDetails() as $orderDetail) {
-                    if ($orderDetail->getGameKey()) {
-                        $gameKeys[] = $orderDetail->getGameKey();
+                    // Only process digital products
+                    if ($order->getCarrierName() === 'Email') {
+                        try {
+                            // Get and assign a game key
+                            $key = $this->gameKeyService->getAvailableKeyForOrder(
+                                $orderDetail,
+                                $this->getUser()
+                            );
+
+                            // Mark the key as sold
+                            $key->setStatus('SOLD');
+                            $key->setSoldAt(new \DateTimeImmutable());
+                            $key->setReservedFor(null);
+
+                            // Assign key to order detail
+                            $orderDetail->setGameKey($key);
+                        } catch (\Exception $e) {
+                            $this->logger->error('Error assigning game key: ' . $e->getMessage(), [
+                                'order_id' => $order->getId(),
+                                'product_name' => $orderDetail->getProductName()
+                            ]);
+                            throw $e;
+                        }
                     }
                 }
 
-                // Marquer les clés comme vendues
-                if (!empty($gameKeys)) {
-                    $this->gameKeyService->assignKeysToOrder($gameKeys);
-                }
-
+                // Complete the order
+                $order->setState('2');
                 $cartService->remove();
-                $entityManager->flush();
+                $this->entityManager->flush();
+
+                // Ajouter un message flash de succès
+                if ($order->getCarrierName() === 'Email') {
+                    $this->addFlash('success', 'Thank you for your purchase! Your game keys are now available in your game library.');
+                } else {
+                    $this->addFlash('success', 'Thank you for your purchase! We will process your order shortly.');
+                }
 
             } catch (\Exception $e) {
                 $this->logger->error('Error processing successful payment: ' . $e->getMessage(), [
                     'order_id' => $order->getId(),
                     'stripe_session' => $stripe_session_id
                 ]);
+                $this->addFlash('error', 'An error occurred while processing your order.');
+                return $this->redirectToRoute('app_account');
             }
         }
 
@@ -137,38 +174,13 @@ class PaymentController extends AbstractController
         ]);
     }
 
+    /**
+     * Handle cancelled payment
+     */
     #[Route('/cancelled', name: 'app_payment_cancelled')]
-    public function cancelled(OrderRepository $orderRepository, EntityManagerInterface $entityManager): Response
+    public function cancelled(): Response
     {
-        // Récupérer la dernière commande non payée
-        $order = $orderRepository->findOneBy([
-            'user' => $this->getUser(),
-            'state' => '1'  // État initial
-        ]);
-
-        if ($order) {
-            try {
-                // Libérer toutes les clés réservées
-                foreach ($order->getOrderDetails() as $orderDetail) {
-                    if ($orderDetail->getGameKey()) {
-                        $gameKey = $orderDetail->getGameKey();
-                        $gameKey->setStatus('AVAILABLE');
-                        $gameKey->setReservedAt(null);
-                        $orderDetail->setGameKey(null);
-                    }
-                }
-
-                $entityManager->remove($order);
-                $entityManager->flush();
-
-            } catch (\Exception $e) {
-                $this->logger->error('Error cancelling order: ' . $e->getMessage(), [
-                    'order_id' => $order->getId()
-                ]);
-            }
-        }
-
         $this->addFlash('warning', 'Your payment was cancelled.');
-        return $this->redirectToRoute('app_cart');
+        return $this->redirectToRoute('app_cart', ['reason' => 'cancelled']);
     }
 }

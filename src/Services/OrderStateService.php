@@ -23,7 +23,7 @@ class OrderStateService
         6 => [
             'label' => 'Cancelled',
             'email_subject' => 'Order canceled',
-            'email_template' => 'mail/order_state_6.html.twig',
+            'email_template' => 'mail/state/order_state_6.html.twig',
         ],
     ];
 }
