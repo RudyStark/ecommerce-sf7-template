@@ -100,15 +100,14 @@ class Order
         return $this;
     }
 
-    public function getState(): ?int
+    public function getState(): string
     {
-        return $this->state;
+        return (string) $this->state;
     }
 
-    public function setState(int $state): static
+    public function setState(string $state): self
     {
         $this->state = $state;
-
         return $this;
     }
 

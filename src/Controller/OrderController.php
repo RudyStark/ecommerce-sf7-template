@@ -7,7 +7,6 @@ use App\Entity\Order;
 use App\Entity\OrderDetail;
 use App\Form\OrderType;
 use App\Services\CartService;
-use App\Services\GameKeyService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +17,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class OrderController extends AbstractController
 {
     public function __construct(
-        private GameKeyService $gameKeyService
+        private EntityManagerInterface $entityManager
     ) {}
 
     #[Route('/delivery', name: 'app_order')]
-    public function index(CartService $cartService, EntityManagerInterface $entityManager): Response
+    public function index(CartService $cartService): Response
     {
         if (!$this->getUser()) {
             $this->addFlash('warning', 'You must be logged in to place an order.');
@@ -36,7 +35,6 @@ class OrderController extends AbstractController
         foreach ($cart as $item) {
             if ($item['object']->isDigital()) {
                 $hasDigital = true;
-                // Vérifier la disponibilité des clés
                 if (!$item['object']->hasAvailableKeys()) {
                     $this->addFlash('error', 'Not enough game keys available for ' . $item['object']->getName());
                     return $this->redirectToRoute('app_cart');
@@ -49,27 +47,13 @@ class OrderController extends AbstractController
         // Si uniquement produits digitaux
         if ($hasDigital && !$hasPhysical) {
             try {
-                // Réserver les clés
-                $reservedKeys = [];
-                foreach ($cart as $item) {
-                    if ($item['object']->isDigital()) {
-                        try {
-                            $key = $this->gameKeyService->getOrReserveKey($item['object'], $this->getUser());
-                            $reservedKeys[$item['object']->getId()] = [$key];
-                        } catch (\Exception $e) {
-                            throw $e;
-                        }
-                    }
-                }
-
                 $totalWt = 0;
                 foreach ($cart as $item) {
                     $totalWt += $item['object']->getPriceWt() * $item['quantity'];
                 }
 
-                $carrier = $entityManager->getRepository(Carrier::class)->findOneBy(['name' => 'Email']);
+                $carrier = $this->entityManager->getRepository(Carrier::class)->findOneBy(['name' => 'Email']);
 
-                // Créer la commande
                 $order = new Order();
                 $order->setUser($this->getUser());
                 $order->setCreatedAt(new \DateTime());
@@ -85,17 +69,12 @@ class OrderController extends AbstractController
                     $orderDetail->setProductPrice($product['object']->getPrice());
                     $orderDetail->setProductVat($product['object']->getTva());
                     $orderDetail->setProductQuantity($product['quantity']);
-
-                    if ($product['object']->isDigital()) {
-                        $key = $reservedKeys[$product['object']->getId()][0];
-                        $orderDetail->setGameKey($key);
-                    }
-
+                    $orderDetail->setPlatformType($product['object']->getSubCategory()->getName());
                     $order->addOrderDetail($orderDetail);
                 }
 
-                $entityManager->persist($order);
-                $entityManager->flush();
+                $this->entityManager->persist($order);
+                $this->entityManager->flush();
 
                 return $this->render('order/summary.html.twig', [
                     'cart' => $cart,
@@ -116,7 +95,7 @@ class OrderController extends AbstractController
         $addresses = $this->getUser()->getAddresses();
         if (count($addresses) === 0 && $hasPhysical) {
             $this->addFlash('warning', 'You must add an address before you can place an order.');
-            return $this->redirectToRoute('app_account_address_form');
+            return $this->redirectToRoute('app_account_settings', ['tab' => 'addresses']);
         }
 
         $form = $this->createForm(OrderType::class, null, [
@@ -130,9 +109,9 @@ class OrderController extends AbstractController
     }
 
     #[Route('/summary', name: 'app_order_summary')]
-    public function add(Request $request, CartService $cartService, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, CartService $cartService): Response
     {
-        if($request->getMethod() != 'POST') {
+        if ($request->getMethod() != 'POST') {
             $this->addFlash('warning', 'You must validate the form before you can place an order.');
             return $this->redirectToRoute('app_cart');
         }
@@ -144,7 +123,6 @@ class OrderController extends AbstractController
         foreach ($cart as $item) {
             if ($item['object']->isDigital()) {
                 $hasDigital = true;
-                // Vérifier la disponibilité des clés
                 if (!$item['object']->hasAvailableKeys()) {
                     $this->addFlash('error', 'Not enough game keys available for ' . $item['object']->getName());
                     return $this->redirectToRoute('app_cart');
@@ -155,18 +133,6 @@ class OrderController extends AbstractController
         }
 
         try {
-            $reservedKeys = [];
-            foreach ($cart as $item) {
-                if ($item['object']->isDigital()) {
-                    try {
-                        $key = $this->gameKeyService->getOrReserveKey($item['object'], $this->getUser());
-                        $reservedKeys[$item['object']->getId()] = [$key];
-                    } catch (\Exception $e) {
-                        throw $e;
-                    }
-                }
-            }
-
             $totalWt = 0;
             foreach ($cart as $item) {
                 $totalWt += $item['object']->getPriceWt() * $item['quantity'];
@@ -210,17 +176,12 @@ class OrderController extends AbstractController
                     $orderDetail->setProductPrice($product['object']->getPrice());
                     $orderDetail->setProductVat($product['object']->getTva());
                     $orderDetail->setProductQuantity($product['quantity']);
-
-                    if ($product['object']->isDigital()) {
-                        $key = $reservedKeys[$product['object']->getId()][0];
-                        $orderDetail->setGameKey($key);
-                    }
-
+                    $orderDetail->setPlatformType($product['object']->getSubCategory()->getName());
                     $order->addOrderDetail($orderDetail);
                 }
 
-                $entityManager->persist($order);
-                $entityManager->flush();
+                $this->entityManager->persist($order);
+                $this->entityManager->flush();
 
                 return $this->render('order/summary.html.twig', [
                     'cart' => $cart,

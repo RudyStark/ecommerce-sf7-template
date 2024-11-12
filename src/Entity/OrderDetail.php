@@ -32,6 +32,9 @@ class OrderDetail
     #[ORM\Column]
     private ?float $productVat = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $platformType = null;
+
     #[ORM\OneToOne(mappedBy: 'orderDetail', cascade: ['persist', 'remove'])]
     private ?GameKey $gameKey = null;
 
@@ -72,6 +75,18 @@ class OrderDetail
     public function setProductPicture(string $productPicture): static
     {
         $this->productPicture = $productPicture;
+
+        return $this;
+    }
+
+    public function getPlatformType(): ?string
+    {
+        return $this->platformType;
+    }
+
+    public function setPlatformType(string $platformType): static
+    {
+        $this->platformType = $platformType;
 
         return $this;
     }

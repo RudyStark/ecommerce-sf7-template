@@ -312,4 +312,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getOwnedGamesCount(): int
+    {
+        $count = 0;
+        foreach ($this->orders as $order) {
+            // Conversion en string pour la comparaison ou utilisation d'une comparaison stricte avec int
+            if ($order->getState() === 2 || $order->getState() === '2') { // Accepte les deux types
+                foreach ($order->getOrderDetails() as $orderDetail) {
+                    $gameKey = $orderDetail->getGameKey();
+                    if ($gameKey && $gameKey->getStatus() === 'SOLD') {
+                        $count++;
+                    }
+                }
+            }
+        }
+        return $count;
+    }
 }

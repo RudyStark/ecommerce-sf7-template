@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\UX\Turbo\Attribute\Broadcast;
+use App\Enum\PlatformType;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -291,13 +291,6 @@ class Product
 
     public function getAvailableGameKeys(): Collection
     {
-//        dd([
-//            'Product' => $this->getName(),
-//            'SubCategory' => $this->getSubCategory()->getName(),
-//            'Game Keys' => $this->gameKeys->toArray(),
-//            'Keys Count' => $this->gameKeys->count()
-//        ]);
-
         return $this->gameKeys->filter(function(GameKey $key) {
             return $key->getStatus() === 'AVAILABLE' &&
                 (
@@ -332,5 +325,10 @@ class Product
         }
 
         return $this;
+    }
+
+    public function getPlatformType(): string
+    {
+        return $this->getSubCategory()->getName();
     }
 }

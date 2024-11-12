@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\GameKey;
+use App\Entity\OrderDetail;
 use App\Entity\Product;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -124,5 +125,20 @@ class GameKeyRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function findAvailableKeyForOrderDetail(OrderDetail $orderDetail): ?GameKey
+    {
+        // On doit d'abord récupérer le type basé sur le product_id de la clé
+        $availableKey = $this->createQueryBuilder('g')
+            ->where('g.status = :status')
+            ->andWhere('g.product_id = :productId')
+            ->setParameter('status', 'AVAILABLE')
+            ->setParameter('productId', $orderDetail->getProduct()->getId())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $availableKey;
     }
 }
