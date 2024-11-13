@@ -1,4 +1,0 @@
-*/15 * * * * cd /var/www/html && php bin/console app:clean-expired-keys >> /var/log/cron.log 2>&1
-
-# Clean pending orders every hour
-0 * * * * /usr/local/bin/php /var/www/bin/console app:clean-pending-orders >> /var/log/cron.log 2>&1

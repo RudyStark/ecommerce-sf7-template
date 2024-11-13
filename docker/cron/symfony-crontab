@@ -1,0 +1,2 @@
+*/15 * * * * cd /var/www/html && php bin/console app:clean-expired-keys --env=prod --no-debug >> /var/log/cron.log 2>&1
+0 * * * * cd /var/www/html && php bin/console app:clean-pending-orders --env=prod --no-debug >> /var/log/cron.log 2>&1

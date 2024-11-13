@@ -41,21 +41,10 @@ RUN touch /var/log/cron.log
 RUN chmod 0777 /var/log/cron.log
 RUN chmod 0777 /var/log/supervisor
 
-# Trouver et stocker le chemin PHP dans une variable d'environnement
-ENV PHP_PATH=/usr/local/bin/php
-
-# Création du script pour la commande cron avec le chemin complet de PHP
-RUN echo '#!/bin/sh' > /usr/local/bin/clean-expired-keys.sh && \
-    echo 'echo "[$(date)] Starting clean-expired-keys script" >> /var/log/cron.log 2>&1' >> /usr/local/bin/clean-expired-keys.sh && \
-    echo "cd /var/www/html && $PHP_PATH bin/console app:clean-expired-keys --env=prod --no-debug >> /var/log/cron.log 2>&1" >> /usr/local/bin/clean-expired-keys.sh && \
-    echo 'echo "[$(date)] Finished clean-expired-keys script" >> /var/log/cron.log 2>&1' >> /usr/local/bin/clean-expired-keys.sh && \
-    chmod +x /usr/local/bin/clean-expired-keys.sh
-
 # Configuration du cron
-RUN echo '*/15 * * * * root /usr/local/bin/clean-expired-keys.sh' > /etc/cron.d/symfony-cron && \
-    echo "" >> /etc/cron.d/symfony-cron && \
-    chmod 0644 /etc/cron.d/symfony-cron && \
-    crontab /etc/cron.d/symfony-cron
+COPY docker/cron/symfony-crontab /etc/cron.d/symfony-cron
+RUN chmod 0644 /etc/cron.d/symfony-cron
+RUN crontab /etc/cron.d/symfony-cron
 
 # Configuration de Supervisor
 COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
@@ -66,9 +55,6 @@ WORKDIR /var/www/html
 # Copie du script d'entrée
 COPY docker/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-# Pour debugging, afficher le contenu du script
-RUN cat /usr/local/bin/clean-expired-keys.sh
 
 # Exposition du port PHP-FPM
 EXPOSE 9000
