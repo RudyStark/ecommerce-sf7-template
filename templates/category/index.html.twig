@@ -1,39 +1,47 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/css/gaming-collection.css') }}">
+{% endblock %}
+
 {% block body %}
-    <div class="bg-light shadow">
-    <header class="bg-dark text-white py-4" style="background-image: url({{ asset('assets/images/category-banner.webp') }}); background-size: cover; background-position: center;">
-        <div class="container text-center">
-            <h1 class="display-5">{{ category.name }} Collection</h1>
-        </div>
-    </header>
+    <div class="gaming-wrapper">
+        <header class="gaming-header">
+            <div class="container text-center">
+                <h1 class="display-4">{{ category.name }}</h1>
+                <div class="gaming-count">
+                    {{ category.allProducts|length }} Games Available
+                </div>
+            </div>
+        </header>
 
-    <div class="container my-5">
-        <p class="text-center">There are {{ category.allProducts|length }} product(s) in this collection.</p>
-
-        <div class="row g-3">
-            {% for product in category.allProducts %}
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <a href="{{ path('app_product', { slug: product.slug }) }}" class="text-decoration-none text-dark">
-                        <div class="card card-single h-100 border-0 shadow">
-                            <img class="card-img-top" src="/uploads/products/{{ product.picture }}" alt="{{ product.name }}" style="height: 250px; width: 100%; object-fit: cover;">
-
-                            <div class="card-body">
-                                <h5 class="card-title">{{ product.name }}</h5>
+        <div class="container-fluid py-5">
+            {% if category.allProducts|length > 0 %}
+                <div class="gaming-grid">
+                    {% for product in category.allProducts %}
+                        <a href="{{ path('app_product', { slug: product.slug }) }}" class="text-decoration-none">
+                            <div class="game-card">
+                                <div class="game-image">
+                                    <img src="/uploads/products/{{ product.picture }}"
+                                         alt="{{ product.name }}">
+                                </div>
+                                <div class="game-info">
+                                    <h3 class="game-title">{{ product.name }}</h3>
+                                    <div class="game-price">
+                                        {{ product.pricewt|price }}
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="card-footer d-flex justify-content-between align-items-center">
-                                <p class="card-text mb-0">
-                                    <strong>{{ product.pricewt|price }}</strong>
-                                </p>
-                            </div>
-                        </div>
-                    </a>
+                        </a>
+                    {% endfor %}
                 </div>
             {% else %}
-                <p class="text-center">No products found in this collection.</p>
-            {% endfor %}
+                <div class="empty-collection">
+                    <i class="bi bi-controller mb-3 d-block" style="font-size: 3rem;"></i>
+                    No games available in this collection yet.
+                </div>
+            {% endif %}
         </div>
     </div>
-</div>
 {% endblock %}
