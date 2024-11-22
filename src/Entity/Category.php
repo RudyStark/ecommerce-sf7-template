@@ -27,28 +27,27 @@ class Category
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent', cascade: ['remove'], orphanRemoval: true)]
     private Collection $children;
 
-    /**
-     * @var Collection<int, Product>
-     */
     #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'parentCategory', cascade: ['remove'], orphanRemoval: true)]
     private Collection $parentProducts;
 
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'subCategory', cascade: ['remove'], orphanRemoval: true)]
+    private Collection $subCategoryProducts;
 
     /**
      * @var Collection<int, Product>
      */
-    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'subCategory', cascade: ['remove'], orphanRemoval: true)]
-    private Collection $subCategoryProducts;
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'genres')]
+    private Collection $productGenres;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $icon = null;
-
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
         $this->parentProducts = new ArrayCollection();
         $this->subCategoryProducts = new ArrayCollection();
+        $this->productGenres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,7 +63,6 @@ class Category
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -76,7 +74,6 @@ class Category
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
-
         return $this;
     }
 
@@ -88,7 +85,6 @@ class Category
     public function setParent(?self $parent): static
     {
         $this->parent = $parent;
-
         return $this;
     }
 
@@ -106,19 +102,16 @@ class Category
             $this->children->add($child);
             $child->setParent($this);
         }
-
         return $this;
     }
 
     public function removeChild(self $child): static
     {
         if ($this->children->removeElement($child)) {
-            // unset the owning side of the relation if necessary
             if ($child->getParent() === $this) {
                 $child->setParent(null);
             }
         }
-
         return $this;
     }
 
@@ -136,19 +129,16 @@ class Category
             $this->parentProducts->add($product);
             $product->setParentCategory($this);
         }
-
         return $this;
     }
 
     public function removeParentProduct(Product $product): static
     {
         if ($this->parentProducts->removeElement($product)) {
-            // set the owning side to null (unless already changed)
             if ($product->getParentCategory() === $this) {
                 $product->setParentCategory(null);
             }
         }
-
         return $this;
     }
 
@@ -166,19 +156,41 @@ class Category
             $this->subCategoryProducts->add($product);
             $product->setSubCategory($this);
         }
-
         return $this;
     }
 
     public function removeSubCategoryProduct(Product $product): static
     {
         if ($this->subCategoryProducts->removeElement($product)) {
-            // set the owning side to null (unless already changed)
             if ($product->getSubCategory() === $this) {
                 $product->setSubCategory(null);
             }
         }
+        return $this;
+    }
 
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProductGenres(): Collection
+    {
+        return $this->productGenres;
+    }
+
+    public function addProductGenre(Product $product): static
+    {
+        if (!$this->productGenres->contains($product)) {
+            $this->productGenres->add($product);
+            $product->addGenre($this);
+        }
+        return $this;
+    }
+
+    public function removeProductGenre(Product $product): static
+    {
+        if ($this->productGenres->removeElement($product)) {
+            $product->removeGenre($this);
+        }
         return $this;
     }
 
@@ -187,15 +199,13 @@ class Category
      */
     public function getAllProducts(): Collection
     {
-        // Fusionner les produits des catégories parent et sous-catégories
         return new ArrayCollection(
-            array_merge($this->parentProducts->toArray(), $this->subCategoryProducts->toArray())
+            array_merge(
+                $this->parentProducts->toArray(),
+                $this->subCategoryProducts->toArray(),
+                $this->productGenres->toArray()
+            )
         );
-    }
-
-    public function __toString(): string
-    {
-        return $this->name;
     }
 
     public function getIcon(): ?string
@@ -206,7 +216,11 @@ class Category
     public function setIcon(?string $icon): static
     {
         $this->icon = $icon;
-
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

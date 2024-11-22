@@ -50,9 +50,6 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $studioLabel = null;
 
-    /**
-     * @var Collection<int, FeatureProduct>
-     */
     #[ORM\ManyToMany(targetEntity: FeatureProduct::class, inversedBy: 'products')]
     private Collection $feature;
 
@@ -65,16 +62,21 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?bool $digital = null;
 
-    /**
-     * @var Collection<int, GameKey>
-     */
     #[ORM\OneToMany(targetEntity: GameKey::class, mappedBy: 'product', orphanRemoval: true)]
     private Collection $gameKeys;
+
+    /**
+     * @var Collection<int, Category>
+     */
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'productGenres')]
+    #[ORM\JoinTable(name: 'product_genres')]
+    private Collection $genres;
 
     public function __construct()
     {
         $this->feature = new ArrayCollection();
         $this->gameKeys = new ArrayCollection();
+        $this->genres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,7 +92,6 @@ class Product
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -102,7 +103,6 @@ class Product
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
-
         return $this;
     }
 
@@ -114,7 +114,6 @@ class Product
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -126,7 +125,6 @@ class Product
     public function setPicture(string $picture): static
     {
         $this->picture = $picture;
-
         return $this;
     }
 
@@ -138,14 +136,12 @@ class Product
     public function setPrice(float $price): static
     {
         $this->price = $price;
-
         return $this;
     }
 
     public function getPriceWt()
     {
         $coef = 1 + ($this->tva / 100);
-
         return $coef * $this->price;
     }
 
@@ -157,7 +153,6 @@ class Product
     public function setTva(float $tva): static
     {
         $this->tva = $tva;
-
         return $this;
     }
 
@@ -169,7 +164,6 @@ class Product
     public function setParentCategory(?Category $parentCategory): static
     {
         $this->parentCategory = $parentCategory;
-
         return $this;
     }
 
@@ -181,7 +175,6 @@ class Product
     public function setSubCategory(?Category $subCategory): static
     {
         $this->subCategory = $subCategory;
-
         return $this;
     }
 
@@ -193,7 +186,6 @@ class Product
     public function setIsHomepage(?bool $isHomepage): static
     {
         $this->isHomepage = $isHomepage;
-
         return $this;
     }
 
@@ -205,7 +197,6 @@ class Product
     public function setStudioPicture(string $studioPicture): static
     {
         $this->studioPicture = $studioPicture;
-
         return $this;
     }
 
@@ -217,7 +208,6 @@ class Product
     public function setStudioLabel(string $studioLabel): static
     {
         $this->studioLabel = $studioLabel;
-
         return $this;
     }
 
@@ -234,14 +224,12 @@ class Product
         if (!$this->feature->contains($feature)) {
             $this->feature->add($feature);
         }
-
         return $this;
     }
 
     public function removeFeature(FeatureProduct $feature): static
     {
         $this->feature->removeElement($feature);
-
         return $this;
     }
 
@@ -253,7 +241,6 @@ class Product
     public function setStorage(string $Storage): static
     {
         $this->Storage = $Storage;
-
         return $this;
     }
 
@@ -265,7 +252,6 @@ class Product
     public function setOnline(string $Online): static
     {
         $this->Online = $Online;
-
         return $this;
     }
 
@@ -277,7 +263,6 @@ class Product
     public function setDigital(?bool $digital): static
     {
         $this->digital = $digital;
-
         return $this;
     }
 
@@ -311,24 +296,43 @@ class Product
             $this->gameKeys->add($gameKey);
             $gameKey->setProduct($this);
         }
-
         return $this;
     }
 
     public function removeGameKey(GameKey $gameKey): static
     {
         if ($this->gameKeys->removeElement($gameKey)) {
-            // set the owning side to null (unless already changed)
             if ($gameKey->getProduct() === $this) {
                 $gameKey->setProduct(null);
             }
         }
-
         return $this;
     }
 
     public function getPlatformType(): string
     {
         return $this->getSubCategory()->getName();
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getGenres(): Collection
+    {
+        return $this->genres;
+    }
+
+    public function addGenre(Category $genre): static
+    {
+        if (!$this->genres->contains($genre)) {
+            $this->genres->add($genre);
+        }
+        return $this;
+    }
+
+    public function removeGenre(Category $genre): static
+    {
+        $this->genres->removeElement($genre);
+        return $this;
     }
 }
